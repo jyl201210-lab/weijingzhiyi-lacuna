@@ -8,7 +8,7 @@
 - `MARKET_LOOP.md`：市场切口、扩张路径与沟通闭环
 - `SCENARIOS.md`：第一阶段最重要的使用场景
 - `assets/screenshots/`：精选视觉预览
-- `assets/poster/`：一页纸 / 海报类材料
+- `assets/poster/`：一页纸 / 海报类材料（如 PDF）
 
 ## 这个公开仓库不包含什么
 

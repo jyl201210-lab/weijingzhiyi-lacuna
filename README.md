@@ -47,7 +47,6 @@
 
 精选视觉材料：
 - [公开页 PDF 一页纸](./assets/poster/weijingzhiyi-lacuna-one-pager.pdf)
-- [原始展示页 HTML](./assets/poster/%E6%9C%AA%E7%AB%9F%E4%B9%8B%E6%84%8F.html)
 
 更完整的阶段信息见：
 - [`STATUS.md`](./STATUS.md)
@@ -67,8 +66,8 @@
 
 如果你是：
 - 对人机协作新结构有判断的投资人
-- 对这类产品早期形态有感觉的设计伙伴
 - 在高价值连续任务里有真实场景的小团队负责人或项目 owner
+- 愿意一起把早期产品形态打磨得更锋利的设计伙伴
 
 可以联系我继续往下聊：
 - Email：`1061790014@qq.com`
