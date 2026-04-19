@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未竟之意 | 商业构想</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a3a3a3;
+            --accent-glow: rgba(255, 255, 255, 0.05);
+            --accent-color: #e5e5e5;
+            --font-serif: "Songti SC", "STSong", "Noto Serif SC", serif;
+            --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::selection {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        /* Ambient Background */
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 60%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: normal;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 5rem 0 2rem;
+            color: var(--accent-color);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin: 2.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        strong {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        ul {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        li {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 4px;
+            height: 4px;
+            background-color: var(--text-secondary);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            padding-top: 10vh;
+        }
+
+        .hero p.lead {
+            font-size: 1.45rem;
+            color: var(--text-primary);
+            max-width: 650px;
+            line-height: 1.8;
+            font-family: var(--font-serif);
+        }
+
+        .hero p.sub-lead {
+            margin-top: 2rem;
+            font-size: 1.15rem;
+            max-width: 650px;
+        }
+
+        /* Blockquote / Highlights */
+        .highlight-box {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
+            border-left: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 2.5rem 3rem;
+            margin: 3.5rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            line-height: 1.8;
+            letter-spacing: 0.03em;
+        }
+
+        /* Comparison block */
+        .comparison {
+            display: flex;
+            gap: 2rem;
+            margin: 3.5rem 0;
+        }
+
+        .comparison-col {
+            flex: 1;
+            padding: 2.5rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: transform 0.4s var(--transition-smooth), background 0.4s;
+        }
+
+        .comparison-col:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .comparison-col h4 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+        }
+
+        @media (max-width: 640px) {
+            .comparison {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        /* Scroll Animation Classes */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s var(--transition-smooth), transform 1s var(--transition-smooth);
+            will-change: opacity, transform;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+        
+        .hero h1 { animation: fadeUp 1.2s ease forwards; opacity: 0; }
+        .hero p.lead { animation: fadeUp 1.2s 0.3s ease forwards; opacity: 0; }
+        .hero p.sub-lead { animation: fadeUp 1.2s 0.5s ease forwards; opacity: 0; }
+
+        /* Footer */
+        footer {
+            margin-top: 8rem;
+            padding: 8rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: linear-gradient(0deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+        }
+
+        footer h2 {
+            border: none;
+            margin: 0 0 2rem;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        footer p {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            opacity: 0;
+            animation: fadeUp 1.2s 1s ease forwards;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+            margin-top: 12px;
+            margin-left: 20px;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+            body {
+                background-color: #050505 !important;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                margin: 0;
+            }
+            .ambient-light, .scroll-indicator {
+                display: none !important;
+            }
+            .fade-in-section, h1, .hero p, h2, h3, p, li, .comparison-col {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+                animation: none !important;
+            }
+            .hero {
+                padding-top: 80px !important;
+                min-height: auto !important;
+            }
+            .container {
+                padding: 0 50px !important;
+            }
+            section {
+                break-inside: avoid;
+                padding: 30px 0 !important;
+            }
+            footer {
+                padding: 60px 0 80px !important;
+                margin-top: 40px !important;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-light"></div>
+    
+    <main class="container">
+        <section class="hero">
+            <h1>未竟之意</h1>
+            <p class="lead">一套从“方向形成”到“持续推进”的 AI-native 系统。</p>
+            <p class="sub-lead">当用户还没有完全想清楚时，未竟之意不会急着替人把问题压成一个任务；当方向逐渐清晰后，它再把低价值的推进、校验与协同动作尽可能接过去持续完成。<br><br>
+            产品名是 <strong>未竟之意</strong>，Lacuna 是当前工程代号。<br>
+            我们做的不是一个更会说话的 AI，而是一种新的人机分工方式。</p>
+            <div class="scroll-indicator">Scroll</div>
+        </section>
+
+        <section class="fade-in-section">
+            <h2>问题不在 AI 不够强，而在任务链被切碎了</h2>
+            <p>今天很多人已经在用 AI 和一串传统工具一起工作：先记一嘴，再梳理一下，再拆成待办，再推进协同，最后还得自己盯着后续接续。</p>
+            <ul>
+                <li><strong>笔记 / 草稿工具</strong>能记住输入，却接不住方向如何长出来</li>
+                <li><strong>脑图 / 白板 / 大纲工具</strong>能帮你整理，却接不住后续任务如何继续</li>
+                <li><strong>Todo / 项目 / 工单工具</strong>能接住执行，却默认问题已经被正确定义</li>
+                <li><strong>AI 聊天产品</strong>能快速生成答案，却很容易在起点阶段过早收口</li>
+            </ul>
+            <div class="highlight-box">
+                <p>所以真正的问题不是“有没有工具”，而是方向形成、任务化、协同推进和持续接续之间长期是断开的。一旦起点错了，后面的回答再顺、执行再快、协同再强，也只是沿着错误方向加速。</p>
+            </div>
+            <p>AI 越普及，这个问题越严重。因为人会越来越自然地把低层动作交给系统，但如果关键判断也在不知不觉中被交出去，就会发生一种几乎没有痛感的能力流失：<strong>动作被替代了，方向也被偷走了。</strong></p>
+        </section>
+
+        <section class="fade-in-section">
+            <h2>未竟之意做的，是把这条连续链重新接起来</h2>
+            <p>未竟之意不是另一个单点工具。它不是只负责记录、只负责拆任务，或者只负责自动执行。它要做的是把一件事从“还没想清楚”一直带到“可以持续往后做”。</p>
+            
+            <div class="comparison">
+                <div class="comparison-col">
+                    <h4>阶段一：方向还没长清楚</h4>
+                    <p>系统先帮助用户保留分叉、展开比较、延迟收口、回看变化，避免第一次表达被误当成最终目标。</p>
+                </div>
+                <div class="comparison-col">
+                    <h4>阶段二：方向已经逐渐显现</h4>
+                    <p>系统开始接过低价值推进、重复校验、协同组织和任务接续，让后续推进不再需要人手动盯住每一步。</p>
+                </div>
+            </div>
+
+            <p><strong>用户保留的是那些不该交出去的部分：</strong>判断、取舍、方向、意义。<br>
+            <strong>系统接过去的是那些应该被自动化的部分：</strong>推进、复核、组织、接续。</p>
+            
+            <div class="highlight-box">
+                <p>所以未竟之意的核心不是“更多 agent”，而是在不同阶段重新划分人与系统的职责。</p>
+            </div>
+        </section>
+
+        <section class="fade-in-section">
+            <h2>谁会先为它付费</h2>
+            <p>第一批用户不是所有人，而是那些同时被两件事困住的人：一方面，他们经常被 AI 或传统工具过早定义问题；另一方面，方向一旦清楚，后续推进又仍然需要自己持续盯着。</p>
+            <ul>
+                <li>创业者、小团队负责人、早期项目 owner</li>
+                <li>产品、研究、方案、咨询、创作等高连续知识工作者</li>
+                <li>复杂问题处理中需要反复判断、反复推进的人</li>
+            </ul>
+            <p>他们不是为“更聪明的聊天”付费，而是为这件事付费：<strong>保住高价值判断，同时把低价值负担真正交出去。</strong></p>
+        </section>
+
+        <section class="fade-in-section">
+            <h2>市场不是从一个大词开始，而是从一条扩张路径开始</h2>
+            <p>未竟之意不是一上来替代所有工具，而是沿着一条非常自然的路径扩张：</p>
+            <ul>
+                <li><strong>第一步：个人高价值连续任务</strong> —— 先切“想法形成 + 初步任务化 + 后续接续”这条个人链路</li>
+                <li><strong>第二步：双人到小团队协作</strong> —— 从个人方向形成，扩到团队分工、协同推进和持续复核</li>
+                <li><strong>第三步：复杂流程型场景</strong> —— 再进入复杂工单、问题处理、医疗与其他高判断密度服务流程</li>
+                <li><strong>长期：人机协作基础层</strong> —— 最终长成一层“决定什么该保留给人、什么该交给系统”的能力层</li>
+            </ul>
+            <p>AI 越深入工作流，这条路径越成立。因为用户会越来越频繁地遇到同一个问题：不是没有工具，而是没有一层系统能正确决定什么时候该展开、什么时候该收口、什么时候该由系统继续做下去。</p>
+        </section>
+
+        <section class="fade-in-section">
+            <h2>我们的错位竞争对象，其实是一串单点工具</h2>
+            <p>未竟之意不是在正面竞争某一个聊天产品，而是在错位竞争一组长期割裂处理同一件事的工具：</p>
+            <ul>
+                <li>笔记 / 草稿工具</li>
+                <li>脑图 / 白板 / 大纲工具</li>
+                <li>Todo / 任务工具</li>
+                <li>项目推进 / 工单 / 跟进工具</li>
+            </ul>
+            <div class="highlight-box">
+                <p>这些工具都能接住一个动作，却接不住一件事如何从模糊方向变成可持续推进的现实任务。未竟之意切入的不是其中一个功能点，而是这些工具之间长期没人负责的断层。</p>
+            </div>
+            <p>别人当然可以模仿表面的形式，但很难复制这套完整闭环：从方向形成开始，到动态分工、自校验，再到后续协同执行，未竟之意不是一个功能，而是一整条连续链。</p>
+        </section>
+
+        <section class="fade-in-section">
+            <h2>这件事为什么由我来做</h2>
+            <p>这个产品不是从一个流行概念倒推出来的，而是从我长期做过的真实系统问题里长出来的。我的路径横跨生信数据分析、医疗 AI 临床落地、传统业务数字化，以及复杂工单与问题处理体系的 AI 化重构。</p>
+            <p>表面上这些领域差得很远，但它们一再指向同一个问题：<strong>系统可以给出结果，却承接不了真正的问题；流程可以推进，却经常在最关键的地方过早收口。</strong></p>
+            <p>未竟之意就是从这些误伤里长出来的结构。它不是在卖一个口号，而是在回应一个越来越频繁、也越来越贵的问题：当 AI 进入连续高价值任务后，哪些能力可以外包，哪些能力必须保留。</p>
+        </section>
+        
+        <section class="fade-in-section">
+            <h2>当前阶段</h2>
+            <p>未竟之意目前处于超早期验证阶段：产品主张、核心结构、对外叙事和视觉表达已经成型，正在把首批真实使用闭环、可复用的产品路径与更强的协同机制继续收口。</p>
+            <ul>
+                <li>已经形成完整产品主线，而不是单点功能拼接</li>
+                <li>已经有对外页面、可演示原型与更深层的私下材料</li>
+                <li>正在寻找对这类方向真正敏感的投资人、设计伙伴与长期协作者</li>
+            </ul>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">注：这个公开仓库展示的是产品层与方向层，不是完整开发源，也不是尽调包。更深一层的细节，只会对真正进入下一步沟通的人展开。</p>
+        </section>
+    </main>
+
+    <footer class="fade-in-section">
+        <div class="container">
+            <h2 style="font-family: var(--font-sans); font-weight: normal; font-size: 1.8rem; letter-spacing: 0.1em; color: var(--text-secondary); background: none; -webkit-text-fill-color: var(--text-secondary); border: none; margin-bottom: 2.5rem;">未竟之意 / <span style="font-family: var(--font-serif); color: #fff;">Lacuna</span></h2>
+            <p>不是让 AI 更快替人定义问题，</p>
+            <p>而是让真正重要的方向先长出来，</p>
+            <p>再让系统把后续推进尽可能接过去。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
