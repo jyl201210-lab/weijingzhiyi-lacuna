@@ -8,7 +8,7 @@ fi
 BIN_DIR="$HOME/.lacuna/bin"
 LOCAL_BIN="$HOME/.local/bin"
 mkdir -p "$BIN_DIR" "$LOCAL_BIN"
-curl -fsSL "https://jyl201210-lab.github.io/weijingzhiyi-lacuna/dist/lacuna.mjs" -o "$BIN_DIR/lacuna.mjs"
+curl -fsSL "https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/dist/lacuna.mjs" -o "$BIN_DIR/lacuna.mjs"
 chmod +x "$BIN_DIR/lacuna.mjs"
 ln -sf "$BIN_DIR/lacuna.mjs" "$LOCAL_BIN/lacuna"
 node "$BIN_DIR/lacuna.mjs" install --quiet

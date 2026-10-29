@@ -992,10 +992,10 @@
             <button type="button" role="tab" class="tab-btn" id="tab-npm" aria-selected="true" aria-controls="panel-install" data-cmd="npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init" data-prompt="$">
               npm (Win / Mac / Linux)
             </button>
-            <button type="button" role="tab" class="tab-btn" id="tab-win" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="irm https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.ps1 | iex" data-prompt="PS&gt;">
+            <button type="button" role="tab" class="tab-btn" id="tab-win" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.ps1 | iex" data-prompt="PS&gt;">
               Windows (PS)
             </button>
-            <button type="button" role="tab" class="tab-btn" id="tab-unix" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="curl -fsSL https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.sh | sh" data-prompt="$">
+            <button type="button" role="tab" class="tab-btn" id="tab-unix" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="curl -fsSL https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.sh | sh" data-prompt="$">
               macOS / Linux
             </button>
           </div>
@@ -1285,33 +1285,33 @@
         </div>
 
         <div class="card">
-          <div class="card-kicker">Product Continuum</div>
+          <div class="card-kicker">Supported Hosts</div>
           <h3>
-            <span data-i18n="zh">从前置引擎，走向完整的人机分工结构</span>
-            <span data-i18n="en">From Pre-Model Hook to the Full Lacuna Agent</span>
+            <span data-i18n="zh">全宿主挂载与桌面端直装</span>
+            <span data-i18n="en">Supported Coding Hosts &amp; Desktop Apps</span>
           </h3>
           <p>
-            <span data-i18n="zh">未竟之意抵抗的不只是效率低，而是人把还不该交出去的判断过早交给了系统。</span>
-            <span data-i18n="en">Lacuna protects the phase where direction is still forming—then takes over repetitive follow-through once your intent is clear.</span>
+            <span data-i18n="zh">一套本地配置同时适配主流终端与桌面编码工具，并预留后续完整 Agent 工作区扩展接口：</span>
+            <span data-i18n="en">One lightweight local install wires into both CLI and desktop coding environments:</span>
           </p>
           <ol class="vision-steps" role="list">
             <li>
-              <strong data-i18n="zh">当前阶段（v2.4 已交付）· 跨平台模型前置引擎</strong>
-              <strong data-i18n="en">Stage 1 (v2.4 Today) · Cross-Platform Pre-Model Engine</strong>
-              <span data-i18n="zh">无缝接入现有编码 CLI 与 IDE，先替你守住工程底线、可逆第一版与跨轮决定。</span>
-              <span data-i18n="en">Plugs straight into your existing coding CLIs to guard craft baselines, reversible v1s, and multi-turn decisions.</span>
+              <strong data-i18n="zh">Codex CLI &amp; Codex 桌面端（Windows / WSL / macOS）</strong>
+              <strong data-i18n="en">Codex CLI &amp; Codex Desktop App (Windows / WSL / macOS)</strong>
+              <span data-i18n="zh">自动写入 <code>~/.codex/hooks.json</code> 并在 <code>config.toml</code> 开启 <code>hooks = true</code>；桌面端可让内置 AI 代装后重启即生效。</span>
+              <span data-i18n="en">Configures <code>~/.codex/hooks.json</code> and enables <code>hooks = true</code> in <code>config.toml</code>; works natively in PowerShell or WSL.</span>
             </li>
             <li>
-              <strong data-i18n="zh">下一阶段 · 原生宿主工作区与冷复核回路</strong>
-              <strong data-i18n="en">Stage 2 · Native Workspace &amp; Independent Review Loop</strong>
-              <span data-i18n="zh">把方向分叉、证据留存、独立冷复核与多代理接续收进同一套可视化工作台。</span>
-              <span data-i18n="en">Unifies open branches, durable workspace grants, cold review, and multi-agent handoff in a dedicated surface.</span>
+              <strong data-i18n="zh">Claude Code（全平台终端与 IDE 插件）</strong>
+              <strong data-i18n="en">Claude Code (CLI &amp; IDE Integrations)</strong>
+              <span data-i18n="zh">自动合并全局 <code>~/.claude/settings.json</code> 的 <code>UserPromptSubmit</code> 钩子，不覆盖原有模型与权限配置。</span>
+              <span data-i18n="en">Non-destructively merges into <code>~/.claude/settings.json</code> <code>UserPromptSubmit</code> while preserving your existing settings.</span>
             </li>
             <li>
-              <strong data-i18n="zh">长期愿景 · 让未完成继续生长</strong>
-              <strong data-i18n="en">Long-Term Horizon · Let What Is Unfinished Grow</strong>
-              <span data-i18n="zh">服务创业者、小团队负责人与高判断密度研究者：方向未明时保住张力，方向既定后接管推进。</span>
-              <span data-i18n="en">Built for founders, tech leads, and researchers: preserve tension while thinking, automate execution once decided.</span>
+              <strong data-i18n="zh">Antigravity IDE（PreInvocation 前置注入）</strong>
+              <strong data-i18n="en">Antigravity IDE (PreInvocation Hook)</strong>
+              <span data-i18n="zh">通过 <code>PreInvocation</code> 注入瞬态上下文，按用户轮次自动去重，不污染历史会话记录。</span>
+              <span data-i18n="en">Injects turn-deduplicated ephemeral context on <code>PreInvocation</code> without polluting conversation transcripts.</span>
             </li>
           </ol>
         </div>
@@ -1323,19 +1323,17 @@
         <div>
           <div class="section-idx">05 / Contact</div>
           <h2>
-            <span data-i18n="zh">如果你也在用 AI 做真实项目，欢迎直接装上试试。</span>
-            <span data-i18n="en">Building real software or research with AI? Try it and let's talk.</span>
+            <span data-i18n="zh">使用反馈与合作交流</span>
+            <span data-i18n="en">Feedback &amp; Collaboration</span>
           </h2>
           <p>
-            <span data-i18n="zh">这个公开入口提供闭源单文件命令行分发包与产品说明，不包含内部完整源码与评估链。如果你在 Windows / macOS 实测中有反馈，或希望交流产品合作、早期团队试用与投资视角，欢迎直接联系：</span>
-            <span data-i18n="en">This public repository hosts the closed-source single-file CLI release and product overview. For feedback on Windows/macOS, design partnerships, or deeper product discussions, reach out directly:</span>
+            <span data-i18n="zh">本仓库提供闭源单文件命令行分发包（<code>UNLICENSED</code>），不含内部源码与明文预设库。如果你在 Windows、macOS 或多模型实测中有任何建议，欢迎直接联系：</span>
+            <span data-i18n="en">This repository distributes the closed-source single-file CLI bundle (<code>UNLICENSED</code>). For Windows/macOS feedback, team trials, or collaboration, reach out directly:</span>
           </p>
           <p>
-            <a href="./STATUS.md"><span data-i18n="zh">阶段说明 (STATUS)</span><span data-i18n="en">Project Status</span></a>
+            <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna/blob/main/README.md"><span data-i18n="zh">中文说明文档 (README)</span><span data-i18n="en">Chinese README</span></a>
             &nbsp;·&nbsp;
-            <a href="./MARKET_LOOP.md"><span data-i18n="zh">市场路径 (MARKET)</span><span data-i18n="en">Market Loop</span></a>
-            &nbsp;·&nbsp;
-            <a href="./assets/poster/weijingzhiyi-lacuna-one-pager.pdf"><span data-i18n="zh">PDF 一页纸</span><span data-i18n="en">One-Pager PDF</span></a>
+            <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna/blob/main/README.en.md"><span data-i18n="zh">英文说明文档 (English README)</span><span data-i18n="en">English README</span></a>
           </p>
         </div>
 
@@ -1362,8 +1360,8 @@
       <strong lang="zh-CN">未竟之意</strong> · Lacuna v2.4 — All rights reserved.
     </div>
     <div>
-      <span data-i18n="zh">不是更快替你下定义，而是先让方向长出来，再把推进接过去。</span>
-      <span data-i18n="en">Don't rush to compress open questions—let direction form first, then carry the execution forward.</span>
+      <span data-i18n="zh">模型开口前垫稳工程底线，把关键决定权留给人。</span>
+      <span data-i18n="en">Guard craft baselines before the model speaks. Keep every real decision yours.</span>
     </div>
   </footer>
 

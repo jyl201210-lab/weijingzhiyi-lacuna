@@ -7,7 +7,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
 $BinDir = Join-Path $HOME ".lacuna\bin"
 New-Item -ItemType Directory -Force -Path $BinDir | Out-Null
 $TargetMjs = Join-Path $BinDir "lacuna.mjs"
-Invoke-RestMethod -Uri "https://jyl201210-lab.github.io/weijingzhiyi-lacuna/dist/lacuna.mjs" -OutFile $TargetMjs
+Invoke-RestMethod -Uri "https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/dist/lacuna.mjs" -OutFile $TargetMjs
 
 Set-Content -Path (Join-Path $BinDir "lacuna.cmd") -Encoding ASCII -Value "@echo off`r`nnode `"%~dp0lacuna.mjs`" %*`r`n"
 Set-Content -Path (Join-Path $BinDir "lacuna.ps1") -Encoding UTF8 -Value "#!/usr/bin/env pwsh`n& node `"$PSScriptRoot/lacuna.mjs`" @args`nexit $LASTEXITCODE`n"

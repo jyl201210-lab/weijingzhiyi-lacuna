@@ -1,103 +1,97 @@
-# 未竟之意 / Lacuna
+<div align="right">
+  <strong>中文</strong> &nbsp;|&nbsp; <a href="./README.en.md">English</a>
+</div>
 
-未竟之意不是一个更会替人下定义的 AI 聊天产品。
+# 未竟之意 · Lacuna `v2.4`
 
-它在尝试回答另一个越来越贵的问题：当人还没完全想清楚时，系统能不能不要急着把问题压成一个任务；当方向逐渐清楚后，系统能不能把后续推进真正接过去，而不是还要人自己一直盯着。
+**在模型开口之前，先把工程与安全底线垫稳，把真正的决定权留给人。**
 
-产品名是 **未竟之意**，**Lacuna** 是当前工程代号。
+**未竟之意（Lacuna）** 是挂载在 **Codex（CLI & 桌面端 App）**、**Claude Code** 与 **Antigravity** 前面的本地**模型前置引擎**（Pre-Model Context & Decision Engine），原生支持 **Windows / macOS / Linux**，并按输入语言**全自动切换中英文**。
 
-- **在线主页（支持中文 / EN 切换）**：<https://jyl201210-lab.github.io/weijingzhiyi-lacuna/>
+![未竟之意 Lacuna v2.4 预览](./assets/screenshots/poster-preview.png)
 
-## 快速安装 / Quick Install (v2.4 · Windows / macOS / Linux · 中文 & English)
+---
 
-装完自动为本机 **Codex CLI**、**Claude Code** 与 **Antigravity** 挂载全局模型前置引擎（需 Node.js ≥ 20）。检测到全英文输入会自动切换为 **100% 纯英文预设与指令（零中文混入）**。
+## 一行命令安装（Windows / macOS / Linux）
 
-**通用一行命令（Windows PowerShell / CMD / macOS / Linux 均可用）：**
+前置要求：本机已安装 `Node.js >= 20`（桌面端用户可直接复制下方口令让内置 AI 代装）。
+
+### 方式 1：跨平台通用（推荐，PowerShell / CMD / 终端均可用）
 ```bash
 npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init
 ```
 
-**或者按系统使用原生脚本：**
+### 方式 2：系统原生脚本
 - **Windows (PowerShell)**：
   ```powershell
-  irm https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.ps1 | iex
+  irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.ps1 | iex
   ```
-- **macOS / Linux**：
+- **macOS / Linux / WSL**：
   ```bash
-  curl -fsSL https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.sh | sh
+  curl -fsSL https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.sh | sh
   ```
 
-常用命令：`lacuna help`（中英双语帮助）、`lacuna config show`（查看设置）、`lacuna config set lang en`（强制固定英文）、`lacuna uninstall`（一键卸载）。
+### 方式 3：Codex 桌面端 App（Windows / macOS）直接让 AI 帮你装
+如果你用的是桌面版 Codex App，直接把下面这句话发给对话框里的 AI，装完**彻底退出并重启一次 Codex App**（若弹窗询问本地 Hook 信任，点一次 **Trust / Allow**）即可：
 
-![未竟之意公开页预览](./assets/screenshots/poster-preview.png)
+```text
+Please check if Node.js (>=20) is installed (install LTS if missing), then run `npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init` and verify with `lacuna self-test`.
+```
 
-## 第一阶段先服务谁
+---
 
-未竟之意第一阶段先服务创业者、小团队负责人和早期项目 owner。
+## 它现在具体做什么？
 
-因为他们最容易同时遇到两个问题：
-- 方向形成时，容易被 AI 或传统工具过早压缩
-- 方向逐渐清楚后，后续推进又仍然需要自己持续盯住
+平时你完全不用改说话习惯，模型自己也感知不到额外工具负担——Lacuna 在提示词发往模型前的 **15 毫秒内纯本地介入**（0 额外 API 调用）：
 
-也正因为这两种痛点同时存在，他们既会最先愿意用起来，也最可能最先为它付费。
+1. **按场景自动补齐工程与科研底线**
+   - **前端与交互**：自动要求金额/编号开启 `tabular-nums` 等宽对齐、异步按钮防连点加载态、补齐空状态/错态与 `:focus-visible` 键盘焦点环。
+   - **数据库与资金安全**：SQLite 写事务显式 `BEGIN IMMEDIATE` + `busy_timeout` 防并发锁死；货币统一按最小整数单位（分 / cents）计算，杜绝浮点精度误差。
+   - **单细胞与统计质控（`scRNA-seq` 等）**：拒绝一刀切硬编码 `percent.mt < 5%`，自动按样本批次计算中位数与 `MAD` 动态阈值，先给过滤前后样本量对比。
+2. **未拍板需求：先交可逆第一版 + 2 道大白话选择题**
+   - 当数据保留策略或冲突处理还没定死时，既不会一口气抛十几个问题卡住你，也不会擅自做物理删库；先交出带状态标记或 `--dry-run` 预览的可运行第一版，并在结尾只列最多 **2 个关键选择题**请你拍板。
+3. **跨轮决定锁定 + 跑偏物理截断（`rebase`）**
+   - 自动识别并锁定你在对话中拍板的规矩（完整保留“不要物理删除”等否定语义，排除反问句误判）；改主意时自动覆盖旧决定；模型若在某轮跑偏，一行 `lacuna rebase` 自动备份并物理截断回退 `.jsonl` 会话记录。
+4. **中英双语全自动隔离**
+   - 默认 `lang: auto`：中文提问注入中文底线；纯英文提问自动切换为 **100% 地道纯英文底线与指令（零中文字符混入）**；日常翻译或非技术闲聊完全不触发注入。
 
-## 这个仓库是什么
+---
 
-这是一个对外公开的产品仓，不是完整开发源，也不是尽调包。
+## 四大主力模型同口径实证
 
-这里主要放的是：
-- 产品层表达
-- 当前阶段状态
-- 精简后的市场切口与扩张路径
-- 几个最能说明方向的场景
-- 精选视觉材料
+使用完全相同的简短模糊提示词与验证断言，在挂载未竟之意前置引擎后实测通过：
 
-这里不会放：
-- 完整源码
-- 内部 specs / records / prompt / rule / eval 链
-- 历史思考资产与判断链
-- 能直接反推出核心方法论和实现路径的细节
+| 验证场景 | 裸提示词常见问题 | 挂载未竟之意后的实测结果 | 覆盖模型 |
+| :--- | :--- | :--- | :--- |
+| **UI 与账单面板** | 数字跳动不对齐、表单可重复提交、漏写空错态 | 自动启用 `tabular-nums`、防连点锁、完整空错态与焦点环 | GPT-6 Astra / GPT-5.6 Sol / Claude Opus 5.5 / Claude Fable 5.1 |
+| **SQLite 与结算写库** | 浮点数算钱精度漂移、并发报 `SQLITE_BUSY`、擅自硬删数据 | 整数分存储、`BEGIN IMMEDIATE` 写锁、默认可逆状态标记 | 4 / 4 全部通过 |
+| **单细胞 `scRNA-seq` 质控** | 生搬硬套 `5%` 阈值误杀高代谢活性细胞 | 按批次计算中位数 + `MAD` 自适应阈值并输出过滤预览 | 4 / 4 全部通过 |
 
-## 当前状态
+---
 
-项目目前处于超早期验证阶段，但已经不是一句空口号。
+## 常用本地管理命令
 
-已经形成的部分包括：
-- 清晰的产品命题与竞争边界
-- 从“方向形成”到“持续推进”的连续结构
-- 当前阶段先切入的人群、场景和市场路径
-- 可对外展示的视觉表达与下一层私下材料框架
+安装后默认静默生效，随时可通过 `lacuna` 命令调整设置：
 
-精选视觉材料：
-- [公开页 PDF 一页纸](./assets/poster/weijingzhiyi-lacuna-one-pager.pdf)
+```bash
+lacuna help                                  # 查看中英双语帮助说明
+lacuna config show                           # 查看当前生效的持久化设置
+lacuna config set lang en                    # 语言模式：auto（默认自动识别）| zh | en
+lacuna config set visual.default warm-editorial  # 固定默认 UI 视觉气质
+lacuna rules list                            # 查看当前会话已锁定的决定
+lacuna rules revoke --id r_1                 # 撤销某条历史决定
+lacuna rebase <session_id> 1                 # 备份并物理截断最近 1 轮走偏对话
+lacuna self-test                             # 运行跨平台与中英双语自检套件
+lacuna uninstall                             # 一键卸载全局前置 Hook
+```
 
-更完整的阶段信息见：
-- [`STATUS.md`](./STATUS.md)
-- [`MARKET_LOOP.md`](./MARKET_LOOP.md)
-- [`SCENARIOS.md`](./SCENARIOS.md)
-- [`REPO_SCOPE.md`](./REPO_SCOPE.md)
+---
 
-## 建议阅读顺序
+## 仓库说明与联系方式
 
-1. [`index.html`](./index.html)
-2. [`STATUS.md`](./STATUS.md)
-3. [`MARKET_LOOP.md`](./MARKET_LOOP.md)
-4. [`SCENARIOS.md`](./SCENARIOS.md)
-5. [`REPO_SCOPE.md`](./REPO_SCOPE.md)
+本仓库为 **未竟之意（Lacuna）** 的对外发行与产品说明仓，提供混淆封装后的闭源单文件 CLI 分发包（协议：`UNLICENSED`，保留一切权利），不包含内部完整开发源码与明文预设库。
 
-## 联系方式
-
-如果你是：
-- 对人机协作新结构有判断的投资人
-- 在高价值连续任务里有真实场景的小团队负责人或项目 owner
-- 愿意一起把早期产品形态打磨得更锋利的设计伙伴
-
-可以联系我继续往下聊：
-- Email：`1061790014@qq.com`
-- WeChat：`Jyl2012111`
-- GitHub：<https://github.com/jyl201210-lab>
-
-## 说明
-
-这个仓库默认不是开源产品本体，而是一个公开产品入口。
-未竟之意仍在继续生长；更深的 demo、实现路径与判断材料，只会在下一层沟通里展开。
+欢迎反馈使用体验或交流合作：
+- **Email**：`1061790014@qq.com`
+- **WeChat**：`Jyl2012111`
+- **GitHub**：[jyl201210-lab](https://github.com/jyl201210-lab)
