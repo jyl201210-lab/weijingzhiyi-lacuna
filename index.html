@@ -3,119 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <script>
-    try {
-      document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
-    } catch {}
-  </script>
-  <meta name="description" content="未竟之意 (Lacuna) v2.4 — 发送前意图与预设控制器，支持 Windows / macOS / Linux 与中英自动切换，适配 Codex、Claude Code 与 Antigravity。">
-  <title>未竟之意 · Lacuna — 发送前意图与预设控制器</title>
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="未竟之意 (Lacuna) — 面向 Codex、Claude Code 与 Antigravity 的发送前意图与预设控制层。支持 Windows / macOS / Linux 与中英自动切换。">
+  <title>未竟之意 | Lacuna</title>
   <style>
     :root {
-      /* Raw light tokens (Warm Archival Paper) */
-      --bg-light: #faf7f1;
-      --bg-elev-light: #ffffff;
-      --bg-subtle-light: rgba(28, 23, 18, 0.04);
-      --line-light: rgba(28, 23, 18, 0.12);
-      --line-strong-light: rgba(28, 23, 18, 0.24);
-      --text-light: #191614;
-      --muted-light: #5c544b;
-      --accent-light: #855316;
-      --accent-soft-light: rgba(133, 83, 22, 0.11);
-      --ok-light: #156d4b;
-      --ok-soft-light: rgba(21, 109, 75, 0.11);
-      --glow-a-light: rgba(196, 145, 78, 0.12);
-      --glow-b-light: rgba(133, 83, 22, 0.06);
-      --topbar-light: rgba(250, 247, 241, 0.82);
-
-      /* Raw dark tokens (Warm Editorial Obsidian) */
-      --bg-dark: #090807;
-      --bg-elev-dark: #13110f;
-      --bg-subtle-dark: rgba(255, 248, 236, 0.045);
-      --line-dark: rgba(255, 248, 236, 0.11);
-      --line-strong-dark: rgba(255, 248, 236, 0.24);
-      --text-dark: #f5efe4;
-      --muted-dark: #b6ac9d;
-      --accent-dark: #f0d6ae;
-      --accent-soft-dark: rgba(240, 214, 174, 0.15);
-      --ok-dark: #7fd1ae;
-      --ok-soft-dark: rgba(127, 209, 174, 0.14);
-      --glow-a-dark: rgba(240, 214, 174, 0.11);
-      --glow-b-dark: rgba(214, 194, 147, 0.06);
-      --topbar-dark: rgba(9, 8, 7, 0.76);
-
-      /* Fallback defaults for older browsers without light-dark() */
-      --bg: var(--bg-light);
-      --bg-elev: var(--bg-elev-light);
-      --bg-subtle: var(--bg-subtle-light);
-      --line: var(--line-light);
-      --line-strong: var(--line-strong-light);
-      --text: var(--text-light);
-      --muted: var(--muted-light);
-      --accent: var(--accent-light);
-      --accent-soft: var(--accent-soft-light);
-      --ok: var(--ok-light);
-      --ok-soft: var(--ok-soft-light);
-      --glow-a: var(--glow-a-light);
-      --glow-b: var(--glow-b-light);
-      --topbar-bg: var(--topbar-light);
-
-      @media (prefers-color-scheme: dark) {
-        --bg: var(--bg-dark);
-        --bg-elev: var(--bg-elev-dark);
-        --bg-subtle: var(--bg-subtle-dark);
-        --line: var(--line-dark);
-        --line-strong: var(--line-strong-dark);
-        --text: var(--text-dark);
-        --muted: var(--muted-dark);
-        --accent: var(--accent-dark);
-        --accent-soft: var(--accent-soft-dark);
-        --ok: var(--ok-dark);
-        --ok-soft: var(--ok-soft-dark);
-        --glow-a: var(--glow-a-dark);
-        --glow-b: var(--glow-b-dark);
-        --topbar-bg: var(--topbar-dark);
-      }
-
-      @supports (color: light-dark(white, black)) {
-        --bg: light-dark(var(--bg-light), var(--bg-dark));
-        --bg-elev: light-dark(var(--bg-elev-light), var(--bg-elev-dark));
-        --bg-subtle: light-dark(var(--bg-subtle-light), var(--bg-subtle-dark));
-        --line: light-dark(var(--line-light), var(--line-dark));
-        --line-strong: light-dark(var(--line-strong-light), var(--line-strong-dark));
-        --text: light-dark(var(--text-light), var(--text-dark));
-        --muted: light-dark(var(--muted-light), var(--muted-dark));
-        --accent: light-dark(var(--accent-light), var(--accent-dark));
-        --accent-soft: light-dark(var(--accent-soft-light), var(--accent-soft-dark));
-        --ok: light-dark(var(--ok-light), var(--ok-dark));
-        --ok-soft: light-dark(var(--ok-soft-light), var(--ok-soft-dark));
-        --glow-a: light-dark(var(--glow-a-light), var(--glow-a-dark));
-        --glow-b: light-dark(var(--glow-b-light), var(--glow-b-dark));
-        --topbar-bg: light-dark(var(--topbar-light), var(--topbar-dark));
-      }
-
-      color-scheme: light dark;
-      accent-color: var(--accent);
-
-      &:has(> head > meta[name="color-scheme"][content="dark"]) {
-        color-scheme: dark;
-      }
-      &:has(> head > meta[name="color-scheme"][content="light"]) {
-        color-scheme: light;
-      }
-
-      --max: 1120px;
-      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Songti SC", "STSong", serif;
-      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-      --radius-lg: 20px;
-      --radius-md: 12px;
+      color-scheme: dark;
+      --bg-color: #050505;
+      --text-primary: #f5f5f5;
+      --text-secondary: #a3a3a3;
+      --text-dim: #6e6e6e;
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.22);
+      --surface: rgba(255, 255, 255, 0.025);
+      --surface-hover: rgba(255, 255, 255, 0.045);
+      --font-serif: "Songti SC", "STSong", "Noto Serif SC", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -126,26 +42,32 @@
     }
 
     body {
-      margin: 0;
-      font-family: var(--sans);
-      color: var(--text);
-      background-color: var(--bg);
-      background-image:
-        radial-gradient(circle at 18% 4%, var(--glow-a), transparent 32%),
-        radial-gradient(circle at 86% 14%, var(--glow-b), transparent 24%);
-      line-height: 1.72;
-      letter-spacing: 0.01em;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.8;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    a { color: inherit; }
+    ::selection {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     :where(a:any-link, button, [role="tab"]):focus-visible {
-      outline: 2px solid var(--accent);
+      outline: 1.5px solid #e5e5e5;
       outline-offset: 3px;
     }
+
+    html[lang^="zh"] [data-i18n="en"] { display: none !important; }
+    html[lang^="en"] [data-i18n="zh"] { display: none !important; }
 
     .visually-hidden:where(:not(:focus-within, :active)) {
       position: absolute !important;
@@ -159,113 +81,35 @@
       white-space: nowrap !important;
     }
 
-    .skip-link:focus {
+    .ambient-light {
       position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 100;
-      padding: 10px 16px;
-      border-radius: 8px;
-      background: var(--bg-elev);
-      color: var(--text);
-      border: 1px solid var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .frame {
-      width: min(var(--max), calc(100vw - 40px));
-      margin: 0 auto;
-    }
-
-    /* Language visibility branching */
-    html[lang^="zh"] [data-i18n="en"] { display: none !important; }
-    html[lang^="en"] [data-i18n="zh"] { display: none !important; }
-
-    /* Topbar */
-    .topbar {
-      position: sticky;
       top: 0;
-      z-index: 30;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: var(--topbar-bg);
-      border-bottom: 1px solid var(--line);
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.045) 0%, transparent 62%);
+      z-index: -1;
+      pointer-events: none;
     }
 
-    .topbar-inner {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 64px;
-      padding: 10px 0;
-    }
-
-    .brand {
+    /* Floating Minimal Top Controls */
+    .top-controls {
+      position: fixed;
+      top: 28px;
+      right: 36px;
+      z-index: 20;
       display: inline-flex;
+      align-items: center;
       gap: 10px;
-      align-items: baseline;
-      text-decoration: none;
-      min-block-size: 32px;
     }
 
-    .brand strong {
-      font-family: var(--serif);
-      font-weight: 600;
-      font-size: 1.08rem;
-      letter-spacing: 0.12em;
-    }
-
-    .brand span {
-      color: var(--muted);
-      font-size: 0.88rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-family: var(--mono);
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .nav {
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      font-size: 0.92rem;
-      color: var(--muted);
-    }
-
-    .nav a {
-      text-decoration: none;
-      padding: 6px 2px;
-      min-block-size: 32px;
+    .lang-pill {
       display: inline-flex;
-      align-items: center;
-      border-bottom: 1px solid transparent;
-      transition: color 180ms var(--ease), border-color 180ms var(--ease);
-    }
-
-    .nav a:hover {
-      color: var(--text);
-      border-color: var(--line-strong);
-    }
-
-    .controls-bar {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .lang-switch {
-      display: inline-flex;
-      align-items: center;
       padding: 3px;
       border-radius: 999px;
-      background: var(--bg-subtle);
+      background: rgba(10, 10, 10, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--line);
     }
 
@@ -273,205 +117,220 @@
       appearance: none;
       border: 0;
       background: transparent;
-      color: var(--muted);
-      font-family: var(--sans);
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 5px 11px;
-      min-block-size: 28px;
-      min-inline-size: 38px;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      padding: 4px 11px;
+      min-block-size: 26px;
       border-radius: 999px;
       cursor: pointer;
-      transition: background 180ms var(--ease), color 180ms var(--ease);
+      transition: color 0.25s var(--ease), background 0.25s var(--ease);
     }
 
     .lang-btn[aria-pressed="true"] {
-      background: var(--accent-soft);
-      color: var(--accent);
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
     }
 
-    .theme-btn {
-      appearance: none;
-      border: 1px solid var(--line);
-      background: var(--bg-subtle);
-      color: var(--muted);
+    .gh-link {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      padding: 5px 12px;
       border-radius: 999px;
-      min-block-size: 34px;
-      min-inline-size: 34px;
-      padding: 0 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: border-color 180ms var(--ease), color 180ms var(--ease);
+      background: rgba(10, 10, 10, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--line);
+      transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
     }
 
-    .theme-btn:hover {
-      color: var(--text);
+    .gh-link:hover {
+      color: #fff;
       border-color: var(--line-strong);
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: normal;
+      text-wrap: balance;
+    }
+
+    h1 {
+      font-size: clamp(3.1rem, 2rem + 3.6vw, 4.6rem);
+      letter-spacing: 0.14em;
+      line-height: 1.15;
+      margin-bottom: 1.75rem;
+      background: linear-gradient(135deg, #ffffff 0%, #a6a6a6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    html[lang^="en"] h1 {
+      letter-spacing: 0.04em;
+    }
+
+    .brand-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 1.1rem;
+    }
+
+    h2 {
+      font-size: clamp(1.55rem, 1.1rem + 1.2vw, 1.95rem);
+      margin: 5rem 0 1.8rem;
+      color: #e8e8e8;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 1.25rem;
+      letter-spacing: 0.04em;
+    }
+
+    p {
+      font-size: 1.06rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.35rem;
+      letter-spacing: 0.02em;
+      text-wrap: pretty;
+    }
+
+    strong {
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      color: #e5e5e5;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    ul.clean-list {
+      list-style: none;
+      margin: 1.6rem 0;
+    }
+
+    ul.clean-list li {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      padding-left: 24px;
+      position: relative;
+      text-wrap: pretty;
+    }
+
+    ul.clean-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 4px;
+      height: 4px;
+      background-color: var(--text-secondary);
+      border-radius: 50%;
+      opacity: 0.6;
     }
 
     /* Hero */
     .hero {
-      display: grid;
-      grid-template-columns: 1.02fr 0.98fr;
-      gap: 36px;
-      align-items: start;
-      padding: 68px 0 56px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 13px;
-      border-radius: 999px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.84rem;
-      font-family: var(--mono);
-      margin-bottom: 22px;
-    }
-
-    .eyebrow-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--ok);
-      box-shadow: 0 0 10px var(--ok);
-    }
-
-    h1 {
-      margin: 0 0 18px;
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: clamp(1.95rem, 1rem + 1.9vw, 2.75rem);
-      line-height: 1.22;
-      letter-spacing: -0.015em;
-      text-wrap: balance;
-    }
-
-    .lead {
-      margin: 0 0 14px;
-      font-size: 1.1rem;
-      color: var(--text);
-      max-width: 62ch;
-      text-wrap: pretty;
-    }
-
-    .sub {
-      margin: 0 0 26px;
-      font-size: 0.96rem;
-      color: var(--muted);
-      max-width: 64ch;
-      text-wrap: pretty;
-    }
-
-    .pill-row {
+      min-height: 94vh;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 26px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+      padding: 8vh 0 10vh;
     }
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 11px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      background: var(--bg-subtle);
+    .hero p.lead {
+      font-size: clamp(1.16rem, 0.95rem + 0.5vw, 1.32rem);
+      color: var(--text-primary);
+      max-width: 680px;
+      line-height: 1.75;
+      font-family: var(--font-serif);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero p.sub-lead {
+      font-size: 1.04rem;
+      max-width: 650px;
+      margin-bottom: 2.2rem;
+      color: var(--text-secondary);
+    }
+
+    /* Minimal Install Box */
+    .install-shell {
+      width: 100%;
+      max-width: 650px;
       border: 1px solid var(--line);
-      color: var(--muted);
-    }
-
-    .pill strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    /* Install Terminal Card */
-    .install-card {
-      border-radius: var(--radius-lg);
-      background: #0d0c0b;
-      color: #f4eee3;
-      color-scheme: dark;
-      accent-color: var(--accent-dark);
-      border: 1px solid rgba(255, 248, 236, 0.14);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
       overflow: hidden;
     }
 
-    .install-header {
+    .install-tabs {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 12px 16px;
-      background: rgba(255, 248, 236, 0.04);
-      border-bottom: 1px solid rgba(255, 248, 236, 0.09);
+      gap: 4px;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       flex-wrap: wrap;
     }
 
-    .tablist {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
+    .itab {
       appearance: none;
-      border: 1px solid transparent;
+      border: 0;
       background: transparent;
-      color: #a99f91;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      padding: 6px 10px;
-      min-block-size: 30px;
-      border-radius: 8px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      padding: 4px 10px;
+      min-block-size: 26px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background 160ms var(--ease), color 160ms var(--ease), border-color 160ms var(--ease);
+      transition: color 0.2s var(--ease), background 0.2s var(--ease);
     }
 
-    .tab-btn:hover {
-      color: #f4eee3;
+    .itab:hover {
+      color: var(--text-secondary);
     }
 
-    .tab-btn[aria-selected="true"] {
-      background: rgba(240, 214, 174, 0.14);
-      border-color: rgba(240, 214, 174, 0.34);
-      color: #f0d6ae;
+    .itab[aria-selected="true"] {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    .install-body {
-      padding: 18px 18px 16px;
-    }
-
-    .cmd-row {
+    .install-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 13px 14px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 248, 236, 0.1);
+      gap: 14px;
+      padding: 14px 16px;
     }
 
-    .cmd-code {
-      font-family: var(--mono);
-      font-size: 0.81rem;
+    .install-cmd {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #f0f0f0;
       line-height: 1.55;
-      color: #f7f1e6;
-      white-space: normal;
-      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
-    .cmd-prompt {
-      color: #7fd1ae;
+    .install-prompt {
+      color: var(--text-dim);
       user-select: none;
       margin-right: 8px;
     }
@@ -479,1117 +338,426 @@
     .copy-btn {
       appearance: none;
       flex-shrink: 0;
-      border: 1px solid rgba(240, 214, 174, 0.32);
-      background: rgba(240, 214, 174, 0.12);
-      color: #f0d6ae;
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 6px 12px;
-      min-block-size: 32px;
-      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      padding: 5px 12px;
+      min-block-size: 30px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background 160ms var(--ease), transform 120ms var(--ease);
+      transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease);
     }
 
     .copy-btn:hover {
-      background: rgba(240, 214, 174, 0.22);
+      color: #fff;
+      border-color: var(--line-strong);
     }
 
     .copy-btn[data-copied="true"] {
-      border-color: rgba(127, 209, 174, 0.48);
-      background: rgba(127, 209, 174, 0.18);
-      color: #7fd1ae;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.12);
     }
 
-    .install-meta {
-      margin-top: 14px;
-      display: grid;
-      gap: 8px;
+    .hero-meta {
+      margin-top: 0.9rem;
+      font-size: 0.84rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    /* Highlight Quote Box */
+    .highlight-box {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
+      border-left: 2px solid rgba(255, 255, 255, 0.38);
+      padding: 1.9rem 2.2rem;
+      margin: 2.6rem 0;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      color: var(--text-primary);
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+
+    /* Two-Column Comparison */
+    .comparison {
+      display: flex;
+      gap: 1.6rem;
+      margin: 2.2rem 0;
+    }
+
+    .comparison-col {
+      flex: 1;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.35s var(--ease), background 0.35s var(--ease);
+    }
+
+    .comparison-col:hover {
+      transform: translateY(-3px);
+      background: var(--surface-hover);
+    }
+
+    .comparison-col h4 {
+      font-size: 1.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .comparison-col p {
+      font-size: 0.98rem;
+      margin-bottom: 0;
+    }
+
+    /* Minimal Code Block */
+    .code-panel {
+      margin: 1.5rem 0;
+      padding: 1.4rem 1.6rem;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-family: var(--font-mono);
       font-size: 0.83rem;
-      color: #b7ad9f;
-    }
-
-    .install-meta code {
-      font-family: var(--mono);
-      font-size: 0.79rem;
-      padding: 2px 6px;
-      border-radius: 5px;
-      background: rgba(255, 248, 236, 0.08);
-      color: #f0d6ae;
-    }
-
-    .host-badges {
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 248, 236, 0.08);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      color: #9e9486;
-      font-family: var(--mono);
-    }
-
-    /* Sections */
-    section.block {
-      padding: 64px 0;
-      border-top: 1px solid var(--line);
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 28px;
-      margin-bottom: 36px;
-      align-items: baseline;
-    }
-
-    .section-idx {
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .section-head h2 {
-      margin: 0 0 10px;
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: clamp(1.55rem, 0.95rem + 1.5vw, 2.15rem);
-      line-height: 1.26;
-      text-wrap: balance;
-    }
-
-    .section-head p {
-      margin: 0;
-      color: var(--muted);
-      max-width: 68ch;
-      text-wrap: pretty;
-    }
-
-    /* Interactive X-Ray Demo */
-    .xray-wrap {
-      border-radius: var(--radius-lg);
-      background: var(--bg-elev);
-      border: 1px solid var(--line);
-      overflow: hidden;
-    }
-
-    .xray-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--line);
-      background: var(--bg-subtle);
-    }
-
-    .xray-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .xray-tab {
-      appearance: none;
-      border: 1px solid var(--line);
-      background: var(--bg-elev);
-      color: var(--muted);
-      font-family: var(--sans);
-      font-size: 0.85rem;
-      font-weight: 500;
-      padding: 6px 13px;
-      min-block-size: 34px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 160ms var(--ease);
-    }
-
-    .xray-tab[aria-selected="true"] {
-      background: var(--accent-soft);
-      border-color: var(--accent);
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .xray-grid {
-      display: grid;
-      grid-template-columns: 0.88fr 1.12fr;
-      gap: 0;
-    }
-
-    .xray-col {
-      padding: 22px 24px;
-    }
-
-    .xray-col + .xray-col {
-      border-left: 1px solid var(--line);
-      background: #0d0c0b;
-      color: #ece5d8;
-      color-scheme: dark;
-      accent-color: var(--accent-dark);
-    }
-
-    .xray-label {
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .xray-col + .xray-col .xray-label {
-      color: #a89f91;
-    }
-
-    .prompt-bubble {
-      padding: 14px 16px;
-      border-radius: var(--radius-md);
-      background: var(--bg-subtle);
-      border: 1px solid var(--line);
-      font-size: 0.96rem;
-      margin-bottom: 18px;
-    }
-
-    .outcome-list {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      display: grid;
-      gap: 8px;
-    }
-
-    .outcome-list strong {
-      color: var(--text);
-    }
-
-    .injected-pre {
-      margin: 0;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      line-height: 1.62;
-      white-space: pre-wrap;
-      word-break: break-word;
-      color: #e9e1d4;
-    }
-
-    .injected-pre .hl-tag { color: #f0d6ae; font-weight: 600; }
-    .injected-pre .hl-ok { color: #7fd1ae; }
-
-    /* Cards Grid */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      padding: 24px 26px;
-      border-radius: var(--radius-lg);
-      background: var(--bg-elev);
-      border: 1px solid var(--line);
-    }
-
-    .card-kicker {
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
-
-    .card h3 {
-      margin: 0 0 10px;
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: 1.24rem;
-      text-wrap: balance;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.94rem;
-      text-wrap: pretty;
-    }
-
-    /* Evidence Table */
-    .table-wrap {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--line);
-      background: var(--bg-elev);
+      line-height: 1.85;
+      color: #e5e5e5;
       overflow-x: auto;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      font-variant-numeric: tabular-nums;
+    .code-panel .dim {
+      color: var(--text-dim);
     }
 
-    caption {
-      text-align: left;
-      padding: 16px 20px 12px;
-      font-weight: 600;
-      color: var(--text);
-      border-bottom: 1px solid var(--line);
-      background: var(--bg-subtle);
-    }
-
-    th, td {
-      text-align: left;
-      padding: 13px 20px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: top;
-    }
-
-    thead th {
-      font-family: var(--mono);
-      font-size: 0.78rem;
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      opacity: 0;
+      animation: fadeUp 1.1s 0.7s ease forwards;
+      font-size: 0.76rem;
+      color: var(--text-dim);
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      background: var(--bg-subtle);
+      font-family: var(--font-mono);
     }
 
-    tbody tr:last-child th,
-    tbody tr:last-child td {
-      border-bottom: 0;
-    }
-
-    tbody th {
-      font-weight: 600;
-      color: var(--text);
-      white-space: nowrap;
-    }
-
-    .badge-ok {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 2px 9px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-family: var(--mono);
-      background: var(--ok-soft);
-      color: var(--ok);
-    }
-
-    /* CLI & Continuum */
-    .cli-pre {
-      margin: 14px 0 0;
-      padding: 16px;
-      border-radius: var(--radius-md);
-      background: #0d0c0b;
-      color: #efe8dc;
-      color-scheme: dark;
-      accent-color: var(--accent-dark);
-      border: 1px solid rgba(255, 248, 236, 0.12);
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      line-height: 1.7;
-      overflow-x: auto;
-    }
-
-    .cli-pre .c-dim { color: #8e8578; }
-    .cli-pre .c-cmd { color: #f0d6ae; }
-
-    .vision-steps {
-      margin: 14px 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 12px;
-    }
-
-    .vision-steps li {
-      padding: 12px 14px;
-      border-radius: var(--radius-md);
-      background: var(--bg-subtle);
-      border: 1px solid var(--line);
-      font-size: 0.91rem;
-      color: var(--muted);
-    }
-
-    .vision-steps strong {
+    .scroll-indicator::after {
+      content: "";
       display: block;
-      color: var(--text);
-      margin-bottom: 2px;
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), transparent);
+      margin-top: 10px;
+      margin-left: 18px;
     }
 
-    /* Contact */
-    .contact-box {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 28px;
-      padding: 30px 32px;
-      border-radius: var(--radius-lg);
-      background: var(--bg-elev);
-      border: 1px solid var(--line);
-      align-items: center;
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
     }
 
-    .contact-box h2 {
-      margin: 6px 0 12px;
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: 1.7rem;
+    .fade-in-section.is-visible {
+      opacity: 1;
+      transform: none;
     }
 
-    .contact-box p {
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
+    .hero .brand-tag { animation: fadeUp 0.9s ease forwards; opacity: 0; }
+    .hero h1 { animation: fadeUp 1s 0.1s ease forwards; opacity: 0; }
+    .hero p.lead { animation: fadeUp 1s 0.22s ease forwards; opacity: 0; }
+    .hero p.sub-lead { animation: fadeUp 1s 0.34s ease forwards; opacity: 0; }
+    .hero .install-shell, .hero .hero-meta { animation: fadeUp 1s 0.44s ease forwards; opacity: 0; }
 
-    .contact-links {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 10px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .contact-links li {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 11px 14px;
-      border-radius: 10px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--line);
-      font-size: 0.9rem;
-    }
-
-    .contact-links span {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 0.8rem;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     footer {
-      padding: 36px 0 56px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.88rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: space-between;
-      align-items: center;
+      margin-top: 6rem;
+      padding: 5rem 0 6rem;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    @media (max-width: 940px) {
-      .hero,
-      .section-head,
-      .xray-grid,
-      .grid-2,
-      .contact-box {
-        grid-template-columns: 1fr;
-      }
+    footer .footer-brand {
+      font-family: var(--font-sans);
+      font-size: 1.35rem;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 1.2rem;
+    }
 
-      .xray-col + .xray-col {
-        border-left: 0;
-        border-top: 1px solid var(--line);
-      }
+    footer .footer-brand span {
+      font-family: var(--font-serif);
+      color: #ffffff;
+    }
 
-      .nav {
-        display: none;
-      }
+    footer .footer-links {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: var(--text-dim);
+    }
 
-      .hero {
-        padding-top: 40px;
-      }
+    footer .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    @media (max-width: 680px) {
+      .container { padding: 0 24px; }
+      .top-controls { top: 18px; right: 20px; }
+      .comparison { flex-direction: column; }
+      .scroll-indicator { display: none; }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a href="#main-heading" class="skip-link visually-hidden">
-      <span data-i18n="zh">跳至正文</span>
-      <span data-i18n="en">Skip to main content</span>
-    </a>
-    <div id="live-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
-    <div class="frame topbar-inner">
-      <a class="brand" href="#top">
-        <strong lang="zh-CN">未竟之意</strong>
-        <span>Lacuna v2.4</span>
-      </a>
+  <div class="ambient-light"></div>
+  <div id="live-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 
-      <div class="topbar-right">
-        <nav class="nav" aria-label="Primary">
-          <a href="#xray"><span data-i18n="zh">前置透视</span><span data-i18n="en">How It Works</span></a>
-          <a href="#capabilities"><span data-i18n="zh">核心能力</span><span data-i18n="en">Capabilities</span></a>
-          <a href="#evidence"><span data-i18n="zh">多模型实证</span><span data-i18n="en">Verification</span></a>
-          <a href="#cli"><span data-i18n="zh">命令与路线</span><span data-i18n="en">CLI &amp; Roadmap</span></a>
-          <a href="#contact"><span data-i18n="zh">联系</span><span data-i18n="en">Contact</span></a>
-        </nav>
+  <div class="top-controls">
+    <div class="lang-pill" role="group" aria-label="Language">
+      <button type="button" class="lang-btn" lang="zh-CN" data-set-lang="zh" aria-pressed="true">中文</button>
+      <button type="button" class="lang-btn" lang="en" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="gh-link" href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">GitHub ↗</a>
+  </div>
 
-        <div class="controls-bar">
-          <div class="lang-switch" role="group" aria-label="Language">
-            <button type="button" class="lang-btn" lang="zh-CN" data-set-lang="zh" aria-pressed="true">中文</button>
-            <button type="button" class="lang-btn" lang="en" data-set-lang="en" aria-pressed="false">EN</button>
+  <main class="container">
+    <section class="hero">
+      <div class="brand-tag">
+        <span data-i18n="zh">LACUNA · v2.4 · WIN / MAC / LINUX</span>
+        <span data-i18n="en">未竟之意 · v2.4 · WIN / MAC / LINUX</span>
+      </div>
+
+      <h1>
+        <span data-i18n="zh">未竟之意</span>
+        <span data-i18n="en">Lacuna</span>
+      </h1>
+
+      <p class="lead">
+        <span data-i18n="zh">面向 Codex、Claude Code 与 Antigravity 的发送前意图与预设控制层。</span>
+        <span data-i18n="en">A pre-send intent and preset layer for Codex, Claude Code, and Antigravity.</span>
+      </p>
+
+      <p class="sub-lead">
+        <span data-i18n="zh">话没说透时，先补齐工程预设、交付可逆初版并列出最多 2 个关键选择题；方向拍板后，跨轮锁死已确认的规矩，走偏时一键回退本地会话。</span>
+        <span data-i18n="en">When a prompt is underspecified, it attaches stack presets, ships a reversible v1, and surfaces at most 2 key choices; once decided, it locks rules across turns and rolls back drifted sessions cleanly.</span>
+      </p>
+
+      <div class="install-shell">
+        <div class="install-tabs" role="tablist" aria-label="Install method">
+          <button type="button" role="tab" class="itab" id="tab-npm" aria-selected="true" aria-controls="panel-cmd" data-prompt="$" data-cmd="npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init">npm (Universal)</button>
+          <button type="button" role="tab" class="itab" id="tab-ps" aria-selected="false" aria-controls="panel-cmd" tabindex="-1" data-prompt="PS&gt;" data-cmd="irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.ps1 | iex">Windows (PowerShell)</button>
+          <button type="button" role="tab" class="itab" id="tab-sh" aria-selected="false" aria-controls="panel-cmd" tabindex="-1" data-prompt="$" data-cmd="curl -fsSL https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.sh | sh">macOS / Linux</button>
+        </div>
+        <div class="install-bar" id="panel-cmd" role="tabpanel" aria-labelledby="tab-npm">
+          <div class="install-cmd">
+            <span class="install-prompt" id="cmd-prompt">$</span><span id="cmd-text">npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</span>
           </div>
-          <button type="button" class="theme-btn" id="theme-toggle" aria-label="Toggle color theme">
-            <span aria-hidden="true" id="theme-icon">◐</span>
+          <button type="button" class="copy-btn" id="copy-btn">
+            <span data-i18n="zh">复制</span>
+            <span data-i18n="en">Copy</span>
           </button>
         </div>
       </div>
-    </div>
-  </header>
 
-  <main id="top" class="frame">
-    <section class="hero">
-      <div>
-        <div class="eyebrow">
-          <span class="eyebrow-dot" aria-hidden="true"></span>
-          <span data-i18n="zh">v2.4 · 原生支持 Windows / macOS / Linux · 中英自动切换</span>
-          <span data-i18n="en">v2.4 · Windows / macOS / Linux · Pure EN &amp; ZH Auto-Switch</span>
-        </div>
+      <div class="hero-meta">
+        <span data-i18n="zh">Node.js &ge; 20 · 中英文输入自动识别（英文提问 100% 纯英文注入） · 0 额外 API 调用</span>
+        <span data-i18n="en">Node.js &ge; 20 · Auto EN / ZH detection (100% pure English on EN prompts) · 0 extra API calls</span>
+      </div>
 
-        <h1 id="main-heading" tabindex="-1">
-          <span data-i18n="zh">发送前意图与预设控制器</span>
-          <span data-i18n="en">Pre-Send Intent &amp; Preset Controller</span>
-        </h1>
+      <div class="scroll-indicator">Scroll</div>
+    </section>
 
-        <p class="lead">
-          <span data-i18n="zh">平时用 Codex、Claude Code 写代码或跑科研分析，最常卡在三个时刻：<strong>第一轮话没说全，模型要么套廉价模板瞎猜、要么连问十几个问题；聊了十几轮，前面拍板的规矩它给改丢了；一旦走偏，在对话里越骂越往坑里钻。</strong></span>
-          <span data-i18n="en">Working with Codex or Claude Code usually hits three walls: <strong>an underspecified Turn 1 triggers generic purple-gradient templates or ten clarifying questions; confirmed rules get forgotten five turns later; and arguing in chat after a bad turn only digs deeper.</strong></span>
+    <section class="fade-in-section">
+      <h2>
+        <span data-i18n="zh">只解决三个最常卡壳的瞬间</span>
+        <span data-i18n="en">Built for Three Everyday Friction Points</span>
+      </h2>
+
+      <ul class="clean-list">
+        <li>
+          <span data-i18n="zh"><strong>第一轮话没说全</strong> —— 自动挂载 UI 排版（<code>tabular-nums</code>、克制色板、防连点）、SQLite 写锁与科研统计规范，拒绝廉价蓝紫模板和十连追问。</span>
+          <span data-i18n="en"><strong>Underspecified Turn 1</strong> — Automatically attaches UI craft (<code>tabular-nums</code>, restrained palettes, submit locks), SQLite write locks, and statistical rigor without purple-gradient slop or 10-question stalls.</span>
+        </li>
+        <li>
+          <span data-i18n="zh"><strong>聊久了忘规矩</strong> —— 自动提取你已确认的决定（含“不要物理删除”等否定要求），后续每一轮持续生效。</span>
+          <span data-i18n="en"><strong>Forgotten rules on Turn 10</strong> — Captures confirmed decisions (including negations like <em>"Never hard-delete"</em>) and carries them across every follow-up turn.</span>
+        </li>
+        <li>
+          <span data-i18n="zh"><strong>走偏后越改越乱</strong> —— <code>lacuna rebase</code> 自动备份并物理截断本地 <code>.jsonl</code> 错误轮次，带着已锁定的规矩干净重跑。</span>
+          <span data-i18n="en"><strong>Rabbit-hole turns</strong> — <code>lacuna rebase</code> backs up and truncates drifted <code>.jsonl</code> turns so you rerun cleanly with locked rules intact.</span>
+        </li>
+      </ul>
+
+      <div class="highlight-box">
+        <p>
+          <span data-i18n="zh">你的本轮明确指令永远排第一，一句话即可覆盖任何默认预设。</span>
+          <span data-i18n="en">Your explicit instructions always come first—override any default preset in a single sentence.</span>
         </p>
-
-        <p class="sub">
-          <span data-i18n="zh"><strong>未竟之意（Lacuna）</strong> 在把你的话发给模型之前本地完成三件事：① 自动补齐界面排版、数据库并发锁与科研统计预设（你的明确要求永远排第一，随时覆盖）；② 需求没说死时，先交出可逆初版并只问 2 个关键选择题；③ 记住你拍板的规矩，走偏时一键截断回退本地 <code>.jsonl</code> 会话记录。</span>
-          <span data-i18n="en"><strong>Lacuna (<span lang="zh-CN">未竟之意</span>)</strong> runs locally right before send: (1) fills in UI craft, database locking, and statistical rigor presets (your explicit instructions always win); (2) ships a runnable reversible v1 plus at most 2 plain-English choices on Turn 1; (3) locks confirmed decisions across turns and physically truncates drifted <code>.jsonl</code> history via <code>lacuna rebase</code>.</span>
-        </p>
-
-        <div class="pill-row">
-          <span class="pill">
-            <strong data-i18n="zh">全平台可用</strong><strong data-i18n="en">Cross-Platform</strong>
-            <span>Windows · macOS · Linux</span>
-          </span>
-          <span class="pill">
-            <strong data-i18n="zh">纯英文零中文残留</strong><strong data-i18n="en">100% Native English</strong>
-            <span data-i18n="zh">按输入语言自动切换</span><span data-i18n="en">Zero CJK leakage on EN prompts</span>
-          </span>
-          <span class="pill">
-            <strong data-i18n="zh">零额外模型调用</strong><strong data-i18n="en">0 Extra API Calls</strong>
-            <span data-i18n="zh">纯本地前置运行</span><span data-i18n="en">Pure local pre-model hook</span>
-          </span>
-        </div>
       </div>
-
-      <aside class="install-card" aria-labelledby="install-card-title">
-        <div class="install-header">
-          <span id="install-card-title" class="visually-hidden">Install Lacuna CLI</span>
-          <div class="tablist" role="tablist" aria-label="Installation method">
-            <button type="button" role="tab" class="tab-btn" id="tab-npm" aria-selected="true" aria-controls="panel-install" data-cmd="npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init" data-prompt="$">
-              npm (Win / Mac / Linux)
-            </button>
-            <button type="button" role="tab" class="tab-btn" id="tab-win" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.ps1 | iex" data-prompt="PS&gt;">
-              Windows (PS)
-            </button>
-            <button type="button" role="tab" class="tab-btn" id="tab-unix" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="curl -fsSL https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.sh | sh" data-prompt="$">
-              macOS / Linux
-            </button>
-          </div>
-        </div>
-
-        <div class="install-body" id="panel-install" role="tabpanel" aria-labelledby="tab-npm">
-          <div class="cmd-row">
-            <div class="cmd-code">
-              <span class="cmd-prompt" id="active-prompt">$</span><span id="active-cmd">npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</span>
-            </div>
-            <button type="button" class="copy-btn" id="copy-cmd-btn">
-              <span data-i18n="zh">复制命令</span>
-              <span data-i18n="en">Copy</span>
-            </button>
-          </div>
-
-          <div class="install-meta">
-            <div data-i18n="zh">
-              装完即自动挂载全局前置 Hook（无需手改配置）。随时运行 <code>lacuna help</code> 查看设置，或 <code>lacuna uninstall</code> 一键卸载。
-            </div>
-            <div data-i18n="en">
-              Automatically wires global pre-model hooks on install (Node.js &ge; 20). Run <code>lacuna help</code> to inspect settings or <code>lacuna uninstall</code> anytime.
-            </div>
-            <div data-i18n="zh">
-              全英文用户无需改任何开关：检测到英文输入即自动切换为 <strong>100% 纯英文预设与指令</strong>；也可固定 <code>lacuna config set lang en</code>。
-            </div>
-            <div data-i18n="en">
-              Using English 100% of the time? Lacuna auto-detects English prompts and injects pure English baselines &amp; decision locks (or pin via <code>lacuna config set lang en</code>).
-            </div>
-          </div>
-
-          <div class="host-badges">
-            <span>Codex CLI · Claude Code · Antigravity</span>
-            <span>UNLICENSED · Closed Dist</span>
-          </div>
-        </div>
-      </aside>
     </section>
 
-    <section id="xray" class="block">
-      <div class="section-head">
-        <div class="section-idx">01 / Pre-Send Preview</div>
-        <div>
-          <h2>
-            <span data-i18n="zh">敲下回车发送前，它在本地补上了哪些具体要求？</span>
-            <span data-i18n="en">What gets attached locally right before your prompt is sent?</span>
-          </h2>
+    <section class="fade-in-section">
+      <h2>
+        <span data-i18n="zh">从方向未定到持续推进</span>
+        <span data-i18n="en">From Open Direction to Locked Execution</span>
+      </h2>
+
+      <div class="comparison">
+        <div class="comparison-col">
+          <h4>
+            <span data-i18n="zh">方向未定时</span>
+            <span data-i18n="en">Before You Decide</span>
+          </h4>
           <p>
-            <span data-i18n="zh">你照常说大白话，模型端不需要调用任何额外工具——收到的直接是按技术栈匹配好的预设和本会话已锁定的规矩。点选下方三个真实任务查看：</span>
-            <span data-i18n="en">Write short prompts as usual. The model calls zero extra tools—it receives stack-matched presets and your locked session decisions upfront. Switch tasks below:</span>
+            <span data-i18n="zh">先按状态标记或预览模式交出能跑的第一版，代码结束后最多只问 2 个决定后续走向的大白话选择题。</span>
+            <span data-i18n="en">Delivers a runnable, reversible v1 first, then asks at most 2 plain-language trade-off choices outside the code block.</span>
           </p>
         </div>
-      </div>
-
-      <div class="xray-wrap">
-        <div class="xray-bar">
-          <div class="xray-tabs" role="tablist" aria-label="Scenario preview">
-            <button type="button" role="tab" class="xray-tab" id="xtab-ui" aria-selected="true" aria-controls="xpanel" data-scenario="ui">
-              <span data-i18n="zh">场景 A：账单看板 + SQLite</span>
-              <span data-i18n="en">Scenario A: Billing UI + SQLite</span>
-            </button>
-            <button type="button" role="tab" class="xray-tab" id="xtab-decision" aria-selected="false" aria-controls="xpanel" tabindex="-1" data-scenario="decision">
-              <span data-i18n="zh">场景 B：未拍板需求与跨轮锁死</span>
-              <span data-i18n="en">Scenario B: Reversible V1 &amp; Decision Lock</span>
-            </button>
-            <button type="button" role="tab" class="xray-tab" id="xtab-sci" aria-selected="false" aria-controls="xpanel" tabindex="-1" data-scenario="sci">
-              <span data-i18n="zh">场景 C：单细胞 scRNA-seq 质控</span>
-              <span data-i18n="en">Scenario C: scRNA-seq QC Rigor</span>
-            </button>
-          </div>
-          <span class="badge-ok">
-            <span data-i18n="zh">本地 &lt; 15ms · 0 额外 Token 往返</span>
-            <span data-i18n="en">Local &lt; 15ms · 0 Extra LLM Calls</span>
-          </span>
-        </div>
-
-        <div class="xray-grid" id="xpanel" role="tabpanel" aria-labelledby="xtab-ui">
-          <div class="xray-col">
-            <div class="xray-label">
-              <span data-i18n="zh">你输入的原话</span>
-              <span data-i18n="en">Your Raw Prompt</span>
-            </div>
-            <div class="prompt-bubble" id="xray-raw"></div>
-
-            <div class="xray-label">
-              <span data-i18n="zh">模型直接交出的变化</span>
-              <span data-i18n="en">Resulting Model Output</span>
-            </div>
-            <ul class="outcome-list" id="xray-outcomes" role="list"></ul>
-          </div>
-
-          <div class="xray-col">
-            <div class="xray-label">
-              <span data-i18n="zh">Lacuna 前置附加内容（按中/英自动匹配）</span>
-              <span data-i18n="en">Pre-Model Context Injected by Lacuna</span>
-              <span>hooks.UserPromptSubmit</span>
-            </div>
-            <pre class="injected-pre" id="xray-injected"></pre>
-          </div>
+        <div class="comparison-col">
+          <h4>
+            <span data-i18n="zh">方向拍板后</span>
+            <span data-i18n="en">Once You Confirm</span>
+          </h4>
+          <p>
+            <span data-i18n="zh">拍板内容写进当前会话规矩清单，你改主意时自动更新覆盖；Codex 桌面端、CLI、Claude Code 与 Antigravity 同步可用。</span>
+            <span data-i18n="en">Confirmed choices stay locked for the rest of the session, update cleanly if you change your mind, and work across Codex App/CLI, Claude Code, and Antigravity.</span>
+          </p>
         </div>
       </div>
     </section>
 
-    <section id="capabilities" class="block">
-      <div class="section-head">
-        <div class="section-idx">02 / Core Mechanism</div>
-        <div>
-          <h2>
-            <span data-i18n="zh">针对平时写代码和跑科研最憋屈的三个问题</span>
-            <span data-i18n="en">Built Around the Three Everyday Multi-Turn Failures</span>
-          </h2>
-          <p>
-            <span data-i18n="zh">所有动作都在把话发给模型之前完成，严格按「你的明确要求 &gt; 数据安全可逆默认 &gt; 本会话已拍板规矩 &gt; 技术栈条件预设 &gt; 默认审美基线」排序，随时一句话覆盖。</span>
-            <span data-i18n="en">Strictly ordered: Explicit user instructions &gt; Reversible data safety &gt; Confirmed session decisions &gt; Stack-conditional presets &gt; Default UI craft.</span>
-          </p>
-        </div>
-      </div>
+    <section class="fade-in-section">
+      <h2>
+        <span data-i18n="zh">常用命令</span>
+        <span data-i18n="en">Everyday Commands</span>
+      </h2>
 
-      <div class="grid-2">
-        <article class="card">
-          <div class="card-kicker">01 · Pre-Model Architecture</div>
-          <h3>
-            <span data-i18n="zh">纯粹模型前置，AI 无需学习新工具</span>
-            <span data-i18n="en">Strictly Pre-Model, Zero Tool Overhead</span>
-          </h3>
-          <p>
-            <span data-i18n="zh">通过各宿主的原生前置入口（<code>UserPromptSubmit</code> / <code>PreInvocation</code>）工作。不占 MCP 工具槽位，不靠模型“自觉想起来调用”，每次发话前稳定生效。</span>
-            <span data-i18n="en">Hooks directly into native <code>UserPromptSubmit</code> and <code>PreInvocation</code> events. No MCP tool clutter, no hoping the model remembers to call a helper, and zero extra network latency.</span>
-          </p>
-        </article>
+      <pre class="code-panel"><span class="dim" data-i18n="zh"># 查看或切换语言 (auto 默认自动识别 | zh | en)</span><span class="dim" data-i18n="en"># Inspect or switch language (auto | en | zh)</span>
+lacuna config show
+lacuna config set lang en
 
-        <article class="card">
-          <div class="card-kicker">02 · Open Direction</div>
-          <h3>
-            <span data-i18n="zh">先交可逆第一版，再摆 2 道大白话选择题</span>
-            <span data-i18n="en">Reversible V1 First + 2 Plain-Language Choices</span>
-          </h3>
-          <p>
-            <span data-i18n="zh">当数据保留策略、并发冲突或异常样本去留还没拍板时，先按状态标记或预览模式交出能跑的第一版，并在结尾只列最多 2 个决定后续走向的问题请你拍板。</span>
-            <span data-i18n="en">When data retention or edge-case policy is still open, the model delivers a working reversible v1 first, then surfaces at most 2 concrete binary choices in plain language for you to confirm.</span>
-          </p>
-        </article>
+<span class="dim" data-i18n="zh"># 查看或撤销当前会话已锁定的规矩</span><span class="dim" data-i18n="en"># List or revoke locked rules in current session</span>
+lacuna rules list
+lacuna rules revoke --id r_1
 
-        <article class="card">
-          <div class="card-kicker">03 · Long-Horizon Memory</div>
-          <h3>
-            <span data-i18n="zh">跨轮否定句精准提取 + 跑偏物理截断</span>
-            <span data-i18n="en">Negation-Aware Decision Lock &amp; File Rebase</span>
-          </h3>
-          <p>
-            <span data-i18n="zh">精准区分反问句与正式拍板，完整保留“不要物理删除 / Never hard-delete”等否定语义；你改主意时自动覆盖旧决定；模型若走偏，<code>lacuna rebase</code> 自动备份并截断回退 <code>.jsonl</code> 会话。</span>
-            <span data-i18n="en">Distinguishes questions from real decisions, preserves negations like <em>"Never hard-delete"</em>, supersedes cleanly when you update your mind, and backs up + truncates drifted <code>.jsonl</code> turns via <code>lacuna rebase</code>.</span>
-          </p>
-        </article>
+<span class="dim" data-i18n="zh"># 备份并回退最近 1 轮走偏会话 / 一键卸载</span><span class="dim" data-i18n="en"># Backup &amp; roll back last 1 drifted turn / cleanly uninstall</span>
+lacuna rebase &lt;session_id&gt; 1
+lacuna uninstall</pre>
 
-        <article class="card">
-          <div class="card-kicker">04 · Windows &amp; Bilingual</div>
-          <h3>
-            <span data-i18n="zh">Windows 原生兼容 &amp; 中英文彻底隔离</span>
-            <span data-i18n="en">First-Class Windows &amp; Pure English Support</span>
-          </h3>
-          <p>
-            <span data-i18n="zh">完整处理 Windows 路径空格、<code>cmd.exe</code> 引号规则与 CRLF 换行。写中文自动注入中文底线，写英文自动注入纯正英文底线（零中文字符混入），与普通翻译/闲聊互不干扰。</span>
-            <span data-i18n="en">Handles Windows <code>cmd.exe</code> / PowerShell quoting, spaces in paths, and CRLF transcripts natively. English prompts trigger 100% pure English context; casual non-coding chats stay completely untouched.</span>
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section id="evidence" class="block">
-      <div class="section-head">
-        <div class="section-idx">03 / Verification</div>
-        <div>
-          <h2>
-            <span data-i18n="zh">同一道模糊需求下的 Raw 裸跑 vs 挂载对照</span>
-            <span data-i18n="en">Same-Prompt Raw vs. Lacuna Verification (`xhigh`)</span>
-          </h2>
-          <p>
-            <span data-i18n="zh">实测任务：<em>“帮我写一个单文件 HTML 工作台，用来管理实验室样品的异常复核与批量归档结清”</em>（固定相同模型与 <code>xhigh</code> 推理档位；并在真实 Codex CLI 与 Claude Code CLI 中通过 3 轮连续对话 + <code>100 + 50 vs 30</code> 并发插单核销压测）：</span>
-            <span data-i18n="en">Task: <em>"Build a single-file HTML workbench for lab sample anomaly review and batch settlement"</em> at identical <code>xhigh</code> effort (plus 3-turn concurrent settlement race test in real Codex CLI &amp; Claude Code CLI):</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <caption>
-            <span data-i18n="zh">同口径功能通过项对照（1 = 通过，0 = 漏做）</span>
-            <span data-i18n="en">Same-Condition Pass/Fail Matrix (1 = Passed, 0 = Missed)</span>
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col"><span data-i18n="zh">模型</span><span data-i18n="en">Model</span></th>
-              <th scope="col"><span data-i18n="zh">模式</span><span data-i18n="en">Mode</span></th>
-              <th scope="col"><code>tabular-nums</code></th>
-              <th scope="col"><span data-i18n="zh">克制暖纸/深色板（无紫渐变）</span><span data-i18n="en">Restrained Palette (No Purple Slop)</span></th>
-              <th scope="col"><span data-i18n="zh"><code>:focus-visible</code> 与防连点</span><span data-i18n="en"><code>:focus-visible</code> &amp; Submit Lock</span></th>
-              <th scope="col"><span data-i18n="zh">批量结清按「快照 ID 集合」加锁</span><span data-i18n="en">Snapshot ID Set Lock</span></th>
-              <th scope="col"><span data-i18n="zh">首轮末尾给出 2 个关键选择题</span><span data-i18n="en">2 Key Choices on Turn 1</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">GPT-6 Astra (<code>xhigh</code>)</th>
-              <td>Raw</td>
-              <td>1</td>
-              <td>0</td>
-              <td>1</td>
-              <td>0</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <th scope="row">GPT-6 Astra (<code>xhigh</code>)</th>
-              <td><span class="badge-ok">+ Lacuna</span></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-            </tr>
-            <tr>
-              <th scope="row">GPT-5.6 Sol (<code>xhigh</code>)</th>
-              <td>Raw</td>
-              <td>1</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <th scope="row">GPT-5.6 Sol (<code>xhigh</code>)</th>
-              <td><span class="badge-ok">+ Lacuna</span></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-              <td><strong>1</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="cli" class="block">
-      <div class="section-head">
-        <div class="section-idx">04 / CLI &amp; Hosts</div>
-        <div>
-          <h2>
-            <span data-i18n="zh">日常查看、改规矩与物理回退命令</span>
-            <span data-i18n="en">Inspect Settings, Edit Locked Rules &amp; Roll Back Turns</span>
-          </h2>
-          <p>
-            <span data-i18n="zh">装上后不需要改变使用 Codex 或 Claude Code 的习惯；需要调整默认风格、语言或回退走偏对话时，直接在终端调用 <code>lacuna</code>：</span>
-            <span data-i18n="en">Keep using Codex or Claude Code as usual; run <code>lacuna</code> anytime to adjust defaults, inspect locked decisions, or roll back a drifted turn:</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-kicker">CLI Quick Reference</div>
-          <h3>
-            <span data-i18n="zh">常用终端管理命令</span>
-            <span data-i18n="en">Everyday Terminal Controls</span>
-          </h3>
-          <pre class="cli-pre"><span class="c-dim"># 查看当前设置 / Inspect active settings</span>
-<span class="c-cmd">lacuna config show</span>
-
-<span class="c-dim"># 切换语言 (auto 自动识别 | zh 中文 | en 纯英文)</span>
-<span class="c-cmd">lacuna config set lang auto</span>
-
-<span class="c-dim"># 固定默认视觉气质 / Set default UI archetype</span>
-<span class="c-cmd">lacuna config set visual.default warm-editorial</span>
-
-<span class="c-dim"># 查看或撤销当前会话已锁定的决定 / Manage session decisions</span>
-<span class="c-cmd">lacuna rules list</span>
-<span class="c-cmd">lacuna rules revoke --id r_1</span>
-
-<span class="c-dim"># 物理截断回退走偏的最近 1 轮会话 / Roll back drifted turn</span>
-<span class="c-cmd">lacuna rebase &lt;session_id&gt; 1</span></pre>
-        </div>
-
-        <div class="card">
-          <div class="card-kicker">Supported Hosts</div>
-          <h3>
-            <span data-i18n="zh">全宿主挂载与桌面端直装</span>
-            <span data-i18n="en">Supported Coding Hosts &amp; Desktop Apps</span>
-          </h3>
-          <p>
-            <span data-i18n="zh">一套本地配置同时适配主流终端与桌面编码工具，并预留后续完整 Agent 工作区扩展接口：</span>
-            <span data-i18n="en">One lightweight local install wires into both CLI and desktop coding environments:</span>
-          </p>
-          <ol class="vision-steps" role="list">
-            <li>
-              <strong data-i18n="zh">Codex CLI &amp; Codex 桌面端（Windows / WSL / macOS）</strong>
-              <strong data-i18n="en">Codex CLI &amp; Codex Desktop App (Windows / WSL / macOS)</strong>
-              <span data-i18n="zh">自动写入 <code>~/.codex/hooks.json</code> 并在 <code>config.toml</code> 开启 <code>hooks = true</code>；桌面端可让内置 AI 代装后重启即生效。</span>
-              <span data-i18n="en">Configures <code>~/.codex/hooks.json</code> and enables <code>hooks = true</code> in <code>config.toml</code>; works natively in PowerShell or WSL.</span>
-            </li>
-            <li>
-              <strong data-i18n="zh">Claude Code（全平台终端与 IDE 插件）</strong>
-              <strong data-i18n="en">Claude Code (CLI &amp; IDE Integrations)</strong>
-              <span data-i18n="zh">自动合并全局 <code>~/.claude/settings.json</code> 的 <code>UserPromptSubmit</code> 钩子，不覆盖原有模型与权限配置。</span>
-              <span data-i18n="en">Non-destructively merges into <code>~/.claude/settings.json</code> <code>UserPromptSubmit</code> while preserving your existing settings.</span>
-            </li>
-            <li>
-              <strong data-i18n="zh">Antigravity IDE（PreInvocation 前置注入）</strong>
-              <strong data-i18n="en">Antigravity IDE (PreInvocation Hook)</strong>
-              <span data-i18n="zh">通过 <code>PreInvocation</code> 注入瞬态上下文，按用户轮次自动去重，不污染历史会话记录。</span>
-              <span data-i18n="en">Injects turn-deduplicated ephemeral context on <code>PreInvocation</code> without polluting conversation transcripts.</span>
-            </li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="block">
-      <div class="contact-box">
-        <div>
-          <div class="section-idx">05 / Contact</div>
-          <h2>
-            <span data-i18n="zh">使用反馈与合作交流</span>
-            <span data-i18n="en">Feedback &amp; Collaboration</span>
-          </h2>
-          <p>
-            <span data-i18n="zh">本仓库提供闭源单文件命令行分发包（<code>UNLICENSED</code>），不含内部源码与明文预设库。如果你在 Windows、macOS 或多模型实测中有任何建议，欢迎直接联系：</span>
-            <span data-i18n="en">This repository distributes the closed-source single-file CLI bundle (<code>UNLICENSED</code>). For Windows/macOS feedback, team trials, or collaboration, reach out directly:</span>
-          </p>
-          <p>
-            <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna/blob/main/README.md"><span data-i18n="zh">中文说明文档 (README)</span><span data-i18n="en">Chinese README</span></a>
-            &nbsp;·&nbsp;
-            <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna/blob/main/README.en.md"><span data-i18n="zh">英文说明文档 (English README)</span><span data-i18n="en">English README</span></a>
-          </p>
-        </div>
-
-        <ul class="contact-links" role="list">
-          <li>
-            <span>Email</span>
-            <a href="mailto:1061790014@qq.com">1061790014@qq.com</a>
-          </li>
-          <li>
-            <span>WeChat</span>
-            <strong>Jyl2012111</strong>
-          </li>
-          <li>
-            <span>GitHub</span>
-            <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">jyl201210-lab/weijingzhiyi-lacuna</a>
-          </li>
-        </ul>
-      </div>
+      <p>
+        <span data-i18n="zh"><strong>Codex 桌面端 App 代装：</strong>直接把 <code>Install Lacuna via: npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> 发给对话框里的 AI，装完彻底退出并重启一次 App 即可。</span>
+        <span data-i18n="en"><strong>Codex Desktop App:</strong> Send <code>Install Lacuna via: npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> directly to the in-app AI, then quit and restart Codex App once.</span>
+      </p>
     </section>
   </main>
 
-  <footer class="frame">
-    <div>
-      <strong lang="zh-CN">未竟之意</strong> · Lacuna v2.4 — All rights reserved.
-    </div>
-    <div>
-      <span data-i18n="zh">发送前意图与预设控制器 · 支持 Codex / Claude Code / Antigravity</span>
-      <span data-i18n="en">Pre-Send Intent &amp; Preset Controller · Codex / Claude Code / Antigravity</span>
+  <footer class="fade-in-section">
+    <div class="container">
+      <div class="footer-brand">未竟之意 / <span>Lacuna</span></div>
+      <div class="footer-links">
+        <a href="mailto:1061790014@qq.com">1061790014@qq.com</a>
+        &nbsp;·&nbsp; WeChat: Jyl2012111 &nbsp;·&nbsp;
+        <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">GitHub</a>
+        &nbsp;·&nbsp; UNLICENSED
+      </div>
     </div>
   </footer>
 
   <script>
     (() => {
-      const SCENARIOS = {
-        ui: {
-          zh: {
-            raw: "“做个订单结算看板，用 React + SQLite，不要物理删除发票记录。”",
-            outcomes: [
-              "<strong>金额与数字严格对齐：</strong>自动开启 <code>tabular-nums</code> 与最小整数单位（分）计算，杜绝浮点误差。",
-              "<strong>SQLite 并发安全：</strong>写事务默认使用 <code>BEGIN IMMEDIATE</code> + <code>busy_timeout</code>，避免锁冲突。",
-              "<strong>否定决定跨轮锁定：</strong>自动提取并锁定“不要物理删除发票记录”，后续改需求也不会被模型忘掉。"
-            ],
-            injected: `<span class="hl-tag">[规则优先级]</span> 1. 本轮明确要求 > 2. 数据安全与可逆默认 > 3. 技术栈条件底线 > 4. 默认工艺基线\n\n<span class="hl-tag">[UI 与交互工程基线]</span>\n- 金额、数量、耗时与编号开启 font-variant-numeric: tabular-nums\n- 异步提交加防连点加载态并保留原输入；补齐空状态、骨架态与 :focus-visible\n\n<span class="hl-tag">[数据与后端安全基线]</span>\n- SQLite 写事务使用 BEGIN IMMEDIATE 提前获取写锁，配置 PRAGMA busy_timeout 与 STRICT 表\n- 货币统一按最小整数单位（如分）存储与运算，严禁直接用浮点数算钱\n\n<span class="hl-ok">[当前生效的用户决定]</span>\n- 数据保留决定：不要物理删除发票记录`
-          },
-          en: {
-            raw: "\"Build a billing dashboard in React + SQLite. Never hard-delete invoices.\"",
-            outcomes: [
-              "<strong>Zero CJK leakage:</strong> Detects English automatically and injects 100% native English baselines.",
-              "<strong>Ledger &amp; SQLite safety:</strong> Enforces integer minor units (cents), <code>STRICT</code> tables, and <code>BEGIN IMMEDIATE</code> write locks.",
-              "<strong>Negation locked across turns:</strong> Extracts <code>Retention decision: Never hard-delete invoices</code> for all follow-up turns."
-            ],
-            injected: `<span class="hl-tag">[Rule Priority]</span> 1. Explicit user instructions > 2. Data safety (reversible v1) > 3. Stack-specific rules > 4. Default craft baseline\n\n<span class="hl-tag">[UI &amp; Interaction Baseline]</span>\n- Enable font-variant-numeric: tabular-nums on all amounts, counts, durations, and IDs\n- Disable duplicate submissions with loading state; handle empty/error states &amp; :focus-visible\n\n<span class="hl-tag">[Data &amp; Backend Safety Baseline]</span>\n- SQLite write concurrency: start write transactions with BEGIN IMMEDIATE, configure PRAGMA busy_timeout &amp; STRICT tables\n- Monetary precision: store and compute all amounts in minor integer units (cents), never floats\n\n<span class="hl-ok">[Active User Decisions]</span>\n- Retention decision: Never hard-delete invoices`
-          }
-        },
-        decision: {
-          zh: {
-            raw: "“帮我写个清理过期试用账号的脚本。”（尚未说明直接删库还是归档）",
-            outcomes: [
-              "<strong>绝不擅自删库，也不原地卡死：</strong>模型先交出带 <code>--dry-run</code> 预览和可逆归档标记的可运行第一版。",
-              "<strong>结尾只问 2 个关键选择题：</strong>用大白话请你在“归档保留审计记录 vs 到期物理删除”和“并发执行锁策略”之间拍板。",
-              "<strong>拍板后随时可改：</strong>下一轮你说“确认直接物理删除”，旧状态即刻更新，全程留痕。"
-            ],
-            injected: `<span class="hl-tag">[数据与后端安全基线]</span>\n- 批量修改、归档或删除前，先锁定目标记录 ID 集合，在单事务内执行并校验影响行数\n- 可逆默认：在用户未明确要求物理删除前，第一版采用状态标记或 dry-run 预览，把“物理删除还是保留历史”列为选择题\n\n<span class="hl-ok">[本轮执行指令]</span>\n先按安全、可逆方案交付可运行的第一版；结束时用大白话列出最多 2 个决定后续走向的关键选择题请用户拍板：\n  - 数据保留策略：用可逆状态标记保留历史记录，还是直接物理删除旧记录？\n  - 并发与冲突策略：并发写入冲突时是直接报错拦截，还是按最新提交覆盖？`
-          },
-          en: {
-            raw: "\"Write a cleanup job for expired trial accounts.\" (Retention policy not yet specified)",
-            outcomes: [
-              "<strong>No silent data loss, no 10-question interrogation:</strong> Ships a working v1 with dry-run preview and soft-archive flag first.",
-              "<strong>Surfaces 2 concrete choices at the end:</strong> Asks you in plain English to decide on retention and conflict policy.",
-              "<strong>Clean superseding:</strong> When you reply <em>\"Confirmed: physically delete after 30 days\"</em>, Lacuna updates the active lock."
-            ],
-            injected: `<span class="hl-tag">[Data &amp; Backend Safety Baseline]</span>\n- Lock explicit target record IDs before batch updates/deletes; execute inside a single transaction and verify row counts\n- Reversible v1 default: use reversible status flags or dry-run previews in v1 until physical deletion is confirmed\n\n<span class="hl-ok">[Turn Execution Directive]</span>\nDeliver a runnable v1 using safe, reversible defaults first; at the end, list at most 2 plain-language choices for the user to decide:\n  - Data retention: keep history via reversible status flags, or physically delete expired rows?\n  - Concurrency policy: reject conflicting writes with an explicit error, or overwrite with latest write?`
-          }
-        },
-        sci: {
-          zh: {
-            raw: "“用 Scanpy 跑一下这批肿瘤单细胞数据的线粒体比例质控。”",
-            outcomes: [
-              "<strong>拒绝生搬硬套 5% 阈值：</strong>自动按样本批次计算中位数与 <code>MAD</code>（中位数绝对偏差）动态识别异常值。",
-              "<strong>过滤前先给前后对比：</strong>展示剔除细胞比例与分布图，避免误杀高代谢活性肿瘤亚群。",
-              "<strong>固定随机种子：</strong>自动记录软件版本与随机种子（UMAP / 聚类），保证结果可复现。"
-            ],
-            injected: `<span class="hl-tag">[科研与统计严谨性基线]</span>\n- 异常值与质控：禁止套用固定经验常数一刀切剔除样本；先展示原始分布与基于中位数/MAD 的自适应参考线\n- 单细胞测序质控：按样本/批次分别计算线粒体比例 (percent.mt)、基因数与 UMI 计数的自适应异常阈值（如 3~5 MAD），禁止全数据集硬编码 5% 或 10%\n- 固定随机种子并记录关键包版本与筛选前后样本量对比`
-          },
-          en: {
-            raw: "\"Run mitochondrial QC filtering on this tumor scRNA-seq dataset in Scanpy.\"",
-            outcomes: [
-              "<strong>Blocks arbitrary 5% cutoffs:</strong> Computes per-sample/batch median + <code>MAD</code> thresholds tailored to tumor metabolism.",
-              "<strong>Pre/post filtering audit:</strong> Reports exact cell counts retained per batch before committing destructive filtering.",
-              "<strong>Reproducibility built in:</strong> Pins random seeds for UMAP/clustering and logs package versions."
-            ],
-            injected: `<span class="hl-tag">[Scientific &amp; Statistical Rigor Baseline]</span>\n- Outliers &amp; QC: never drop samples with arbitrary hardcoded cutoffs; show raw distributions and median/MAD reference lines first\n- Single-cell (scRNA-seq) QC: compute adaptive thresholds (e.g., 3-5 MAD) per sample/batch jointly across percent.mt, detected genes, and UMI counts rather than hardcoding 5% or 10%\n- Reproducibility: fix random seeds and report pre- vs. post-filtering cell counts`
-          }
-        }
-      };
-
-      const metaDesc = document.querySelector('meta[name="description"]');
-      const liveRegion = document.getElementById("live-status");
+      const live = document.getElementById("live-status");
       const langBtns = Array.from(document.querySelectorAll("[data-set-lang]"));
-      let currentLang = "zh";
-      let currentScenario = "ui";
+      let lang = "zh";
 
-      function announce(msg) {
-        if (!liveRegion) return;
-        liveRegion.textContent = "";
-        window.setTimeout(() => { liveRegion.textContent = msg; }, 30);
+      function announce(text) {
+        if (!live) return;
+        live.textContent = "";
+        setTimeout(() => { live.textContent = text; }, 30);
       }
 
-      function renderXray() {
-        const data = SCENARIOS[currentScenario][currentLang];
-        document.getElementById("xray-raw").textContent = data.raw;
-        document.getElementById("xray-outcomes").innerHTML = data.outcomes.map(item => `<li>${item}</li>`).join("");
-        document.getElementById("xray-injected").innerHTML = data.injected;
-      }
-
-      function applyLanguage(lang, persist = false) {
-        currentLang = lang === "en" ? "en" : "zh";
-        document.documentElement.lang = currentLang === "en" ? "en" : "zh-CN";
-        document.title = currentLang === "en"
-          ? "Lacuna (未竟之意) v2.4 — Pre-Send Intent & Preset Controller"
-          : "未竟之意 · Lacuna — 发送前意图与预设控制器";
-        if (metaDesc) {
-          metaDesc.content = currentLang === "en"
-            ? "Lacuna v2.4 — Pre-Send Intent & Preset Controller (Windows / macOS / Linux · EN & ZH) for Codex, Claude Code, and Antigravity."
-            : "未竟之意 (Lacuna) v2.4 — 发送前意图与预设控制器，支持 Windows / macOS / Linux 与中英自动切换，适配 Codex、Claude Code 与 Antigravity。";
-        }
-        langBtns.forEach(btn => {
-          btn.setAttribute("aria-pressed", String(btn.dataset.setLang === currentLang));
-        });
-        const themeBtn = document.getElementById("theme-toggle");
-        if (themeBtn) {
-          themeBtn.setAttribute("aria-label", currentLang === "en" ? "Switch color theme" : "切换深浅色外观");
-        }
-        renderXray();
+      function setLang(next, persist) {
+        lang = next === "en" ? "en" : "zh";
+        document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+        document.title = lang === "en" ? "Lacuna | 未竟之意" : "未竟之意 | Lacuna";
+        langBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.setLang === lang)));
         if (persist) {
-          try { localStorage.setItem("lacuna-lang", currentLang); } catch {}
-          announce(currentLang === "en" ? "Switched language to English" : "已切换为中文界面");
+          try { localStorage.setItem("lacuna-lang", lang); } catch {}
+          announce(lang === "en" ? "Switched to English" : "已切换为中文");
         }
       }
 
-      // Auto-detect initial language (saved preference -> browser locale)
-      let initialLang = "zh";
+      let initLang = "zh";
       try {
         const saved = localStorage.getItem("lacuna-lang");
-        if (saved === "en" || saved === "zh") {
-          initialLang = saved;
-        } else if (navigator.language && !navigator.language.toLowerCase().startsWith("zh")) {
-          initialLang = "en";
-        }
+        if (saved === "en" || saved === "zh") initLang = saved;
+        else if (navigator.language && !navigator.language.toLowerCase().startsWith("zh")) initLang = "en";
       } catch {}
-      applyLanguage(initialLang, false);
+      setLang(initLang, false);
 
-      langBtns.forEach(btn => {
-        btn.addEventListener("click", () => applyLanguage(btn.dataset.setLang, true));
-      });
+      langBtns.forEach(b => b.addEventListener("click", () => setLang(b.dataset.setLang, true)));
 
-      // Accessible Tablist helper (ArrowLeft / ArrowRight / Home / End)
-      function wireTablist(tabs, onSelect) {
-        tabs.forEach((tab, idx) => {
-          tab.addEventListener("click", () => onSelect(tab, false));
-          tab.addEventListener("keydown", e => {
-            let nextIdx = -1;
-            if (e.key === "ArrowRight") nextIdx = (idx + 1) % tabs.length;
-            else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + tabs.length) % tabs.length;
-            else if (e.key === "Home") nextIdx = 0;
-            else if (e.key === "End") nextIdx = tabs.length - 1;
-            if (nextIdx >= 0) {
-              e.preventDefault();
-              onSelect(tabs[nextIdx], true);
-            }
-          });
-        });
-      }
+      const tabs = Array.from(document.querySelectorAll(".itab"));
+      const panel = document.getElementById("panel-cmd");
+      const cmdPrompt = document.getElementById("cmd-prompt");
+      const cmdText = document.getElementById("cmd-text");
+      const copyBtn = document.getElementById("copy-btn");
 
-      // Install tabs + auto-select Windows PowerShell tab when opened on Windows if desired, keeping npm universal default
-      const installTabs = Array.from(document.querySelectorAll(".tab-btn"));
-      const installPanel = document.getElementById("panel-install");
-      const activeCmd = document.getElementById("active-cmd");
-      const activePrompt = document.getElementById("active-prompt");
-      const copyBtn = document.getElementById("copy-cmd-btn");
-
-      function selectInstallTab(selectedTab, moveFocus) {
-        installTabs.forEach(t => {
-          const active = t === selectedTab;
+      function selectTab(tab, focus) {
+        tabs.forEach(t => {
+          const active = t === tab;
           t.setAttribute("aria-selected", String(active));
           t.tabIndex = active ? 0 : -1;
         });
-        installPanel.setAttribute("aria-labelledby", selectedTab.id);
-        activeCmd.textContent = selectedTab.dataset.cmd;
-        activePrompt.textContent = selectedTab.dataset.prompt;
+        panel.setAttribute("aria-labelledby", tab.id);
+        cmdPrompt.textContent = tab.dataset.prompt;
+        cmdText.textContent = tab.dataset.cmd;
         copyBtn.dataset.copied = "false";
-        if (moveFocus) selectedTab.focus();
+        if (focus) tab.focus();
       }
-      wireTablist(installTabs, selectInstallTab);
+
+      tabs.forEach((tab, i) => {
+        tab.addEventListener("click", () => selectTab(tab, false));
+        tab.addEventListener("keydown", e => {
+          let next = -1;
+          if (e.key === "ArrowRight") next = (i + 1) % tabs.length;
+          else if (e.key === "ArrowLeft") next = (i - 1 + tabs.length) % tabs.length;
+          if (next >= 0) {
+            e.preventDefault();
+            selectTab(tabs[next], true);
+          }
+        });
+      });
 
       copyBtn.addEventListener("click", async () => {
-        const text = activeCmd.textContent || "";
         try {
-          await navigator.clipboard.writeText(text);
+          await navigator.clipboard.writeText(cmdText.textContent || "");
           copyBtn.dataset.copied = "true";
-          announce(currentLang === "en" ? "Install command copied to clipboard" : "安装命令已复制到剪贴板");
-          window.setTimeout(() => { copyBtn.dataset.copied = "false"; }, 1800);
+          announce(lang === "en" ? "Copied to clipboard" : "已复制到剪贴板");
+          setTimeout(() => { copyBtn.dataset.copied = "false"; }, 1600);
         } catch {}
       });
 
-      // X-Ray scenario tabs
-      const xrayTabs = Array.from(document.querySelectorAll(".xray-tab"));
-      const xrayPanel = document.getElementById("xpanel");
-      wireTablist(xrayTabs, (selectedTab, moveFocus) => {
-        xrayTabs.forEach(t => {
-          const active = t === selectedTab;
-          t.setAttribute("aria-selected", String(active));
-          t.tabIndex = active ? 0 : -1;
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            obs.unobserve(entry.target);
+          }
         });
-        xrayPanel.setAttribute("aria-labelledby", selectedTab.id);
-        currentScenario = selectedTab.dataset.scenario || "ui";
-        renderXray();
-        if (moveFocus) selectedTab.focus();
-      });
+      }, { threshold: 0.12 });
 
-      // Two-state color-scheme toggle synced with <meta name="color-scheme">
-      const schemeMeta = document.querySelector('meta[name="color-scheme"]');
-      const themeBtn = document.getElementById("theme-toggle");
-
-      function getSystemScheme() {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      }
-
-      function getRenderedScheme() {
-        const content = schemeMeta ? schemeMeta.content : "light dark";
-        return content === "dark" || content === "light" ? content : getSystemScheme();
-      }
-
-      themeBtn.addEventListener("click", () => {
-        const systemScheme = getSystemScheme();
-        const target = getRenderedScheme() === "dark" ? "light" : "dark";
-        if (target === systemScheme) {
-          try { localStorage.removeItem("color-scheme"); } catch {}
-          schemeMeta.content = "light dark";
-        } else {
-          try { localStorage.setItem("color-scheme", target); } catch {}
-          schemeMeta.content = target;
-        }
-        announce(
-          currentLang === "en"
-            ? `Switched to ${target} theme`
-            : `已切换为${target === "dark" ? "深色" : "浅色"}外观`
-        );
-      });
-
-      window.addEventListener("storage", e => {
-        if (e.key === "color-scheme" && schemeMeta) {
-          schemeMeta.content = e.newValue ?? "light dark";
-        }
-      });
+      document.querySelectorAll(".fade-in-section").forEach(el => observer.observe(el));
     })();
   </script>
 </body>
