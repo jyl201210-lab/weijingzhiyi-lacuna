@@ -9,8 +9,8 @@
       document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
     } catch {}
   </script>
-  <meta name="description" content="未竟之意 (Lacuna) v2.4 — 支持 Windows / macOS / Linux 与中英双语自动切换的模型前置工程与决策引擎，适配 Codex CLI、Claude Code 与 Antigravity。">
-  <title>未竟之意 · Lacuna — 模型前置工程与决策引擎</title>
+  <meta name="description" content="未竟之意 (Lacuna) v2.4 — 发送前意图与预设控制器，支持 Windows / macOS / Linux 与中英自动切换，适配 Codex、Claude Code 与 Antigravity。">
+  <title>未竟之意 · Lacuna — 发送前意图与预设控制器</title>
   <style>
     :root {
       /* Raw light tokens (Warm Archival Paper) */
@@ -347,23 +347,26 @@
       margin: 0 0 18px;
       font-family: var(--serif);
       font-weight: 500;
-      font-size: clamp(2.15rem, 4.1vw, 3.35rem);
-      line-height: 1.18;
+      font-size: clamp(1.95rem, 1rem + 1.9vw, 2.75rem);
+      line-height: 1.22;
       letter-spacing: -0.015em;
+      text-wrap: balance;
     }
 
     .lead {
       margin: 0 0 14px;
-      font-size: 1.12rem;
+      font-size: 1.1rem;
       color: var(--text);
       max-width: 62ch;
+      text-wrap: pretty;
     }
 
     .sub {
       margin: 0 0 26px;
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       color: var(--muted);
       max-width: 64ch;
+      text-wrap: pretty;
     }
 
     .pill-row {
@@ -556,14 +559,16 @@
       margin: 0 0 10px;
       font-family: var(--serif);
       font-weight: 500;
-      font-size: clamp(1.55rem, 2.7vw, 2.2rem);
+      font-size: clamp(1.55rem, 0.95rem + 1.5vw, 2.15rem);
       line-height: 1.26;
+      text-wrap: balance;
     }
 
     .section-head p {
       margin: 0;
       color: var(--muted);
       max-width: 68ch;
+      text-wrap: pretty;
     }
 
     /* Interactive X-Ray Demo */
@@ -710,12 +715,14 @@
       font-family: var(--serif);
       font-weight: 500;
       font-size: 1.24rem;
+      text-wrap: balance;
     }
 
     .card p {
       margin: 0;
       color: var(--muted);
       font-size: 0.94rem;
+      text-wrap: pretty;
     }
 
     /* Evidence Table */
@@ -955,18 +962,18 @@
         </div>
 
         <h1 id="main-heading" tabindex="-1">
-          <span data-i18n="zh">在模型开口之前，<br>先把底线垫稳，把决定留给人。</span>
-          <span data-i18n="en">Set the craft baseline before the model speaks.<br>Keep every real decision yours.</span>
+          <span data-i18n="zh">发送前意图与预设控制器</span>
+          <span data-i18n="en">Pre-Send Intent &amp; Preset Controller</span>
         </h1>
 
         <p class="lead">
-          <span data-i18n="zh"><strong>未竟之意（Lacuna）</strong> 是挂载在 Codex CLI、Claude Code 与 Antigravity 前面的<strong>模型前置引擎</strong>。</span>
-          <span data-i18n="en"><strong>Lacuna (<span lang="zh-CN">未竟之意</span>)</strong> is a zero-latency <strong>pre-model hook engine</strong> for Codex CLI, Claude Code, and Antigravity.</span>
+          <span data-i18n="zh">平时用 Codex、Claude Code 写代码或跑科研分析，最常卡在三个时刻：<strong>第一轮话没说全，模型要么套廉价模板瞎猜、要么连问十几个问题；聊了十几轮，前面拍板的规矩它给改丢了；一旦走偏，在对话里越骂越往坑里钻。</strong></span>
+          <span data-i18n="en">Working with Codex or Claude Code usually hits three walls: <strong>an underspecified Turn 1 triggers generic purple-gradient templates or ten clarifying questions; confirmed rules get forgotten five turns later; and arguing in chat after a bad turn only digs deeper.</strong></span>
         </p>
 
         <p class="sub">
-          <span data-i18n="zh">它在提示词发往模型前毫秒级介入：自动补齐 UI、数据库与科研统计底线；需求还没拍板时，让模型先交出安全可逆的第一版并列出 2 道关键选择题；一旦你拍板，后续多轮全程锁死规矩，跑偏还能直接回退会话文件。</span>
-          <span data-i18n="en">Before your prompt reaches the model, Lacuna injects stack-matched craft and safety baselines locally in under 15ms. When direction is still forming, it ships a reversible v1 plus 2 clear choices; once you decide, it locks your rules across turns and supports physical session rollback.</span>
+          <span data-i18n="zh"><strong>未竟之意（Lacuna）</strong> 在把你的话发给模型之前本地完成三件事：① 自动补齐界面排版、数据库并发锁与科研统计预设（你的明确要求永远排第一，随时覆盖）；② 需求没说死时，先交出可逆初版并只问 2 个关键选择题；③ 记住你拍板的规矩，走偏时一键截断回退本地 <code>.jsonl</code> 会话记录。</span>
+          <span data-i18n="en"><strong>Lacuna (<span lang="zh-CN">未竟之意</span>)</strong> runs locally right before send: (1) fills in UI craft, database locking, and statistical rigor presets (your explicit instructions always win); (2) ships a runnable reversible v1 plus at most 2 plain-English choices on Turn 1; (3) locks confirmed decisions across turns and physically truncates drifted <code>.jsonl</code> history via <code>lacuna rebase</code>.</span>
         </p>
 
         <div class="pill-row">
@@ -1037,15 +1044,15 @@
 
     <section id="xray" class="block">
       <div class="section-head">
-        <div class="section-idx">01 / Pre-Model X-Ray</div>
+        <div class="section-idx">01 / Pre-Send Preview</div>
         <div>
           <h2>
-            <span data-i18n="zh">模型开口前，未竟之意到底替你垫了什么？</span>
-            <span data-i18n="en">What happens in the 15ms before the model sees your prompt?</span>
+            <span data-i18n="zh">敲下回车发送前，它在本地补上了哪些具体要求？</span>
+            <span data-i18n="en">What gets attached locally right before your prompt is sent?</span>
           </h2>
           <p>
-            <span data-i18n="zh">你只管按平时的习惯说人话。模型自己并不感知未竟之意的存在——它收到的是已经按场景补齐工程底线、并附上本会话历史决定的上下文。点选下方真实场景查看对比：</span>
-            <span data-i18n="en">Write short, natural prompts as usual. The model never needs to call a tool—it receives stack-specific baselines and your locked session decisions upfront. Switch scenarios below:</span>
+            <span data-i18n="zh">你照常说大白话，模型端不需要调用任何额外工具——收到的直接是按技术栈匹配好的预设和本会话已锁定的规矩。点选下方三个真实任务查看：</span>
+            <span data-i18n="en">Write short prompts as usual. The model calls zero extra tools—it receives stack-matched presets and your locked session decisions upfront. Switch tasks below:</span>
           </p>
         </div>
       </div>
@@ -1101,15 +1108,15 @@
 
     <section id="capabilities" class="block">
       <div class="section-head">
-        <div class="section-idx">02 / Capabilities</div>
+        <div class="section-idx">02 / Core Mechanism</div>
         <div>
           <h2>
-            <span data-i18n="zh">不抢方向盘，也不让你每轮重复盯细节。</span>
-            <span data-i18n="en">Never hijacks your direction. Never makes you repeat your rules.</span>
+            <span data-i18n="zh">针对平时写代码和跑科研最憋屈的三个问题</span>
+            <span data-i18n="en">Built Around the Three Everyday Multi-Turn Failures</span>
           </h2>
           <p>
-            <span data-i18n="zh">普通 AI 工具要么一次吐出十几个追问把你卡在原地，要么一声不吭替你做不可逆的物理删除。未竟之意在模型前置层把分工重新划清楚。</span>
-            <span data-i18n="en">Typical AI workflows either stall you with a wall of questions or silently hardcode destructive defaults. Lacuna enforces a clean division of labor before generation starts.</span>
+            <span data-i18n="zh">所有动作都在把话发给模型之前完成，严格按「你的明确要求 &gt; 数据安全可逆默认 &gt; 本会话已拍板规矩 &gt; 技术栈条件预设 &gt; 默认审美基线」排序，随时一句话覆盖。</span>
+            <span data-i18n="en">Strictly ordered: Explicit user instructions &gt; Reversible data safety &gt; Confirmed session decisions &gt; Stack-conditional presets &gt; Default UI craft.</span>
           </p>
         </div>
       </div>
@@ -1170,12 +1177,12 @@
         <div class="section-idx">03 / Verification</div>
         <div>
           <h2>
-            <span data-i18n="zh">四大主力模型同口径实测验证</span>
-            <span data-i18n="en">Verified Under Identical Conditions Across 4 Frontier Models</span>
+            <span data-i18n="zh">同一道模糊需求下的 Raw 裸跑 vs 挂载对照</span>
+            <span data-i18n="en">Same-Prompt Raw vs. Lacuna Verification (`xhigh`)</span>
           </h2>
           <p>
-            <span data-i18n="zh">同一句模糊提示词、同一套验证断言，在挂载未竟之意前置引擎后，四款主力模型在前端工艺、数据库并发安全与生信质控上均稳定守住工程底线：</span>
-            <span data-i18n="en">Tested with identical underspecified prompts across GPT-6 Astra, GPT-5.6 Sol, Claude Opus 5.5, and Claude Fable 5.1:</span>
+            <span data-i18n="zh">实测任务：<em>“帮我写一个单文件 HTML 工作台，用来管理实验室样品的异常复核与批量归档结清”</em>（固定相同模型与 <code>xhigh</code> 推理档位；并在真实 Codex CLI 与 Claude Code CLI 中通过 3 轮连续对话 + <code>100 + 50 vs 30</code> 并发插单核销压测）：</span>
+            <span data-i18n="en">Task: <em>"Build a single-file HTML workbench for lab sample anomaly review and batch settlement"</em> at identical <code>xhigh</code> effort (plus 3-turn concurrent settlement race test in real Codex CLI &amp; Claude Code CLI):</span>
           </p>
         </div>
       </div>
@@ -1183,62 +1190,56 @@
       <div class="table-wrap">
         <table>
           <caption>
-            <span data-i18n="zh">模型前置注入实测表现对照（v2.4 验证套件通过）</span>
-            <span data-i18n="en">Pre-Model Baseline Verification Matrix (v2.4 Suite Passed)</span>
+            <span data-i18n="zh">同口径功能通过项对照（1 = 通过，0 = 漏做）</span>
+            <span data-i18n="en">Same-Condition Pass/Fail Matrix (1 = Passed, 0 = Missed)</span>
           </caption>
           <thead>
             <tr>
-              <th scope="col"><span data-i18n="zh">验证维度</span><span data-i18n="en">Domain</span></th>
-              <th scope="col"><span data-i18n="zh">裸提示词常见失误</span><span data-i18n="en">Typical Raw-Prompt Failure</span></th>
-              <th scope="col"><span data-i18n="zh">挂载未竟之意后的实测行为</span><span data-i18n="en">With Lacuna Pre-Model Hook</span></th>
-              <th scope="col"><span data-i18n="zh">实测覆盖模型</span><span data-i18n="en">Verified Models</span></th>
+              <th scope="col"><span data-i18n="zh">模型</span><span data-i18n="en">Model</span></th>
+              <th scope="col"><span data-i18n="zh">模式</span><span data-i18n="en">Mode</span></th>
+              <th scope="col"><code>tabular-nums</code></th>
+              <th scope="col"><span data-i18n="zh">克制暖纸/深色板（无紫渐变）</span><span data-i18n="en">Restrained Palette (No Purple Slop)</span></th>
+              <th scope="col"><span data-i18n="zh"><code>:focus-visible</code> 与防连点</span><span data-i18n="en"><code>:focus-visible</code> &amp; Submit Lock</span></th>
+              <th scope="col"><span data-i18n="zh">批量结清按「快照 ID 集合」加锁</span><span data-i18n="en">Snapshot ID Set Lock</span></th>
+              <th scope="col"><span data-i18n="zh">首轮末尾给出 2 个关键选择题</span><span data-i18n="en">2 Key Choices on Turn 1</span></th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row">
-                <span data-i18n="zh">UI 与交互底线</span>
-                <span data-i18n="en">UI &amp; Interaction Craft</span>
-              </th>
-              <td>
-                <span data-i18n="zh">金额列跳动不对齐、异步按钮可重复连点、漏写空状态与键盘焦点环</span>
-                <span data-i18n="en">Jittery numeric columns, duplicate form submits, missing empty states &amp; focus rings</span>
-              </td>
-              <td>
-                <span data-i18n="zh">自动启用 <code>tabular-nums</code> 等宽数字、防连点加载态、完整空状态/错态与 <code>:focus-visible</code></span>
-                <span data-i18n="en">Enforces <code>tabular-nums</code>, async submit lock, empty/error states, and <code>:focus-visible</code></span>
-              </td>
-              <td><span class="badge-ok">4 / 4 Models</span></td>
+              <th scope="row">GPT-6 Astra (<code>xhigh</code>)</th>
+              <td>Raw</td>
+              <td>1</td>
+              <td>0</td>
+              <td>1</td>
+              <td>0</td>
+              <td>0</td>
             </tr>
             <tr>
-              <th scope="row">
-                <span data-i18n="zh">SQLite 与资金结算</span>
-                <span data-i18n="en">SQLite &amp; Ledger Safety</span>
-              </th>
-              <td>
-                <span data-i18n="zh">浮点数存金额产生精度误差、并发写库报 <code>SQLITE_BUSY</code>、擅自物理删表数据</span>
-                <span data-i18n="en">Floating-point rounding drift, <code>SQLITE_BUSY</code> write races, silent hard-deletes</span>
-              </td>
-              <td>
-                <span data-i18n="zh">金额统一按最小整数单位（分/cents）存储、写事务显式 <code>BEGIN IMMEDIATE</code>、默认可逆状态标记</span>
-                <span data-i18n="en">Integer minor units (cents), upfront <code>BEGIN IMMEDIATE</code> lock, reversible v1 + explicit choice</span>
-              </td>
-              <td><span class="badge-ok">4 / 4 Models</span></td>
+              <th scope="row">GPT-6 Astra (<code>xhigh</code>)</th>
+              <td><span class="badge-ok">+ Lacuna</span></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
             </tr>
             <tr>
-              <th scope="row">
-                <span data-i18n="zh">单细胞 scRNA-seq 质控</span>
-                <span data-i18n="en">scRNA-seq Statistical QC</span>
-              </th>
-              <td>
-                <span data-i18n="zh">一刀切硬编码 <code>percent.mt &lt; 5%</code>，误杀心肌或肿瘤高代谢健康细胞</span>
-                <span data-i18n="en">Hardcoded <code>percent.mt &lt; 5%</code> cutoff, discarding metabolically active cells</span>
-              </td>
-              <td>
-                <span data-i18n="zh">按样本批次计算中位数与 <code>MAD</code> 自适应阈值，先输出剔除比例预览再请研究者确认</span>
-                <span data-i18n="en">Per-batch median + <code>MAD</code> outlier detection with pre/post retention preview before filtering</span>
-              </td>
-              <td><span class="badge-ok">4 / 4 Models</span></td>
+              <th scope="row">GPT-5.6 Sol (<code>xhigh</code>)</th>
+              <td>Raw</td>
+              <td>1</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <th scope="row">GPT-5.6 Sol (<code>xhigh</code>)</th>
+              <td><span class="badge-ok">+ Lacuna</span></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
+              <td><strong>1</strong></td>
             </tr>
           </tbody>
         </table>
@@ -1247,15 +1248,15 @@
 
     <section id="cli" class="block">
       <div class="section-head">
-        <div class="section-idx">04 / Control &amp; Horizon</div>
+        <div class="section-idx">04 / CLI &amp; Hosts</div>
         <div>
           <h2>
-            <span data-i18n="zh">平时隐形工作，需要时一行命令随手调。</span>
-            <span data-i18n="en">Invisible day to day. One short command whenever you want to tune it.</span>
+            <span data-i18n="zh">日常查看、改规矩与物理回退命令</span>
+            <span data-i18n="en">Inspect Settings, Edit Locked Rules &amp; Roll Back Turns</span>
           </h2>
           <p>
-            <span data-i18n="zh">装上后不需要改变使用 Codex 或 Claude Code 的习惯；同时保留完整的本地 CLI 控制面板，并为未来完整的未竟之意工作区留好演进接口。</span>
-            <span data-i18n="en">Keep using Codex CLI, Claude Code, or Antigravity exactly as you do today—with full local CLI control and a clear path toward the complete Lacuna workspace.</span>
+            <span data-i18n="zh">装上后不需要改变使用 Codex 或 Claude Code 的习惯；需要调整默认风格、语言或回退走偏对话时，直接在终端调用 <code>lacuna</code>：</span>
+            <span data-i18n="en">Keep using Codex or Claude Code as usual; run <code>lacuna</code> anytime to adjust defaults, inspect locked decisions, or roll back a drifted turn:</span>
           </p>
         </div>
       </div>
@@ -1360,8 +1361,8 @@
       <strong lang="zh-CN">未竟之意</strong> · Lacuna v2.4 — All rights reserved.
     </div>
     <div>
-      <span data-i18n="zh">模型开口前垫稳工程底线，把关键决定权留给人。</span>
-      <span data-i18n="en">Guard craft baselines before the model speaks. Keep every real decision yours.</span>
+      <span data-i18n="zh">发送前意图与预设控制器 · 支持 Codex / Claude Code / Antigravity</span>
+      <span data-i18n="en">Pre-Send Intent &amp; Preset Controller · Codex / Claude Code / Antigravity</span>
     </div>
   </footer>
 
@@ -1453,12 +1454,12 @@
         currentLang = lang === "en" ? "en" : "zh";
         document.documentElement.lang = currentLang === "en" ? "en" : "zh-CN";
         document.title = currentLang === "en"
-          ? "Lacuna (未竟之意) v2.4 — Pre-Model Context & Decision Engine"
-          : "未竟之意 · Lacuna — 模型前置工程与决策引擎";
+          ? "Lacuna (未竟之意) v2.4 — Pre-Send Intent & Preset Controller"
+          : "未竟之意 · Lacuna — 发送前意图与预设控制器";
         if (metaDesc) {
           metaDesc.content = currentLang === "en"
-            ? "Lacuna v2.4 — Cross-platform (Windows / macOS / Linux) & bilingual pre-model hook engine for Codex CLI, Claude Code, and Antigravity."
-            : "未竟之意 (Lacuna) v2.4 — 支持 Windows / macOS / Linux 与中英双语自动切换的模型前置工程与决策引擎，适配 Codex CLI、Claude Code 与 Antigravity。";
+            ? "Lacuna v2.4 — Pre-Send Intent & Preset Controller (Windows / macOS / Linux · EN & ZH) for Codex, Claude Code, and Antigravity."
+            : "未竟之意 (Lacuna) v2.4 — 发送前意图与预设控制器，支持 Windows / macOS / Linux 与中英自动切换，适配 Codex、Claude Code 与 Antigravity。";
         }
         langBtns.forEach(btn => {
           btn.setAttribute("aria-pressed", String(btn.dataset.setLang === currentLang));
