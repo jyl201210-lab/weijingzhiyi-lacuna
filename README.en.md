@@ -6,7 +6,7 @@
 
 ## Install
 
-Requires `Node.js >= 20` on Windows, macOS, or Linux:
+`Node.js >= 20` · Windows / macOS / Linux · Works with Codex (CLI & Desktop App), Claude Code, and Antigravity
 
 ```bash
 npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init
@@ -22,24 +22,24 @@ irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.p
 curl -fsSL https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.sh | sh
 ```
 
-Codex Desktop App: send `npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init` in an in-app chat to install, then quit and restart the app once.
+For Codex Desktop App, send the `npm` command above in an in-app chat, then fully quit and restart the app.
 
-## Features
+## Use
 
-- **Task presets**: Attaches frontend, database, and statistical baselines before prompts reach the model. Explicit instructions take precedence; English prompts stay 100% English.
-- **Session rules**: Carries confirmed session constraints (schemas, soft-delete, etc.) across turns. Inspect, add, or revoke via `lacuna rules`.
-- **JSONL rollback**: `lacuna rebase <session_id> [turns]` backs up and truncates the last `N` turns of local Codex or Claude `.jsonl` logs.
-
-## Commands
+- **Explore**: While the goal is taking shape, start with a working, reversible implementation and surface key trade-offs for your decision.
+- **Iterate**: Carry confirmed architecture and data conventions through development and bug fixes. View, add, or revoke with `lacuna rules`.
+- **Rewind**: Back up and truncate the last `N` turns of local Codex / Claude Code `.jsonl` logs while keeping workspace code in place.
 
 ```bash
-lacuna config show                 # Show active configuration
-lacuna config set lang auto        # Language: auto (default) | en | zh
-lacuna rules list                  # List session constraints (also: add, revoke, clear)
-lacuna rebase <session_id> [turns] # Back up and truncate last N .jsonl turns
-lacuna uninstall                   # Remove pre-model hooks
+lacuna rules list                   # View confirmed conventions (also: add, revoke, clear)
+lacuna rebase <session_id> [turns]  # Back up and remove the last N turns
+lacuna config show                  # View configuration
+lacuna config set lang auto         # Language: auto (default, 100% EN on EN input) | en | zh
+lacuna uninstall                    # Remove integration settings
 ```
 
-## Contact
+Includes baselines for frontend layout and UI states, database transaction locks and snapshot checks, and avoiding circular reasoning in statistical tests. Explicit instructions always take precedence.
 
-Closed-source single-file CLI (`UNLICENSED`) · `1061790014@qq.com` · WeChat `Jyl2012111`
+## About
+
+v2.4 · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`

@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="未竟之意 (Lacuna) — Codex、Claude Code 与 Antigravity 的前置 Hook。">
-  <title>未竟之意 | Lacuna</title>
+  <meta name="description" content="未竟之意 / Lacuna — 让 Codex 与 Claude Code 在探索时保留余地，在迭代中守住你的决定。">
+  <title>未竟之意 / Lacuna</title>
   <style>
     @layer reset, base, components;
 
@@ -105,26 +105,26 @@
       }
 
       h2 {
-        font-size: clamp(1.5rem, 1.15rem + 1vw, 1.9rem);
-        margin-block: 5.5rem 2rem;
+        font-size: clamp(1.45rem, 1.15rem + 0.9vw, 1.8rem);
+        margin-block: 5rem 1.75rem;
         color: #e5e5e5;
         border-block-end: 1px solid rgba(255, 255, 255, 0.06);
-        padding-block-end: 1.25rem;
+        padding-block-end: 1.15rem;
         letter-spacing: 0.05em;
       }
 
       h3 {
         font-size: 1.2rem;
-        margin-block-end: 0.85rem;
+        margin-block-end: 0.9rem;
         color: var(--text-primary);
         letter-spacing: 0.03em;
       }
 
       p {
-        font-size: 1.0625rem;
+        font-size: 1.05rem;
         color: var(--text-secondary);
         max-inline-size: 66ch;
-        margin-block-end: 1.35rem;
+        margin-block-end: 1.25rem;
         letter-spacing: 0.02em;
         text-wrap: pretty;
         overflow-wrap: break-word;
@@ -264,18 +264,18 @@
       }
 
       .hero p.lead {
-        font-size: clamp(1.25rem, 1.05rem + 0.45vw, 1.45rem);
+        font-size: clamp(1.18rem, 0.98rem + 0.36vw, 1.32rem);
         color: var(--text-primary);
-        max-inline-size: 40rem;
+        max-inline-size: 45rem;
         line-height: 1.75;
         font-family: var(--font-serif);
         margin-block-end: 2.5rem;
-        text-wrap: balance;
+        text-wrap: pretty;
       }
 
       .install-shell {
         inline-size: 100%;
-        max-inline-size: 41rem;
+        max-inline-size: 41.5rem;
         border: 1px solid var(--border-subtle);
         border-radius: 12px;
         background: var(--surface);
@@ -394,39 +394,32 @@
         margin-inline-start: 1.125rem;
       }
 
-      .clean-list {
-        list-style: none;
-        margin-block: 1.75rem;
+      .comparison {
+        display: flex;
+        gap: 1.5rem;
+        margin-block: 1rem 2rem;
       }
 
-      .clean-list li {
-        font-size: 1.0625rem;
-        color: var(--text-secondary);
-        max-inline-size: 66ch;
-        padding-inline-start: 1.5rem;
-        position: relative;
-        text-wrap: pretty;
-        overflow-wrap: break-word;
+      .comparison-col {
+        flex: 1;
+        padding: 2rem;
+        background: var(--surface);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.3s var(--ease);
       }
 
-      .clean-list li:not(:last-child) {
-        margin-block-end: 1.15rem;
+      .comparison-col:hover {
+        background: var(--surface-hover);
       }
 
-      .clean-list li::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0.75rem;
-        width: 4px;
-        height: 4px;
-        background-color: var(--text-secondary);
-        border-radius: 50%;
-        opacity: 0.65;
+      .comparison-col p {
+        font-size: 0.98rem;
+        margin-block-end: 0;
       }
 
       .code-panel {
-        margin-block: 1.5rem 2rem;
+        margin-block: 1.5rem;
         padding: 1.35rem 1.5rem;
         border-radius: 12px;
         background: var(--surface);
@@ -443,28 +436,9 @@
         color: var(--text-muted);
       }
 
-      .comparison {
-        display: flex;
-        gap: 1.5rem;
-        margin-block: 2rem;
-      }
-
-      .comparison-col {
-        flex: 1;
-        padding: 1.75rem 2rem;
-        background: var(--surface);
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        transition: background 0.3s var(--ease);
-      }
-
-      .comparison-col:hover {
-        background: var(--surface-hover);
-      }
-
-      .comparison-col p {
-        font-size: 0.96875rem;
-        margin-block-end: 0;
+      .subtle-note {
+        font-size: 0.95rem;
+        color: var(--text-muted);
       }
 
       .fade-in-section {
@@ -489,8 +463,8 @@
       }
 
       footer {
-        margin-block-start: 6.5rem;
-        padding-block: 5.5rem 6rem;
+        margin-block-start: 6rem;
+        padding-block: 5rem 5.5rem;
         text-align: center;
         border-block-start: 1px solid rgba(255, 255, 255, 0.05);
         background: linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
@@ -499,10 +473,10 @@
       .footer-brand {
         max-inline-size: none;
         font-family: var(--font-sans);
-        font-size: 1.5rem;
+        font-size: 1.45rem;
         letter-spacing: 0.1em;
         color: var(--text-secondary);
-        margin-block-end: 1.5rem;
+        margin-block-end: 1.25rem;
       }
 
       .footer-brand span {
@@ -513,14 +487,14 @@
       .footer-note {
         max-inline-size: none;
         font-family: var(--font-serif);
-        font-size: 1.125rem;
+        font-size: 1.1rem;
         color: var(--text-primary);
         margin-block-end: 0.35rem;
       }
 
       .footer-links {
         max-inline-size: none;
-        margin-block-start: 2.25rem;
+        margin-block-start: 2rem;
         margin-block-end: 0;
         font-family: var(--font-mono);
         font-size: 0.8125rem;
@@ -585,8 +559,8 @@
   <main class="container">
     <section class="hero">
       <div class="brand-tag">
-        <span data-i18n="zh">LACUNA · v2.4 · WIN / MAC / LINUX</span>
-        <span data-i18n="en">未竟之意 · v2.4 · WIN / MAC / LINUX</span>
+        <span data-i18n="zh">LACUNA · v2.4</span>
+        <span data-i18n="en">未竟之意 · v2.4</span>
       </div>
 
       <h1>
@@ -595,8 +569,8 @@
       </h1>
 
       <p class="lead">
-        <span data-i18n="zh">Codex、Claude Code 与 Antigravity 的前置 Hook。</span>
-        <span data-i18n="en">Pre-prompt hook for Codex, Claude Code, and Antigravity.</span>
+        <span data-i18n="zh">让 Codex 与 Claude Code 在探索时保留余地，在迭代中守住你的决定。</span>
+        <span data-i18n="en">Keep your options open while exploring, and your decisions intact as Codex and Claude Code build.</span>
       </p>
 
       <div class="install-shell">
@@ -617,70 +591,52 @@
       </div>
 
       <div class="hero-meta">
-        <span data-i18n="zh">Node.js &gt;= 20 · Codex（CLI 与桌面端 App）/ Claude Code / Antigravity · 中英文自动识别</span>
-        <span data-i18n="en">Node.js &gt;= 20 · Codex (CLI &amp; Desktop App) / Claude Code / Antigravity · Auto EN / ZH</span>
+        <span data-i18n="zh">Windows / macOS / Linux · Node.js &gt;= 20 · Codex CLI &amp; App · Claude Code · Antigravity</span>
+        <span data-i18n="en">Windows / macOS / Linux · Node.js &gt;= 20 · Codex CLI &amp; App · Claude Code · Antigravity</span>
       </div>
 
       <div class="scroll-indicator" aria-hidden="true">Scroll</div>
     </section>
 
     <section class="fade-in-section">
-      <h2>
-        <span data-i18n="zh">作用</span>
-        <span data-i18n="en">Features</span>
-      </h2>
-
-      <ul class="clean-list" role="list">
-        <li>
-          <span data-i18n="zh"><strong>前置预设</strong> —— 发给模型前按任务附加前端排版、数据库事务与统计检验基线；当轮显式指令始终优先，英文输入自动注入纯英文上下文。</span>
-          <span data-i18n="en"><strong>Task Presets</strong> — Attaches frontend, database, and statistical baselines before prompts reach the model. Explicit instructions take precedence; English prompts stay 100% English.</span>
-        </li>
-        <li>
-          <span data-i18n="zh"><strong>会话约束</strong> —— 自动记录当前会话内已定的约束（如表结构、软删除策略），后续轮次持续附带，可通过 <code>lacuna rules</code> 查看、添加或撤销。</span>
-          <span data-i18n="en"><strong>Session Rules</strong> — Carries confirmed session constraints (schemas, soft-delete policies, etc.) across turns. Inspect, add, or revoke via <code>lacuna rules</code>.</span>
-        </li>
-        <li>
-          <span data-i18n="zh"><strong>记录回退</strong> —— <code>lacuna rebase &lt;session_id&gt; [turns]</code> 自动备份并截断本机 Codex 或 Claude <code>.jsonl</code> 最后 N 轮对话。</span>
-          <span data-i18n="en"><strong>JSONL Rollback</strong> — <code>lacuna rebase &lt;session_id&gt; [turns]</code> backs up and truncates the last N turns of local Codex or Claude <code>.jsonl</code> logs.</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="fade-in-section">
-      <h2>
-        <span data-i18n="zh">命令与安装</span>
-        <span data-i18n="en">Commands &amp; Setup</span>
-      </h2>
-
-      <pre class="code-panel">lacuna config show                  <span class="dim" data-i18n="zh"># 查看当前配置</span><span class="dim" data-i18n="en"># Show active configuration</span>
-lacuna config set lang auto         <span class="dim" data-i18n="zh"># 语言：auto（默认）| zh | en</span><span class="dim" data-i18n="en"># Language: auto (default) | en | zh</span>
-lacuna rules list                   <span class="dim" data-i18n="zh"># 查看当前会话约束</span><span class="dim" data-i18n="en"># List constraints in active session</span>
-lacuna rules revoke --id &lt;id&gt;       <span class="dim" data-i18n="zh"># 撤销指定约束</span><span class="dim" data-i18n="en"># Revoke a constraint by ID</span>
-lacuna rebase &lt;session_id&gt; [turns]  <span class="dim" data-i18n="zh"># 备份并截断最后 N 轮 .jsonl</span><span class="dim" data-i18n="en"># Back up and truncate last N .jsonl turns</span>
-lacuna uninstall                    <span class="dim" data-i18n="zh"># 卸载前置 Hook</span><span class="dim" data-i18n="en"># Remove pre-model hooks</span></pre>
-
       <div class="comparison">
         <div class="comparison-col">
           <h3>
-            <span data-i18n="zh">终端 CLI</span>
-            <span data-i18n="en">CLI Hosts</span>
+            <span data-i18n="zh">探索时</span>
+            <span data-i18n="en">Explore</span>
           </h3>
           <p>
-            <span data-i18n="zh">闭源单文件 CLI 发行版（<code>UNLICENSED</code>）。执行 <code>lacuna init</code> 自动写入 Codex CLI、Claude Code 与 Antigravity 的前置 Hook；<code>lacuna uninstall</code> 可完整移除。</span>
-            <span data-i18n="en">Closed-source single-file CLI (<code>UNLICENSED</code>). Running <code>lacuna init</code> configures pre-model hooks for Codex CLI, Claude Code, and Antigravity; <code>lacuna uninstall</code> removes them.</span>
+            <span data-i18n="zh">目标还在形成时，先做出可用、可回退的实现，再把关键取舍交给你确认。</span>
+            <span data-i18n="en">While the goal is taking shape, starts with a working, reversible implementation and surfaces key trade-offs for your decision.</span>
           </p>
         </div>
         <div class="comparison-col">
           <h3>
-            <span data-i18n="zh">Codex 桌面端 App</span>
-            <span data-i18n="en">Codex Desktop App</span>
+            <span data-i18n="zh">迭代时</span>
+            <span data-i18n="en">Iterate &amp; Rewind</span>
           </h3>
           <p>
-            <span data-i18n="zh">把 <code>npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> 发给应用内对话自动安装，装完退出并重启一次 App。</span>
-            <span data-i18n="en">Send <code>npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> in an in-app chat to install, then quit and restart the app once.</span>
+            <span data-i18n="zh">将已确认的架构与数据约定持续带入后续开发和修复；需要重来时备份并回退本地 <code>.jsonl</code> 对话记录，保留工作区代码。</span>
+            <span data-i18n="en">Carries confirmed architecture and data conventions across follow-up turns and bug fixes, or rewinds local <code>.jsonl</code> logs while keeping workspace code intact.</span>
           </p>
         </div>
       </div>
+
+      <p>
+        <span data-i18n="zh">内置前端排版与交互状态、数据库事务锁与快照核验、统计检验防循环论证基线。你的明确指令始终优先，中英文自动识别。</span>
+        <span data-i18n="en">Includes baselines for frontend layout and UI states, database transaction locks and snapshot checks, and avoiding circular reasoning in statistical tests. Explicit instructions always take precedence.</span>
+      </p>
+
+      <pre class="code-panel">lacuna rules list                   <span class="dim" data-i18n="zh"># 查看已确认的约定（add / revoke / clear）</span><span class="dim" data-i18n="en"># View confirmed conventions (add / revoke)</span>
+lacuna rebase &lt;session_id&gt; [turns]  <span class="dim" data-i18n="zh"># 备份并移除最后 N 轮对话</span><span class="dim" data-i18n="en"># Back up and remove the last N turns</span>
+lacuna config show                  <span class="dim" data-i18n="zh"># 查看配置</span><span class="dim" data-i18n="en"># View configuration</span>
+lacuna config set lang auto         <span class="dim" data-i18n="zh"># 语言：auto | zh | en</span><span class="dim" data-i18n="en"># Language: auto | en | zh</span>
+lacuna uninstall                    <span class="dim" data-i18n="zh"># 移除接入配置</span><span class="dim" data-i18n="en"># Remove integration settings</span></pre>
+
+      <p class="subtle-note">
+        <span data-i18n="zh">Codex 桌面端 App 可在应用内对话发送安装命令，安装后完全退出并重启一次。</span>
+        <span data-i18n="en">For Codex Desktop App, send the install command in an in-app chat, then fully quit and restart the app.</span>
+      </p>
     </section>
   </main>
 
@@ -695,7 +651,7 @@ lacuna uninstall                    <span class="dim" data-i18n="zh"># 卸载前
         <a href="mailto:1061790014@qq.com">1061790014@qq.com</a>
         &nbsp;·&nbsp; WeChat: Jyl2012111
         &nbsp;·&nbsp; <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">GitHub</a>
-        &nbsp;·&nbsp; UNLICENSED
+        &nbsp;·&nbsp; v2.4 · UNLICENSED
       </p>
     </div>
   </footer>
@@ -726,7 +682,7 @@ lacuna uninstall                    <span class="dim" data-i18n="zh"># 卸载前
       function setLang(next, persist) {
         lang = next === "en" ? "en" : "zh";
         document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
-        document.title = lang === "en" ? "Lacuna | 未竟之意" : "未竟之意 | Lacuna";
+        document.title = lang === "en" ? "Lacuna / 未竟之意" : "未竟之意 / Lacuna";
         langBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.setLang === lang)));
         if (persist) {
           try { localStorage.setItem("lacuna-lang", lang); } catch {}
