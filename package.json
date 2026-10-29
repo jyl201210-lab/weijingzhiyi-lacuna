@@ -1,0 +1,19 @@
+{
+  "name": "lacuna-ai",
+  "version": "2.4.0",
+  "description": "Lacuna (未竟之意) — Cross-platform bilingual (ZH/EN) pre-model context & decision engine for Codex CLI, Claude Code, and Antigravity.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "files": [
+    "dist/lacuna.mjs"
+  ],
+  "bin": {
+    "lacuna": "./dist/lacuna.mjs"
+  },
+  "scripts": {
+    "postinstall": "node ./dist/lacuna.mjs install --quiet"
+  }
+}

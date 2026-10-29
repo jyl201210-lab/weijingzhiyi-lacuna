@@ -2,7 +2,8 @@
 
 ## 这个公开仓库包含什么
 
-- `index.html`：对外产品入口页
+- `index.html`：对外中英双语产品入口页与交互透视
+- `dist/lacuna.mjs`、`package.json`、`i.ps1`、`i.sh`：混淆封装后的闭源单文件命令行分发产物与跨平台一键安装引导（不含源码目录与明文规则 JSON）
 - `README.md`：产品简介与仓库定位
 - `STATUS.md`：当前阶段与下一步
 - `MARKET_LOOP.md`：市场切口、扩张路径与沟通闭环

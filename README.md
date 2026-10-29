@@ -6,6 +6,29 @@
 
 产品名是 **未竟之意**，**Lacuna** 是当前工程代号。
 
+- **在线主页（支持中文 / EN 切换）**：<https://jyl201210-lab.github.io/weijingzhiyi-lacuna/>
+
+## 快速安装 / Quick Install (v2.4 · Windows / macOS / Linux · 中文 & English)
+
+装完自动为本机 **Codex CLI**、**Claude Code** 与 **Antigravity** 挂载全局模型前置引擎（需 Node.js ≥ 20）。检测到全英文输入会自动切换为 **100% 纯英文预设与指令（零中文混入）**。
+
+**通用一行命令（Windows PowerShell / CMD / macOS / Linux 均可用）：**
+```bash
+npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init
+```
+
+**或者按系统使用原生脚本：**
+- **Windows (PowerShell)**：
+  ```powershell
+  irm https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.ps1 | iex
+  ```
+- **macOS / Linux**：
+  ```bash
+  curl -fsSL https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.sh | sh
+  ```
+
+常用命令：`lacuna help`（中英双语帮助）、`lacuna config show`（查看设置）、`lacuna config set lang en`（强制固定英文）、`lacuna uninstall`（一键卸载）。
+
 ![未竟之意公开页预览](./assets/screenshots/poster-preview.png)
 
 ## 第一阶段先服务谁

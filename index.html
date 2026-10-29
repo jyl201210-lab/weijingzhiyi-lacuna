@@ -3,35 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="未竟之意不是让 AI 更快替人下定义，而是让真正重要的方向先长出来，再让系统把后续推进尽可能接过去。">
-  <title>未竟之意 / Lacuna</title>
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
+    } catch {}
+  </script>
+  <meta name="description" content="未竟之意 (Lacuna) v2.4 — 支持 Windows / macOS / Linux 与中英双语自动切换的模型前置工程与决策引擎，适配 Codex CLI、Claude Code 与 Antigravity。">
+  <title>未竟之意 · Lacuna — 模型前置工程与决策引擎</title>
   <style>
     :root {
-      --bg: #070606;
-      --panel: rgba(255, 248, 236, 0.05);
-      --panel-strong: rgba(255, 248, 236, 0.09);
-      --line: rgba(255, 248, 236, 0.12);
-      --text: #f5efe4;
-      --muted: #b9b0a1;
-      --accent: #f0d6ae;
-      --accent-soft: rgba(240, 214, 174, 0.18);
-      --max: 1080px;
+      /* Raw light tokens (Warm Archival Paper) */
+      --bg-light: #faf7f1;
+      --bg-elev-light: #ffffff;
+      --bg-subtle-light: rgba(28, 23, 18, 0.04);
+      --line-light: rgba(28, 23, 18, 0.12);
+      --line-strong-light: rgba(28, 23, 18, 0.24);
+      --text-light: #191614;
+      --muted-light: #5c544b;
+      --accent-light: #855316;
+      --accent-soft-light: rgba(133, 83, 22, 0.11);
+      --ok-light: #156d4b;
+      --ok-soft-light: rgba(21, 109, 75, 0.11);
+      --glow-a-light: rgba(196, 145, 78, 0.12);
+      --glow-b-light: rgba(133, 83, 22, 0.06);
+      --topbar-light: rgba(250, 247, 241, 0.82);
+
+      /* Raw dark tokens (Warm Editorial Obsidian) */
+      --bg-dark: #090807;
+      --bg-elev-dark: #13110f;
+      --bg-subtle-dark: rgba(255, 248, 236, 0.045);
+      --line-dark: rgba(255, 248, 236, 0.11);
+      --line-strong-dark: rgba(255, 248, 236, 0.24);
+      --text-dark: #f5efe4;
+      --muted-dark: #b6ac9d;
+      --accent-dark: #f0d6ae;
+      --accent-soft-dark: rgba(240, 214, 174, 0.15);
+      --ok-dark: #7fd1ae;
+      --ok-soft-dark: rgba(127, 209, 174, 0.14);
+      --glow-a-dark: rgba(240, 214, 174, 0.11);
+      --glow-b-dark: rgba(214, 194, 147, 0.06);
+      --topbar-dark: rgba(9, 8, 7, 0.76);
+
+      /* Fallback defaults for older browsers without light-dark() */
+      --bg: var(--bg-light);
+      --bg-elev: var(--bg-elev-light);
+      --bg-subtle: var(--bg-subtle-light);
+      --line: var(--line-light);
+      --line-strong: var(--line-strong-light);
+      --text: var(--text-light);
+      --muted: var(--muted-light);
+      --accent: var(--accent-light);
+      --accent-soft: var(--accent-soft-light);
+      --ok: var(--ok-light);
+      --ok-soft: var(--ok-soft-light);
+      --glow-a: var(--glow-a-light);
+      --glow-b: var(--glow-b-light);
+      --topbar-bg: var(--topbar-light);
+
+      @media (prefers-color-scheme: dark) {
+        --bg: var(--bg-dark);
+        --bg-elev: var(--bg-elev-dark);
+        --bg-subtle: var(--bg-subtle-dark);
+        --line: var(--line-dark);
+        --line-strong: var(--line-strong-dark);
+        --text: var(--text-dark);
+        --muted: var(--muted-dark);
+        --accent: var(--accent-dark);
+        --accent-soft: var(--accent-soft-dark);
+        --ok: var(--ok-dark);
+        --ok-soft: var(--ok-soft-dark);
+        --glow-a: var(--glow-a-dark);
+        --glow-b: var(--glow-b-dark);
+        --topbar-bg: var(--topbar-dark);
+      }
+
+      @supports (color: light-dark(white, black)) {
+        --bg: light-dark(var(--bg-light), var(--bg-dark));
+        --bg-elev: light-dark(var(--bg-elev-light), var(--bg-elev-dark));
+        --bg-subtle: light-dark(var(--bg-subtle-light), var(--bg-subtle-dark));
+        --line: light-dark(var(--line-light), var(--line-dark));
+        --line-strong: light-dark(var(--line-strong-light), var(--line-strong-dark));
+        --text: light-dark(var(--text-light), var(--text-dark));
+        --muted: light-dark(var(--muted-light), var(--muted-dark));
+        --accent: light-dark(var(--accent-light), var(--accent-dark));
+        --accent-soft: light-dark(var(--accent-soft-light), var(--accent-soft-dark));
+        --ok: light-dark(var(--ok-light), var(--ok-dark));
+        --ok-soft: light-dark(var(--ok-soft-light), var(--ok-soft-dark));
+        --glow-a: light-dark(var(--glow-a-light), var(--glow-a-dark));
+        --glow-b: light-dark(var(--glow-b-light), var(--glow-b-dark));
+        --topbar-bg: light-dark(var(--topbar-light), var(--topbar-dark));
+      }
+
+      color-scheme: light dark;
+      accent-color: var(--accent);
+
+      &:has(> head > meta[name="color-scheme"][content="dark"]) {
+        color-scheme: dark;
+      }
+      &:has(> head > meta[name="color-scheme"][content="light"]) {
+        color-scheme: light;
+      }
+
+      --max: 1120px;
       --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Songti SC", "STSong", serif;
-      --sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Helvetica Neue", sans-serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --radius-lg: 20px;
+      --radius-md: 12px;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     body {
       margin: 0;
       font-family: var(--sans);
       color: var(--text);
-      background:
-        radial-gradient(circle at top, rgba(255, 231, 194, 0.11), transparent 28%),
-        radial-gradient(circle at 85% 20%, rgba(214, 194, 147, 0.08), transparent 20%),
-        linear-gradient(180deg, #080706 0%, #11100f 40%, #090807 100%);
-      line-height: 1.8;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 18% 4%, var(--glow-a), transparent 32%),
+        radial-gradient(circle at 86% 14%, var(--glow-b), transparent 24%);
+      line-height: 1.72;
       letter-spacing: 0.01em;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
@@ -40,27 +142,35 @@
 
     a { color: inherit; }
 
-    .noise,
-    .glow {
+    :where(a:any-link, button, [role="tab"]):focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .visually-hidden:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+
+    .skip-link:focus {
       position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    .noise {
-      opacity: 0.08;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.02)),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
-      mix-blend-mode: soft-light;
-    }
-
-    .glow {
-      background:
-        radial-gradient(circle at 15% 10%, rgba(240, 214, 174, 0.12), transparent 0 22%),
-        radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.05), transparent 0 18%);
-      z-index: -3;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: var(--bg-elev);
+      color: var(--text);
+      border: 1px solid var(--accent);
+      text-decoration: none;
+      font-weight: 600;
     }
 
     .frame {
@@ -68,408 +178,726 @@
       margin: 0 auto;
     }
 
+    /* Language visibility branching */
+    html[lang^="zh"] [data-i18n="en"] { display: none !important; }
+    html[lang^="en"] [data-i18n="zh"] { display: none !important; }
+
+    /* Topbar */
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 10;
-      backdrop-filter: blur(22px);
-      background: rgba(8, 7, 6, 0.64);
-      border-bottom: 1px solid rgba(255, 248, 236, 0.06);
+      z-index: 30;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--line);
     }
 
     .topbar-inner {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 0;
+      min-height: 64px;
+      padding: 10px 0;
     }
 
     .brand {
-      display: flex;
-      gap: 12px;
+      display: inline-flex;
+      gap: 10px;
       align-items: baseline;
       text-decoration: none;
+      min-block-size: 32px;
     }
 
     .brand strong {
       font-family: var(--serif);
-      font-weight: 500;
-      font-size: 1.05rem;
-      letter-spacing: 0.16em;
+      font-weight: 600;
+      font-size: 1.08rem;
+      letter-spacing: 0.12em;
     }
 
     .brand span {
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      font-family: var(--mono);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
 
     .nav {
       display: flex;
       gap: 18px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      font-size: 0.93rem;
+      align-items: center;
+      font-size: 0.92rem;
       color: var(--muted);
     }
 
     .nav a {
       text-decoration: none;
-      padding-bottom: 2px;
+      padding: 6px 2px;
+      min-block-size: 32px;
+      display: inline-flex;
+      align-items: center;
       border-bottom: 1px solid transparent;
-      transition: color 220ms var(--ease), border-color 220ms var(--ease);
+      transition: color 180ms var(--ease), border-color 180ms var(--ease);
     }
 
     .nav a:hover {
       color: var(--text);
-      border-color: rgba(255, 248, 236, 0.28);
+      border-color: var(--line-strong);
     }
 
-    .hero {
-      min-height: calc(100vh - 70px);
-      display: grid;
-      grid-template-columns: 1.4fr 0.9fr;
-      gap: 48px;
+    .controls-bar {
+      display: inline-flex;
       align-items: center;
-      padding: 76px 0 64px;
+      gap: 8px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+    }
+
+    .lang-btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 5px 11px;
+      min-block-size: 28px;
+      min-inline-size: 38px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 180ms var(--ease), color 180ms var(--ease);
+    }
+
+    .lang-btn[aria-pressed="true"] {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .theme-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+      color: var(--muted);
+      border-radius: 999px;
+      min-block-size: 34px;
+      min-inline-size: 34px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: border-color 180ms var(--ease), color 180ms var(--ease);
+    }
+
+    .theme-btn:hover {
+      color: var(--text);
+      border-color: var(--line-strong);
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 36px;
+      align-items: start;
+      padding: 68px 0 56px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 8px 14px;
+      gap: 8px;
+      padding: 6px 13px;
       border-radius: 999px;
-      background: var(--panel);
+      background: var(--bg-subtle);
       border: 1px solid var(--line);
       color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: 28px;
+      font-size: 0.84rem;
+      font-family: var(--mono);
+      margin-bottom: 22px;
     }
 
-    .eyebrow::before {
-      content: "";
+    .eyebrow-dot {
       width: 7px;
       height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 20px rgba(240, 214, 174, 0.72);
-    }
-
-    h1, h2, h3 {
-      font-family: var(--serif);
-      font-weight: 500;
-      line-height: 1.18;
-      margin: 0;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 10px var(--ok);
     }
 
     h1 {
-      font-size: clamp(3rem, 7.6vw, 6rem);
-      letter-spacing: 0.12em;
-      margin-bottom: 28px;
-      color: #fffaf0;
-      text-wrap: balance;
-    }
-
-    .hero-copy .lead {
-      font-size: 1.3rem;
-      max-width: 40rem;
-      color: #f1e7d7;
-      margin-bottom: 20px;
+      margin: 0 0 18px;
       font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(2.15rem, 4.1vw, 3.35rem);
+      line-height: 1.18;
+      letter-spacing: -0.015em;
     }
 
-    .hero-copy .sub {
-      max-width: 42rem;
+    .lead {
+      margin: 0 0 14px;
+      font-size: 1.12rem;
+      color: var(--text);
+      max-width: 62ch;
+    }
+
+    .sub {
+      margin: 0 0 26px;
+      font-size: 0.98rem;
       color: var(--muted);
-      font-size: 1.04rem;
-      margin-bottom: 36px;
+      max-width: 64ch;
     }
 
-    .cta-row {
+    .pill-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
       gap: 8px;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 999px;
-      text-decoration: none;
-      border: 1px solid var(--line);
-      transition: transform 220ms var(--ease), border-color 220ms var(--ease), background 220ms var(--ease);
-    }
-
-    .btn:hover { transform: translateY(-1px); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(240,214,174,0.18), rgba(240,214,174,0.08));
-      color: #fff6e8;
-      border-color: rgba(240,214,174,0.28);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
-    }
-
-    .btn-secondary {
-      color: var(--text);
-      background: rgba(255,255,255,0.02);
-    }
-
-    .hero-note {
-      color: var(--muted);
-      font-size: 0.95rem;
-      max-width: 38rem;
-    }
-
-    .hero-panel {
-      position: relative;
-      padding: 28px;
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,248,236,0.08), rgba(255,248,236,0.03));
-      border: 1px solid rgba(255,248,236,0.1);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 28px 80px rgba(0,0,0,0.28);
-      overflow: hidden;
-    }
-
-    .hero-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(150deg, rgba(240,214,174,0.1), transparent 38%, rgba(255,255,255,0.03));
-      pointer-events: none;
-    }
-
-    .panel-label {
-      font-size: 0.82rem;
-      color: var(--muted);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .panel-quote {
-      font-family: var(--serif);
-      font-size: 1.5rem;
-      color: #fff7eb;
-      margin-bottom: 18px;
-      line-height: 1.6;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0 26px;
-    }
-
-    .chip {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,248,236,0.06);
-      border: 1px solid rgba(255,248,236,0.1);
-      color: var(--muted);
-      font-size: 0.88rem;
-    }
-
-    .panel-list {
-      display: grid;
-      gap: 14px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .panel-list li {
-      padding: 16px 16px 16px 18px;
-      border-radius: 18px;
-      background: rgba(255,248,236,0.05);
-      border: 1px solid rgba(255,248,236,0.08);
-      color: var(--muted);
-    }
-
-    .panel-list strong {
-      display: block;
-      color: var(--text);
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    section {
-      padding: 46px 0;
-    }
-
-    .section-heading {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 24px;
-      align-items: start;
       margin-bottom: 26px;
     }
 
-    .section-index {
-      color: rgba(240,214,174,0.72);
-      font-size: 0.95rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding-top: 8px;
-    }
-
-    .section-heading p {
-      margin: 18px 0 0;
-      max-width: 46rem;
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
       color: var(--muted);
     }
 
-    .grid-3,
-    .grid-2 {
-      display: grid;
-      gap: 18px;
+    .pill strong {
+      color: var(--text);
+      font-weight: 600;
     }
 
-    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* Install Terminal Card */
+    .install-card {
+      border-radius: var(--radius-lg);
+      background: #0d0c0b;
+      color: #f4eee3;
+      color-scheme: dark;
+      accent-color: var(--accent-dark);
+      border: 1px solid rgba(255, 248, 236, 0.14);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    .install-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(255, 248, 236, 0.04);
+      border-bottom: 1px solid rgba(255, 248, 236, 0.09);
+      flex-wrap: wrap;
+    }
+
+    .tablist {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #a99f91;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      min-block-size: 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 160ms var(--ease), color 160ms var(--ease), border-color 160ms var(--ease);
+    }
+
+    .tab-btn:hover {
+      color: #f4eee3;
+    }
+
+    .tab-btn[aria-selected="true"] {
+      background: rgba(240, 214, 174, 0.14);
+      border-color: rgba(240, 214, 174, 0.34);
+      color: #f0d6ae;
+    }
+
+    .install-body {
+      padding: 18px 18px 16px;
+    }
+
+    .cmd-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 248, 236, 0.1);
+    }
+
+    .cmd-code {
+      font-family: var(--mono);
+      font-size: 0.81rem;
+      line-height: 1.55;
+      color: #f7f1e6;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    .cmd-prompt {
+      color: #7fd1ae;
+      user-select: none;
+      margin-right: 8px;
+    }
+
+    .copy-btn {
+      appearance: none;
+      flex-shrink: 0;
+      border: 1px solid rgba(240, 214, 174, 0.32);
+      background: rgba(240, 214, 174, 0.12);
+      color: #f0d6ae;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      min-block-size: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 160ms var(--ease), transform 120ms var(--ease);
+    }
+
+    .copy-btn:hover {
+      background: rgba(240, 214, 174, 0.22);
+    }
+
+    .copy-btn[data-copied="true"] {
+      border-color: rgba(127, 209, 174, 0.48);
+      background: rgba(127, 209, 174, 0.18);
+      color: #7fd1ae;
+    }
+
+    .install-meta {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+      font-size: 0.83rem;
+      color: #b7ad9f;
+    }
+
+    .install-meta code {
+      font-family: var(--mono);
+      font-size: 0.79rem;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: rgba(255, 248, 236, 0.08);
+      color: #f0d6ae;
+    }
+
+    .host-badges {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 248, 236, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #9e9486;
+      font-family: var(--mono);
+    }
+
+    /* Sections */
+    section.block {
+      padding: 64px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 28px;
+      margin-bottom: 36px;
+      align-items: baseline;
+    }
+
+    .section-idx {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .section-head h2 {
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(1.55rem, 2.7vw, 2.2rem);
+      line-height: 1.26;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 68ch;
+    }
+
+    /* Interactive X-Ray Demo */
+    .xray-wrap {
+      border-radius: var(--radius-lg);
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .xray-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+
+    .xray-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .xray-tab {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-elev);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 6px 13px;
+      min-block-size: 34px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 160ms var(--ease);
+    }
+
+    .xray-tab[aria-selected="true"] {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .xray-grid {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 0;
+    }
+
+    .xray-col {
+      padding: 22px 24px;
+    }
+
+    .xray-col + .xray-col {
+      border-left: 1px solid var(--line);
+      background: #0d0c0b;
+      color: #ece5d8;
+      color-scheme: dark;
+      accent-color: var(--accent-dark);
+    }
+
+    .xray-label {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .xray-col + .xray-col .xray-label {
+      color: #a89f91;
+    }
+
+    .prompt-bubble {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+      font-size: 0.96rem;
+      margin-bottom: 18px;
+    }
+
+    .outcome-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: grid;
+      gap: 8px;
+    }
+
+    .outcome-list strong {
+      color: var(--text);
+    }
+
+    .injected-pre {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.62;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #e9e1d4;
+    }
+
+    .injected-pre .hl-tag { color: #f0d6ae; font-weight: 600; }
+    .injected-pre .hl-ok { color: #7fd1ae; }
+
+    /* Cards Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
 
     .card {
-      padding: 24px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(255,248,236,0.06), rgba(255,248,236,0.03));
-      border: 1px solid rgba(255,248,236,0.1);
-      min-height: 100%;
+      padding: 24px 26px;
+      border-radius: var(--radius-lg);
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+    }
+
+    .card-kicker {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
     }
 
     .card h3 {
-      font-size: 1.35rem;
-      margin-bottom: 14px;
-      color: #fff9ef;
-    }
-
-    .card p, .card li {
-      color: var(--muted);
-      margin: 0;
-      font-size: 0.98rem;
-    }
-
-    .card ul {
-      margin: 0;
-      padding-left: 1.1rem;
-    }
-
-    .card li + li {
-      margin-top: 10px;
-    }
-
-    .highlight {
-      margin-top: 22px;
-      padding: 24px 26px;
-      border-left: 2px solid rgba(240,214,174,0.44);
-      border-radius: 0 20px 20px 0;
-      background: linear-gradient(90deg, rgba(240,214,174,0.12), rgba(255,248,236,0.03));
-      color: #f6ecdd;
+      margin: 0 0 10px;
       font-family: var(--serif);
-      font-size: 1.16rem;
+      font-weight: 500;
+      font-size: 1.24rem;
     }
 
-    .timeline {
-      display: grid;
-      gap: 16px;
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 20px;
-      padding: 20px 22px;
-      border-radius: 22px;
-      background: rgba(255,248,236,0.04);
-      border: 1px solid rgba(255,248,236,0.08);
-    }
-
-    .timeline-item strong {
-      color: rgba(240,214,174,0.9);
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-    }
-
-    .timeline-item p {
+    .card p {
       margin: 0;
       color: var(--muted);
+      font-size: 0.94rem;
     }
 
-    .contact-panel {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 20px;
-      padding: 30px;
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,248,236,0.08), rgba(255,248,236,0.03));
-      border: 1px solid rgba(255,248,236,0.1);
-      box-shadow: 0 22px 60px rgba(0,0,0,0.22);
+    /* Evidence Table */
+    .table-wrap {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: var(--bg-elev);
+      overflow-x: auto;
     }
 
-    .contact-panel p {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    caption {
+      text-align: left;
+      padding: 16px 20px 12px;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+
+    th, td {
+      text-align: left;
+      padding: 13px 20px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    thead th {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
       color: var(--muted);
-      margin-top: 14px;
-      margin-bottom: 0;
+      background: var(--bg-subtle);
     }
 
-    .contact-list {
-      margin: 0;
+    tbody tr:last-child th,
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody th {
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .badge-ok {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      background: var(--ok-soft);
+      color: var(--ok);
+    }
+
+    /* CLI & Continuum */
+    .cli-pre {
+      margin: 14px 0 0;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: #0d0c0b;
+      color: #efe8dc;
+      color-scheme: dark;
+      accent-color: var(--accent-dark);
+      border: 1px solid rgba(255, 248, 236, 0.12);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+
+    .cli-pre .c-dim { color: #8e8578; }
+    .cli-pre .c-cmd { color: #f0d6ae; }
+
+    .vision-steps {
+      margin: 14px 0 0;
       padding: 0;
       list-style: none;
       display: grid;
       gap: 12px;
-      align-content: start;
     }
 
-    .contact-list li {
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: rgba(255,248,236,0.05);
-      border: 1px solid rgba(255,248,236,0.08);
+    .vision-steps li {
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+      font-size: 0.91rem;
       color: var(--muted);
     }
 
-    .contact-list strong {
+    .vision-steps strong {
       display: block;
       color: var(--text);
-      margin-bottom: 5px;
+      margin-bottom: 2px;
+    }
+
+    /* Contact */
+    .contact-box {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      padding: 30px 32px;
+      border-radius: var(--radius-lg);
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      align-items: center;
+    }
+
+    .contact-box h2 {
+      margin: 6px 0 12px;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.7rem;
+    }
+
+    .contact-box p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .contact-links {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .contact-links li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+
+    .contact-links span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.8rem;
     }
 
     footer {
-      padding: 42px 0 64px;
+      padding: 36px 0 56px;
+      border-top: 1px solid var(--line);
       color: var(--muted);
-      text-align: center;
+      font-size: 0.88rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .fade {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 900ms var(--ease), transform 900ms var(--ease);
-    }
-
-    .fade.visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    @media (max-width: 960px) {
+    @media (max-width: 940px) {
       .hero,
-      .section-heading,
-      .contact-panel,
-      .timeline-item {
+      .section-head,
+      .xray-grid,
+      .grid-2,
+      .contact-box {
         grid-template-columns: 1fr;
       }
 
-      .grid-3,
-      .grid-2 {
-        grid-template-columns: 1fr;
+      .xray-col + .xray-col {
+        border-left: 0;
+        border-top: 1px solid var(--line);
       }
 
       .nav {
@@ -477,219 +905,693 @@
       }
 
       .hero {
-        min-height: auto;
-        padding-top: 56px;
-      }
-
-      .frame {
-        width: min(var(--max), calc(100vw - 28px));
+        padding-top: 40px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="glow"></div>
-  <div class="noise"></div>
-
   <header class="topbar">
+    <a href="#main-heading" class="skip-link visually-hidden">
+      <span data-i18n="zh">跳至正文</span>
+      <span data-i18n="en">Skip to main content</span>
+    </a>
+    <div id="live-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
     <div class="frame topbar-inner">
       <a class="brand" href="#top">
-        <strong>未竟之意</strong>
-        <span>Lacuna</span>
+        <strong lang="zh-CN">未竟之意</strong>
+        <span>Lacuna v2.4</span>
       </a>
-      <nav class="nav">
-        <a href="#problem">问题</a>
-        <a href="#structure">结构</a>
-        <a href="#market">市场</a>
-        <a href="#status">阶段</a>
-        <a href="#contact">联系</a>
-      </nav>
+
+      <div class="topbar-right">
+        <nav class="nav" aria-label="Primary">
+          <a href="#xray"><span data-i18n="zh">前置透视</span><span data-i18n="en">How It Works</span></a>
+          <a href="#capabilities"><span data-i18n="zh">核心能力</span><span data-i18n="en">Capabilities</span></a>
+          <a href="#evidence"><span data-i18n="zh">多模型实证</span><span data-i18n="en">Verification</span></a>
+          <a href="#cli"><span data-i18n="zh">命令与路线</span><span data-i18n="en">CLI &amp; Roadmap</span></a>
+          <a href="#contact"><span data-i18n="zh">联系</span><span data-i18n="en">Contact</span></a>
+        </nav>
+
+        <div class="controls-bar">
+          <div class="lang-switch" role="group" aria-label="Language">
+            <button type="button" class="lang-btn" lang="zh-CN" data-set-lang="zh" aria-pressed="true">中文</button>
+            <button type="button" class="lang-btn" lang="en" data-set-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <button type="button" class="theme-btn" id="theme-toggle" aria-label="Toggle color theme">
+            <span aria-hidden="true" id="theme-icon">◐</span>
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main id="top" class="frame">
     <section class="hero">
-      <div class="hero-copy fade">
-        <div class="eyebrow">产品名是 未竟之意，Lacuna 是当前工程代号</div>
-        <h1>不是更快替你下定义，<br>而是让未完成继续生长。</h1>
-        <p class="lead">未竟之意试着把一件事从“方向形成”重新接到“持续推进”。</p>
-        <p class="sub">当人还没有完全想清楚时，系统不急着把问题压成一个任务；当方向逐渐清楚后，系统再把低价值的推进、校验与协同尽可能接过去。它想做的不是一个更会说话的 AI，而是一种新的人机分工方式。</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="./STATUS.md">看当前状态</a>
-          <a class="btn btn-secondary" href="./MARKET_LOOP.md">看市场路径</a>
+      <div>
+        <div class="eyebrow">
+          <span class="eyebrow-dot" aria-hidden="true"></span>
+          <span data-i18n="zh">v2.4 · 原生支持 Windows / macOS / Linux · 中英自动切换</span>
+          <span data-i18n="en">v2.4 · Windows / macOS / Linux · Pure EN &amp; ZH Auto-Switch</span>
         </div>
-        <p class="hero-note">第一阶段先服务创业者、小团队负责人和早期项目 owner：他们最容易同时遇到“方向过早被压缩”和“后续推进仍然只能自己盯住”这两个问题，因此也会最先成为高质量用户与付费者。</p>
+
+        <h1 id="main-heading" tabindex="-1">
+          <span data-i18n="zh">在模型开口之前，<br>先把底线垫稳，把决定留给人。</span>
+          <span data-i18n="en">Set the craft baseline before the model speaks.<br>Keep every real decision yours.</span>
+        </h1>
+
+        <p class="lead">
+          <span data-i18n="zh"><strong>未竟之意（Lacuna）</strong> 是挂载在 Codex CLI、Claude Code 与 Antigravity 前面的<strong>模型前置引擎</strong>。</span>
+          <span data-i18n="en"><strong>Lacuna (<span lang="zh-CN">未竟之意</span>)</strong> is a zero-latency <strong>pre-model hook engine</strong> for Codex CLI, Claude Code, and Antigravity.</span>
+        </p>
+
+        <p class="sub">
+          <span data-i18n="zh">它在提示词发往模型前毫秒级介入：自动补齐 UI、数据库与科研统计底线；需求还没拍板时，让模型先交出安全可逆的第一版并列出 2 道关键选择题；一旦你拍板，后续多轮全程锁死规矩，跑偏还能直接回退会话文件。</span>
+          <span data-i18n="en">Before your prompt reaches the model, Lacuna injects stack-matched craft and safety baselines locally in under 15ms. When direction is still forming, it ships a reversible v1 plus 2 clear choices; once you decide, it locks your rules across turns and supports physical session rollback.</span>
+        </p>
+
+        <div class="pill-row">
+          <span class="pill">
+            <strong data-i18n="zh">全平台可用</strong><strong data-i18n="en">Cross-Platform</strong>
+            <span>Windows · macOS · Linux</span>
+          </span>
+          <span class="pill">
+            <strong data-i18n="zh">纯英文零中文残留</strong><strong data-i18n="en">100% Native English</strong>
+            <span data-i18n="zh">按输入语言自动切换</span><span data-i18n="en">Zero CJK leakage on EN prompts</span>
+          </span>
+          <span class="pill">
+            <strong data-i18n="zh">零额外模型调用</strong><strong data-i18n="en">0 Extra API Calls</strong>
+            <span data-i18n="zh">纯本地前置运行</span><span data-i18n="en">Pure local pre-model hook</span>
+          </span>
+        </div>
       </div>
 
-      <aside class="hero-panel fade">
-        <div class="panel-label">Why Now</div>
-        <div class="panel-quote">AI 越会回答，越容易让人误以为：只要答案更顺，方向也一定是对的。</div>
-        <div class="chips">
-          <span class="chip">方向形成</span>
-          <span class="chip">持续推进</span>
-          <span class="chip">人机分工</span>
+      <aside class="install-card" aria-labelledby="install-card-title">
+        <div class="install-header">
+          <span id="install-card-title" class="visually-hidden">Install Lacuna CLI</span>
+          <div class="tablist" role="tablist" aria-label="Installation method">
+            <button type="button" role="tab" class="tab-btn" id="tab-npm" aria-selected="true" aria-controls="panel-install" data-cmd="npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init" data-prompt="$">
+              npm (Win / Mac / Linux)
+            </button>
+            <button type="button" role="tab" class="tab-btn" id="tab-win" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="irm https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.ps1 | iex" data-prompt="PS&gt;">
+              Windows (PS)
+            </button>
+            <button type="button" role="tab" class="tab-btn" id="tab-unix" aria-selected="false" aria-controls="panel-install" tabindex="-1" data-cmd="curl -fsSL https://jyl201210-lab.github.io/weijingzhiyi-lacuna/i.sh | sh" data-prompt="$">
+              macOS / Linux
+            </button>
+          </div>
         </div>
-        <ul class="panel-list">
-          <li>
-            <strong>先别把我定死</strong>
-            很多系统在第一句话里就开始替人压缩问题。
-          </li>
-          <li>
-            <strong>别让我一直自己盯住后续</strong>
-            方向一旦逐渐清楚，低价值推进应该开始被真正接过去。
-          </li>
-          <li>
-            <strong>不是一个聊天框，而是一条连续链</strong>
-            它承接的是“怎么开始”与“怎么继续”之间长期断开的部分。
-          </li>
-        </ul>
+
+        <div class="install-body" id="panel-install" role="tabpanel" aria-labelledby="tab-npm">
+          <div class="cmd-row">
+            <div class="cmd-code">
+              <span class="cmd-prompt" id="active-prompt">$</span><span id="active-cmd">npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</span>
+            </div>
+            <button type="button" class="copy-btn" id="copy-cmd-btn">
+              <span data-i18n="zh">复制命令</span>
+              <span data-i18n="en">Copy</span>
+            </button>
+          </div>
+
+          <div class="install-meta">
+            <div data-i18n="zh">
+              装完即自动挂载全局前置 Hook（无需手改配置）。随时运行 <code>lacuna help</code> 查看设置，或 <code>lacuna uninstall</code> 一键卸载。
+            </div>
+            <div data-i18n="en">
+              Automatically wires global pre-model hooks on install (Node.js &ge; 20). Run <code>lacuna help</code> to inspect settings or <code>lacuna uninstall</code> anytime.
+            </div>
+            <div data-i18n="zh">
+              全英文用户无需改任何开关：检测到英文输入即自动切换为 <strong>100% 纯英文预设与指令</strong>；也可固定 <code>lacuna config set lang en</code>。
+            </div>
+            <div data-i18n="en">
+              Using English 100% of the time? Lacuna auto-detects English prompts and injects pure English baselines &amp; decision locks (or pin via <code>lacuna config set lang en</code>).
+            </div>
+          </div>
+
+          <div class="host-badges">
+            <span>Codex CLI · Claude Code · Antigravity</span>
+            <span>UNLICENSED · Closed Dist</span>
+          </div>
+        </div>
       </aside>
     </section>
 
-    <section id="problem" class="fade">
-      <div class="section-heading">
-        <div class="section-index">01 / Problem</div>
+    <section id="xray" class="block">
+      <div class="section-head">
+        <div class="section-idx">01 / Pre-Model X-Ray</div>
         <div>
-          <h2>问题不在工具不够多，而在一件事总被切碎。</h2>
-          <p>今天的人已经有很多工具：聊天、笔记、白板、任务、协作、工单。它们都能接住一个动作，却很少有一层系统，能把“方向形成、任务化、推进与接续”接成一条不断裂的线。</p>
+          <h2>
+            <span data-i18n="zh">模型开口前，未竟之意到底替你垫了什么？</span>
+            <span data-i18n="en">What happens in the 15ms before the model sees your prompt?</span>
+          </h2>
+          <p>
+            <span data-i18n="zh">你只管按平时的习惯说人话。模型自己并不感知未竟之意的存在——它收到的是已经按场景补齐工程底线、并附上本会话历史决定的上下文。点选下方真实场景查看对比：</span>
+            <span data-i18n="en">Write short, natural prompts as usual. The model never needs to call a tool—it receives stack-specific baselines and your locked session decisions upfront. Switch scenarios below:</span>
+          </p>
         </div>
       </div>
-      <div class="grid-3">
-        <article class="card">
-          <h3>起点被过早压缩</h3>
-          <p>AI 往往太快给出像答案的东西，传统工具也默认问题已经被正确定义。真正还没长清楚的部分，就这样在一开始被丢掉。</p>
-        </article>
-        <article class="card">
-          <h3>后续推进仍靠人盯住</h3>
-          <p>方向哪怕已经逐渐清楚，后续说明、复核、接续、沟通和跟进，仍然要靠人自己把整条链拽着走。</p>
-        </article>
-        <article class="card">
-          <h3>能力流失没有痛感</h3>
-          <p>动作被替代很舒服，但如果关键判断也在不知不觉中被交出去，人会慢慢失去自己决定方向的能力。</p>
-        </article>
+
+      <div class="xray-wrap">
+        <div class="xray-bar">
+          <div class="xray-tabs" role="tablist" aria-label="Scenario preview">
+            <button type="button" role="tab" class="xray-tab" id="xtab-ui" aria-selected="true" aria-controls="xpanel" data-scenario="ui">
+              <span data-i18n="zh">场景 A：账单看板 + SQLite</span>
+              <span data-i18n="en">Scenario A: Billing UI + SQLite</span>
+            </button>
+            <button type="button" role="tab" class="xray-tab" id="xtab-decision" aria-selected="false" aria-controls="xpanel" tabindex="-1" data-scenario="decision">
+              <span data-i18n="zh">场景 B：未拍板需求与跨轮锁死</span>
+              <span data-i18n="en">Scenario B: Reversible V1 &amp; Decision Lock</span>
+            </button>
+            <button type="button" role="tab" class="xray-tab" id="xtab-sci" aria-selected="false" aria-controls="xpanel" tabindex="-1" data-scenario="sci">
+              <span data-i18n="zh">场景 C：单细胞 scRNA-seq 质控</span>
+              <span data-i18n="en">Scenario C: scRNA-seq QC Rigor</span>
+            </button>
+          </div>
+          <span class="badge-ok">
+            <span data-i18n="zh">本地 &lt; 15ms · 0 额外 Token 往返</span>
+            <span data-i18n="en">Local &lt; 15ms · 0 Extra LLM Calls</span>
+          </span>
+        </div>
+
+        <div class="xray-grid" id="xpanel" role="tabpanel" aria-labelledby="xtab-ui">
+          <div class="xray-col">
+            <div class="xray-label">
+              <span data-i18n="zh">你输入的原话</span>
+              <span data-i18n="en">Your Raw Prompt</span>
+            </div>
+            <div class="prompt-bubble" id="xray-raw"></div>
+
+            <div class="xray-label">
+              <span data-i18n="zh">模型直接交出的变化</span>
+              <span data-i18n="en">Resulting Model Output</span>
+            </div>
+            <ul class="outcome-list" id="xray-outcomes" role="list"></ul>
+          </div>
+
+          <div class="xray-col">
+            <div class="xray-label">
+              <span data-i18n="zh">Lacuna 前置附加内容（按中/英自动匹配）</span>
+              <span data-i18n="en">Pre-Model Context Injected by Lacuna</span>
+              <span>hooks.UserPromptSubmit</span>
+            </div>
+            <pre class="injected-pre" id="xray-injected"></pre>
+          </div>
+        </div>
       </div>
-      <div class="highlight">未竟之意抵抗的，不只是“效率低”，而是另一种更隐蔽的损失：人把还不该交出去的部分，也一起交给了系统。</div>
     </section>
 
-    <section id="structure" class="fade">
-      <div class="section-heading">
-        <div class="section-index">02 / Structure</div>
+    <section id="capabilities" class="block">
+      <div class="section-head">
+        <div class="section-idx">02 / Capabilities</div>
         <div>
-          <h2>它尝试重划人与系统的职责，而不是再堆一个功能层。</h2>
-          <p>未竟之意不是单点工具，也不是单纯的自动执行器。它要做的是把一件事从“还没想清楚”一直带到“可以继续往后做”。</p>
+          <h2>
+            <span data-i18n="zh">不抢方向盘，也不让你每轮重复盯细节。</span>
+            <span data-i18n="en">Never hijacks your direction. Never makes you repeat your rules.</span>
+          </h2>
+          <p>
+            <span data-i18n="zh">普通 AI 工具要么一次吐出十几个追问把你卡在原地，要么一声不吭替你做不可逆的物理删除。未竟之意在模型前置层把分工重新划清楚。</span>
+            <span data-i18n="en">Typical AI workflows either stall you with a wall of questions or silently hardcode destructive defaults. Lacuna enforces a clean division of labor before generation starts.</span>
+          </p>
         </div>
       </div>
+
       <div class="grid-2">
         <article class="card">
-          <h3>当方向还没长清楚</h3>
-          <ul>
-            <li>先保住分叉、差异、收缩与张力</li>
-            <li>避免第一次表达被误当成最终目标</li>
-            <li>让人能在推进里认出自己真正要的东西</li>
-          </ul>
+          <div class="card-kicker">01 · Pre-Model Architecture</div>
+          <h3>
+            <span data-i18n="zh">纯粹模型前置，AI 无需学习新工具</span>
+            <span data-i18n="en">Strictly Pre-Model, Zero Tool Overhead</span>
+          </h3>
+          <p>
+            <span data-i18n="zh">通过各宿主的原生前置入口（<code>UserPromptSubmit</code> / <code>PreInvocation</code>）工作。不占 MCP 工具槽位，不靠模型“自觉想起来调用”，每次发话前稳定生效。</span>
+            <span data-i18n="en">Hooks directly into native <code>UserPromptSubmit</code> and <code>PreInvocation</code> events. No MCP tool clutter, no hoping the model remembers to call a helper, and zero extra network latency.</span>
+          </p>
         </article>
+
         <article class="card">
-          <h3>当方向逐渐显现</h3>
-          <ul>
-            <li>把低价值推进、校验、协同与接续接过去</li>
-            <li>让后续不再只能靠人手动盯住每一步</li>
-            <li>把人的注意力留给判断、取舍、意义与责任</li>
-          </ul>
+          <div class="card-kicker">02 · Open Direction</div>
+          <h3>
+            <span data-i18n="zh">先交可逆第一版，再摆 2 道大白话选择题</span>
+            <span data-i18n="en">Reversible V1 First + 2 Plain-Language Choices</span>
+          </h3>
+          <p>
+            <span data-i18n="zh">当数据保留策略、并发冲突或异常样本去留还没拍板时，先按状态标记或预览模式交出能跑的第一版，并在结尾只列最多 2 个决定后续走向的问题请你拍板。</span>
+            <span data-i18n="en">When data retention or edge-case policy is still open, the model delivers a working reversible v1 first, then surfaces at most 2 concrete binary choices in plain language for you to confirm.</span>
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-kicker">03 · Long-Horizon Memory</div>
+          <h3>
+            <span data-i18n="zh">跨轮否定句精准提取 + 跑偏物理截断</span>
+            <span data-i18n="en">Negation-Aware Decision Lock &amp; File Rebase</span>
+          </h3>
+          <p>
+            <span data-i18n="zh">精准区分反问句与正式拍板，完整保留“不要物理删除 / Never hard-delete”等否定语义；你改主意时自动覆盖旧决定；模型若走偏，<code>lacuna rebase</code> 自动备份并截断回退 <code>.jsonl</code> 会话。</span>
+            <span data-i18n="en">Distinguishes questions from real decisions, preserves negations like <em>"Never hard-delete"</em>, supersedes cleanly when you update your mind, and backs up + truncates drifted <code>.jsonl</code> turns via <code>lacuna rebase</code>.</span>
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-kicker">04 · Windows &amp; Bilingual</div>
+          <h3>
+            <span data-i18n="zh">Windows 原生兼容 &amp; 中英文彻底隔离</span>
+            <span data-i18n="en">First-Class Windows &amp; Pure English Support</span>
+          </h3>
+          <p>
+            <span data-i18n="zh">完整处理 Windows 路径空格、<code>cmd.exe</code> 引号规则与 CRLF 换行。写中文自动注入中文底线，写英文自动注入纯正英文底线（零中文字符混入），与普通翻译/闲聊互不干扰。</span>
+            <span data-i18n="en">Handles Windows <code>cmd.exe</code> / PowerShell quoting, spaces in paths, and CRLF transcripts natively. English prompts trigger 100% pure English context; casual non-coding chats stay completely untouched.</span>
+          </p>
         </article>
       </div>
-      <div class="highlight">所以它的核心不是“更多 agent”，而是：什么时候该展开，什么时候该收口，什么时候该由系统继续往下做。</div>
     </section>
 
-    <section id="market" class="fade">
-      <div class="section-heading">
-        <div class="section-index">03 / Market</div>
+    <section id="evidence" class="block">
+      <div class="section-head">
+        <div class="section-idx">03 / Verification</div>
         <div>
-          <h2>第一阶段不求大而全，只先切最容易同时感到两种损失的人。</h2>
-          <p>创业者、小团队负责人和早期项目 owner，最容易同时遇到这两个问题：方向形成时容易被过早压缩；方向形成后，后续推进又没有真正被系统接过去。</p>
+          <h2>
+            <span data-i18n="zh">四大主力模型同口径实测验证</span>
+            <span data-i18n="en">Verified Under Identical Conditions Across 4 Frontier Models</span>
+          </h2>
+          <p>
+            <span data-i18n="zh">同一句模糊提示词、同一套验证断言，在挂载未竟之意前置引擎后，四款主力模型在前端工艺、数据库并发安全与生信质控上均稳定守住工程底线：</span>
+            <span data-i18n="en">Tested with identical underspecified prompts across GPT-6 Astra, GPT-5.6 Sol, Claude Opus 5.5, and Claude Fable 5.1:</span>
+          </p>
         </div>
       </div>
-      <div class="timeline">
-        <div class="timeline-item card">
-          <strong>第一步</strong>
-          <p>从个人高价值连续任务开始：方向形成、初步任务化、后续接续。</p>
-        </div>
-        <div class="timeline-item card">
-          <strong>第二步</strong>
-          <p>扩到双人到小团队协作：让分工、复核、推进与接续逐渐能被系统承接。</p>
-        </div>
-        <div class="timeline-item card">
-          <strong>第三步</strong>
-          <p>再进入复杂流程型场景：复杂问题处理、服务流程、医疗等更高判断密度领域。</p>
-        </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption>
+            <span data-i18n="zh">模型前置注入实测表现对照（v2.4 验证套件通过）</span>
+            <span data-i18n="en">Pre-Model Baseline Verification Matrix (v2.4 Suite Passed)</span>
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col"><span data-i18n="zh">验证维度</span><span data-i18n="en">Domain</span></th>
+              <th scope="col"><span data-i18n="zh">裸提示词常见失误</span><span data-i18n="en">Typical Raw-Prompt Failure</span></th>
+              <th scope="col"><span data-i18n="zh">挂载未竟之意后的实测行为</span><span data-i18n="en">With Lacuna Pre-Model Hook</span></th>
+              <th scope="col"><span data-i18n="zh">实测覆盖模型</span><span data-i18n="en">Verified Models</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">
+                <span data-i18n="zh">UI 与交互底线</span>
+                <span data-i18n="en">UI &amp; Interaction Craft</span>
+              </th>
+              <td>
+                <span data-i18n="zh">金额列跳动不对齐、异步按钮可重复连点、漏写空状态与键盘焦点环</span>
+                <span data-i18n="en">Jittery numeric columns, duplicate form submits, missing empty states &amp; focus rings</span>
+              </td>
+              <td>
+                <span data-i18n="zh">自动启用 <code>tabular-nums</code> 等宽数字、防连点加载态、完整空状态/错态与 <code>:focus-visible</code></span>
+                <span data-i18n="en">Enforces <code>tabular-nums</code>, async submit lock, empty/error states, and <code>:focus-visible</code></span>
+              </td>
+              <td><span class="badge-ok">4 / 4 Models</span></td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <span data-i18n="zh">SQLite 与资金结算</span>
+                <span data-i18n="en">SQLite &amp; Ledger Safety</span>
+              </th>
+              <td>
+                <span data-i18n="zh">浮点数存金额产生精度误差、并发写库报 <code>SQLITE_BUSY</code>、擅自物理删表数据</span>
+                <span data-i18n="en">Floating-point rounding drift, <code>SQLITE_BUSY</code> write races, silent hard-deletes</span>
+              </td>
+              <td>
+                <span data-i18n="zh">金额统一按最小整数单位（分/cents）存储、写事务显式 <code>BEGIN IMMEDIATE</code>、默认可逆状态标记</span>
+                <span data-i18n="en">Integer minor units (cents), upfront <code>BEGIN IMMEDIATE</code> lock, reversible v1 + explicit choice</span>
+              </td>
+              <td><span class="badge-ok">4 / 4 Models</span></td>
+            </tr>
+            <tr>
+              <th scope="row">
+                <span data-i18n="zh">单细胞 scRNA-seq 质控</span>
+                <span data-i18n="en">scRNA-seq Statistical QC</span>
+              </th>
+              <td>
+                <span data-i18n="zh">一刀切硬编码 <code>percent.mt &lt; 5%</code>，误杀心肌或肿瘤高代谢健康细胞</span>
+                <span data-i18n="en">Hardcoded <code>percent.mt &lt; 5%</code> cutoff, discarding metabolically active cells</span>
+              </td>
+              <td>
+                <span data-i18n="zh">按样本批次计算中位数与 <code>MAD</code> 自适应阈值，先输出剔除比例预览再请研究者确认</span>
+                <span data-i18n="en">Per-batch median + <code>MAD</code> outlier detection with pre/post retention preview before filtering</span>
+              </td>
+              <td><span class="badge-ok">4 / 4 Models</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="highlight">这不是在正面竞争某一个聊天产品，而是在错位竞争一串彼此断裂的工具：记录、整理、任务、协作、跟进，它们都能接住一个动作，却接不住一件事如何继续生长。</div>
     </section>
 
-    <section id="status" class="fade">
-      <div class="section-heading">
-        <div class="section-index">04 / Status</div>
+    <section id="cli" class="block">
+      <div class="section-head">
+        <div class="section-idx">04 / Control &amp; Horizon</div>
         <div>
-          <h2>它已经长出清楚的主张，但仍处于超早期验证阶段。</h2>
-          <p>现在已经能被明确说出的，是这件事在解决什么、先为谁做、为什么有扩张性；还在继续压实的，是首批外部反馈、真实使用闭环和更深一层的对话材料。</p>
+          <h2>
+            <span data-i18n="zh">平时隐形工作，需要时一行命令随手调。</span>
+            <span data-i18n="en">Invisible day to day. One short command whenever you want to tune it.</span>
+          </h2>
+          <p>
+            <span data-i18n="zh">装上后不需要改变使用 Codex 或 Claude Code 的习惯；同时保留完整的本地 CLI 控制面板，并为未来完整的未竟之意工作区留好演进接口。</span>
+            <span data-i18n="en">Keep using Codex CLI, Claude Code, or Antigravity exactly as you do today—with full local CLI control and a clear path toward the complete Lacuna workspace.</span>
+          </p>
         </div>
       </div>
+
       <div class="grid-2">
-        <article class="card">
-          <h3>已经形成</h3>
-          <ul>
-            <li>产品命题与竞争边界</li>
-            <li>从方向形成到持续推进的连续结构</li>
-            <li>公开层叙事、视觉表达与下一层材料框架</li>
-          </ul>
-        </article>
-        <article class="card">
-          <h3>正在推进</h3>
-          <ul>
-            <li>更高质量的真实外部反馈</li>
-            <li>第一阶段真实付费理由验证</li>
-            <li>更完整的私下 demo 与定向沟通材料</li>
-          </ul>
-        </article>
+        <div class="card">
+          <div class="card-kicker">CLI Quick Reference</div>
+          <h3>
+            <span data-i18n="zh">常用终端管理命令</span>
+            <span data-i18n="en">Everyday Terminal Controls</span>
+          </h3>
+          <pre class="cli-pre"><span class="c-dim"># 查看当前设置 / Inspect active settings</span>
+<span class="c-cmd">lacuna config show</span>
+
+<span class="c-dim"># 切换语言 (auto 自动识别 | zh 中文 | en 纯英文)</span>
+<span class="c-cmd">lacuna config set lang auto</span>
+
+<span class="c-dim"># 固定默认视觉气质 / Set default UI archetype</span>
+<span class="c-cmd">lacuna config set visual.default warm-editorial</span>
+
+<span class="c-dim"># 查看或撤销当前会话已锁定的决定 / Manage session decisions</span>
+<span class="c-cmd">lacuna rules list</span>
+<span class="c-cmd">lacuna rules revoke --id r_1</span>
+
+<span class="c-dim"># 物理截断回退走偏的最近 1 轮会话 / Roll back drifted turn</span>
+<span class="c-cmd">lacuna rebase &lt;session_id&gt; 1</span></pre>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Product Continuum</div>
+          <h3>
+            <span data-i18n="zh">从前置引擎，走向完整的人机分工结构</span>
+            <span data-i18n="en">From Pre-Model Hook to the Full Lacuna Agent</span>
+          </h3>
+          <p>
+            <span data-i18n="zh">未竟之意抵抗的不只是效率低，而是人把还不该交出去的判断过早交给了系统。</span>
+            <span data-i18n="en">Lacuna protects the phase where direction is still forming—then takes over repetitive follow-through once your intent is clear.</span>
+          </p>
+          <ol class="vision-steps" role="list">
+            <li>
+              <strong data-i18n="zh">当前阶段（v2.4 已交付）· 跨平台模型前置引擎</strong>
+              <strong data-i18n="en">Stage 1 (v2.4 Today) · Cross-Platform Pre-Model Engine</strong>
+              <span data-i18n="zh">无缝接入现有编码 CLI 与 IDE，先替你守住工程底线、可逆第一版与跨轮决定。</span>
+              <span data-i18n="en">Plugs straight into your existing coding CLIs to guard craft baselines, reversible v1s, and multi-turn decisions.</span>
+            </li>
+            <li>
+              <strong data-i18n="zh">下一阶段 · 原生宿主工作区与冷复核回路</strong>
+              <strong data-i18n="en">Stage 2 · Native Workspace &amp; Independent Review Loop</strong>
+              <span data-i18n="zh">把方向分叉、证据留存、独立冷复核与多代理接续收进同一套可视化工作台。</span>
+              <span data-i18n="en">Unifies open branches, durable workspace grants, cold review, and multi-agent handoff in a dedicated surface.</span>
+            </li>
+            <li>
+              <strong data-i18n="zh">长期愿景 · 让未完成继续生长</strong>
+              <strong data-i18n="en">Long-Term Horizon · Let What Is Unfinished Grow</strong>
+              <span data-i18n="zh">服务创业者、小团队负责人与高判断密度研究者：方向未明时保住张力，方向既定后接管推进。</span>
+              <span data-i18n="en">Built for founders, tech leads, and researchers: preserve tension while thinking, automate execution once decided.</span>
+            </li>
+          </ol>
+        </div>
       </div>
     </section>
 
-    <section id="contact" class="fade">
-      <div class="contact-panel">
+    <section id="contact" class="block">
+      <div class="contact-box">
         <div>
-          <div class="section-index">05 / Contact</div>
-          <h2>如果你对这种方向敏感，我们可以继续往下聊。</h2>
-          <p>这个公开仓负责第一层入口，不承担全部说服任务。更深的 demo、场景细节与实现判断，会在下一层沟通里展开。</p>
-          <p>当前更希望继续往下聊的对象有三类：对人机协作结构有判断的投资人、在高价值连续任务里有真实场景的小团队负责人，以及愿意一起把早期产品形态打磨得更锋利的设计伙伴。</p>
+          <div class="section-idx">05 / Contact</div>
+          <h2>
+            <span data-i18n="zh">如果你也在用 AI 做真实项目，欢迎直接装上试试。</span>
+            <span data-i18n="en">Building real software or research with AI? Try it and let's talk.</span>
+          </h2>
+          <p>
+            <span data-i18n="zh">这个公开入口提供闭源单文件命令行分发包与产品说明，不包含内部完整源码与评估链。如果你在 Windows / macOS 实测中有反馈，或希望交流产品合作、早期团队试用与投资视角，欢迎直接联系：</span>
+            <span data-i18n="en">This public repository hosts the closed-source single-file CLI release and product overview. For feedback on Windows/macOS, design partnerships, or deeper product discussions, reach out directly:</span>
+          </p>
+          <p>
+            <a href="./STATUS.md"><span data-i18n="zh">阶段说明 (STATUS)</span><span data-i18n="en">Project Status</span></a>
+            &nbsp;·&nbsp;
+            <a href="./MARKET_LOOP.md"><span data-i18n="zh">市场路径 (MARKET)</span><span data-i18n="en">Market Loop</span></a>
+            &nbsp;·&nbsp;
+            <a href="./assets/poster/weijingzhiyi-lacuna-one-pager.pdf"><span data-i18n="zh">PDF 一页纸</span><span data-i18n="en">One-Pager PDF</span></a>
+          </p>
         </div>
-        <ul class="contact-list">
-          <li><strong>Email</strong>1061790014@qq.com</li>
-          <li><strong>WeChat</strong>Jyl2012111</li>
-          <li><strong>GitHub</strong><a href="https://github.com/jyl201210-lab" target="_blank" rel="noreferrer">jyl201210-lab</a></li>
+
+        <ul class="contact-links" role="list">
+          <li>
+            <span>Email</span>
+            <a href="mailto:1061790014@qq.com">1061790014@qq.com</a>
+          </li>
+          <li>
+            <span>WeChat</span>
+            <strong>Jyl2012111</strong>
+          </li>
+          <li>
+            <span>GitHub</span>
+            <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">jyl201210-lab/weijingzhiyi-lacuna</a>
+          </li>
         </ul>
       </div>
     </section>
   </main>
 
   <footer class="frame">
-    <p>未竟之意 / Lacuna</p>
-    <p>不是让系统更快替人完成，</p>
-    <p>而是先让真正重要的方向长出来，</p>
-    <p>再让系统把后续推进尽可能接过去。</p>
+    <div>
+      <strong lang="zh-CN">未竟之意</strong> · Lacuna v2.4 — All rights reserved.
+    </div>
+    <div>
+      <span data-i18n="zh">不是更快替你下定义，而是先让方向长出来，再把推进接过去。</span>
+      <span data-i18n="en">Don't rush to compress open questions—let direction form first, then carry the execution forward.</span>
+    </div>
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            obs.unobserve(entry.target);
+    (() => {
+      const SCENARIOS = {
+        ui: {
+          zh: {
+            raw: "“做个订单结算看板，用 React + SQLite，不要物理删除发票记录。”",
+            outcomes: [
+              "<strong>金额与数字严格对齐：</strong>自动开启 <code>tabular-nums</code> 与最小整数单位（分）计算，杜绝浮点误差。",
+              "<strong>SQLite 并发安全：</strong>写事务默认使用 <code>BEGIN IMMEDIATE</code> + <code>busy_timeout</code>，避免锁冲突。",
+              "<strong>否定决定跨轮锁定：</strong>自动提取并锁定“不要物理删除发票记录”，后续改需求也不会被模型忘掉。"
+            ],
+            injected: `<span class="hl-tag">[规则优先级]</span> 1. 本轮明确要求 > 2. 数据安全与可逆默认 > 3. 技术栈条件底线 > 4. 默认工艺基线\n\n<span class="hl-tag">[UI 与交互工程基线]</span>\n- 金额、数量、耗时与编号开启 font-variant-numeric: tabular-nums\n- 异步提交加防连点加载态并保留原输入；补齐空状态、骨架态与 :focus-visible\n\n<span class="hl-tag">[数据与后端安全基线]</span>\n- SQLite 写事务使用 BEGIN IMMEDIATE 提前获取写锁，配置 PRAGMA busy_timeout 与 STRICT 表\n- 货币统一按最小整数单位（如分）存储与运算，严禁直接用浮点数算钱\n\n<span class="hl-ok">[当前生效的用户决定]</span>\n- 数据保留决定：不要物理删除发票记录`
+          },
+          en: {
+            raw: "\"Build a billing dashboard in React + SQLite. Never hard-delete invoices.\"",
+            outcomes: [
+              "<strong>Zero CJK leakage:</strong> Detects English automatically and injects 100% native English baselines.",
+              "<strong>Ledger &amp; SQLite safety:</strong> Enforces integer minor units (cents), <code>STRICT</code> tables, and <code>BEGIN IMMEDIATE</code> write locks.",
+              "<strong>Negation locked across turns:</strong> Extracts <code>Retention decision: Never hard-delete invoices</code> for all follow-up turns."
+            ],
+            injected: `<span class="hl-tag">[Rule Priority]</span> 1. Explicit user instructions > 2. Data safety (reversible v1) > 3. Stack-specific rules > 4. Default craft baseline\n\n<span class="hl-tag">[UI &amp; Interaction Baseline]</span>\n- Enable font-variant-numeric: tabular-nums on all amounts, counts, durations, and IDs\n- Disable duplicate submissions with loading state; handle empty/error states &amp; :focus-visible\n\n<span class="hl-tag">[Data &amp; Backend Safety Baseline]</span>\n- SQLite write concurrency: start write transactions with BEGIN IMMEDIATE, configure PRAGMA busy_timeout &amp; STRICT tables\n- Monetary precision: store and compute all amounts in minor integer units (cents), never floats\n\n<span class="hl-ok">[Active User Decisions]</span>\n- Retention decision: Never hard-delete invoices`
           }
-        });
-      }, { threshold: 0.16 });
+        },
+        decision: {
+          zh: {
+            raw: "“帮我写个清理过期试用账号的脚本。”（尚未说明直接删库还是归档）",
+            outcomes: [
+              "<strong>绝不擅自删库，也不原地卡死：</strong>模型先交出带 <code>--dry-run</code> 预览和可逆归档标记的可运行第一版。",
+              "<strong>结尾只问 2 个关键选择题：</strong>用大白话请你在“归档保留审计记录 vs 到期物理删除”和“并发执行锁策略”之间拍板。",
+              "<strong>拍板后随时可改：</strong>下一轮你说“确认直接物理删除”，旧状态即刻更新，全程留痕。"
+            ],
+            injected: `<span class="hl-tag">[数据与后端安全基线]</span>\n- 批量修改、归档或删除前，先锁定目标记录 ID 集合，在单事务内执行并校验影响行数\n- 可逆默认：在用户未明确要求物理删除前，第一版采用状态标记或 dry-run 预览，把“物理删除还是保留历史”列为选择题\n\n<span class="hl-ok">[本轮执行指令]</span>\n先按安全、可逆方案交付可运行的第一版；结束时用大白话列出最多 2 个决定后续走向的关键选择题请用户拍板：\n  - 数据保留策略：用可逆状态标记保留历史记录，还是直接物理删除旧记录？\n  - 并发与冲突策略：并发写入冲突时是直接报错拦截，还是按最新提交覆盖？`
+          },
+          en: {
+            raw: "\"Write a cleanup job for expired trial accounts.\" (Retention policy not yet specified)",
+            outcomes: [
+              "<strong>No silent data loss, no 10-question interrogation:</strong> Ships a working v1 with dry-run preview and soft-archive flag first.",
+              "<strong>Surfaces 2 concrete choices at the end:</strong> Asks you in plain English to decide on retention and conflict policy.",
+              "<strong>Clean superseding:</strong> When you reply <em>\"Confirmed: physically delete after 30 days\"</em>, Lacuna updates the active lock."
+            ],
+            injected: `<span class="hl-tag">[Data &amp; Backend Safety Baseline]</span>\n- Lock explicit target record IDs before batch updates/deletes; execute inside a single transaction and verify row counts\n- Reversible v1 default: use reversible status flags or dry-run previews in v1 until physical deletion is confirmed\n\n<span class="hl-ok">[Turn Execution Directive]</span>\nDeliver a runnable v1 using safe, reversible defaults first; at the end, list at most 2 plain-language choices for the user to decide:\n  - Data retention: keep history via reversible status flags, or physically delete expired rows?\n  - Concurrency policy: reject conflicting writes with an explicit error, or overwrite with latest write?`
+          }
+        },
+        sci: {
+          zh: {
+            raw: "“用 Scanpy 跑一下这批肿瘤单细胞数据的线粒体比例质控。”",
+            outcomes: [
+              "<strong>拒绝生搬硬套 5% 阈值：</strong>自动按样本批次计算中位数与 <code>MAD</code>（中位数绝对偏差）动态识别异常值。",
+              "<strong>过滤前先给前后对比：</strong>展示剔除细胞比例与分布图，避免误杀高代谢活性肿瘤亚群。",
+              "<strong>固定随机种子：</strong>自动记录软件版本与随机种子（UMAP / 聚类），保证结果可复现。"
+            ],
+            injected: `<span class="hl-tag">[科研与统计严谨性基线]</span>\n- 异常值与质控：禁止套用固定经验常数一刀切剔除样本；先展示原始分布与基于中位数/MAD 的自适应参考线\n- 单细胞测序质控：按样本/批次分别计算线粒体比例 (percent.mt)、基因数与 UMI 计数的自适应异常阈值（如 3~5 MAD），禁止全数据集硬编码 5% 或 10%\n- 固定随机种子并记录关键包版本与筛选前后样本量对比`
+          },
+          en: {
+            raw: "\"Run mitochondrial QC filtering on this tumor scRNA-seq dataset in Scanpy.\"",
+            outcomes: [
+              "<strong>Blocks arbitrary 5% cutoffs:</strong> Computes per-sample/batch median + <code>MAD</code> thresholds tailored to tumor metabolism.",
+              "<strong>Pre/post filtering audit:</strong> Reports exact cell counts retained per batch before committing destructive filtering.",
+              "<strong>Reproducibility built in:</strong> Pins random seeds for UMAP/clustering and logs package versions."
+            ],
+            injected: `<span class="hl-tag">[Scientific &amp; Statistical Rigor Baseline]</span>\n- Outliers &amp; QC: never drop samples with arbitrary hardcoded cutoffs; show raw distributions and median/MAD reference lines first\n- Single-cell (scRNA-seq) QC: compute adaptive thresholds (e.g., 3-5 MAD) per sample/batch jointly across percent.mt, detected genes, and UMI counts rather than hardcoding 5% or 10%\n- Reproducibility: fix random seeds and report pre- vs. post-filtering cell counts`
+          }
+        }
+      };
 
-      document.querySelectorAll('.fade').forEach((node) => observer.observe(node));
-    });
+      const metaDesc = document.querySelector('meta[name="description"]');
+      const liveRegion = document.getElementById("live-status");
+      const langBtns = Array.from(document.querySelectorAll("[data-set-lang]"));
+      let currentLang = "zh";
+      let currentScenario = "ui";
+
+      function announce(msg) {
+        if (!liveRegion) return;
+        liveRegion.textContent = "";
+        window.setTimeout(() => { liveRegion.textContent = msg; }, 30);
+      }
+
+      function renderXray() {
+        const data = SCENARIOS[currentScenario][currentLang];
+        document.getElementById("xray-raw").textContent = data.raw;
+        document.getElementById("xray-outcomes").innerHTML = data.outcomes.map(item => `<li>${item}</li>`).join("");
+        document.getElementById("xray-injected").innerHTML = data.injected;
+      }
+
+      function applyLanguage(lang, persist = false) {
+        currentLang = lang === "en" ? "en" : "zh";
+        document.documentElement.lang = currentLang === "en" ? "en" : "zh-CN";
+        document.title = currentLang === "en"
+          ? "Lacuna (未竟之意) v2.4 — Pre-Model Context & Decision Engine"
+          : "未竟之意 · Lacuna — 模型前置工程与决策引擎";
+        if (metaDesc) {
+          metaDesc.content = currentLang === "en"
+            ? "Lacuna v2.4 — Cross-platform (Windows / macOS / Linux) & bilingual pre-model hook engine for Codex CLI, Claude Code, and Antigravity."
+            : "未竟之意 (Lacuna) v2.4 — 支持 Windows / macOS / Linux 与中英双语自动切换的模型前置工程与决策引擎，适配 Codex CLI、Claude Code 与 Antigravity。";
+        }
+        langBtns.forEach(btn => {
+          btn.setAttribute("aria-pressed", String(btn.dataset.setLang === currentLang));
+        });
+        const themeBtn = document.getElementById("theme-toggle");
+        if (themeBtn) {
+          themeBtn.setAttribute("aria-label", currentLang === "en" ? "Switch color theme" : "切换深浅色外观");
+        }
+        renderXray();
+        if (persist) {
+          try { localStorage.setItem("lacuna-lang", currentLang); } catch {}
+          announce(currentLang === "en" ? "Switched language to English" : "已切换为中文界面");
+        }
+      }
+
+      // Auto-detect initial language (saved preference -> browser locale)
+      let initialLang = "zh";
+      try {
+        const saved = localStorage.getItem("lacuna-lang");
+        if (saved === "en" || saved === "zh") {
+          initialLang = saved;
+        } else if (navigator.language && !navigator.language.toLowerCase().startsWith("zh")) {
+          initialLang = "en";
+        }
+      } catch {}
+      applyLanguage(initialLang, false);
+
+      langBtns.forEach(btn => {
+        btn.addEventListener("click", () => applyLanguage(btn.dataset.setLang, true));
+      });
+
+      // Accessible Tablist helper (ArrowLeft / ArrowRight / Home / End)
+      function wireTablist(tabs, onSelect) {
+        tabs.forEach((tab, idx) => {
+          tab.addEventListener("click", () => onSelect(tab, false));
+          tab.addEventListener("keydown", e => {
+            let nextIdx = -1;
+            if (e.key === "ArrowRight") nextIdx = (idx + 1) % tabs.length;
+            else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + tabs.length) % tabs.length;
+            else if (e.key === "Home") nextIdx = 0;
+            else if (e.key === "End") nextIdx = tabs.length - 1;
+            if (nextIdx >= 0) {
+              e.preventDefault();
+              onSelect(tabs[nextIdx], true);
+            }
+          });
+        });
+      }
+
+      // Install tabs + auto-select Windows PowerShell tab when opened on Windows if desired, keeping npm universal default
+      const installTabs = Array.from(document.querySelectorAll(".tab-btn"));
+      const installPanel = document.getElementById("panel-install");
+      const activeCmd = document.getElementById("active-cmd");
+      const activePrompt = document.getElementById("active-prompt");
+      const copyBtn = document.getElementById("copy-cmd-btn");
+
+      function selectInstallTab(selectedTab, moveFocus) {
+        installTabs.forEach(t => {
+          const active = t === selectedTab;
+          t.setAttribute("aria-selected", String(active));
+          t.tabIndex = active ? 0 : -1;
+        });
+        installPanel.setAttribute("aria-labelledby", selectedTab.id);
+        activeCmd.textContent = selectedTab.dataset.cmd;
+        activePrompt.textContent = selectedTab.dataset.prompt;
+        copyBtn.dataset.copied = "false";
+        if (moveFocus) selectedTab.focus();
+      }
+      wireTablist(installTabs, selectInstallTab);
+
+      copyBtn.addEventListener("click", async () => {
+        const text = activeCmd.textContent || "";
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.dataset.copied = "true";
+          announce(currentLang === "en" ? "Install command copied to clipboard" : "安装命令已复制到剪贴板");
+          window.setTimeout(() => { copyBtn.dataset.copied = "false"; }, 1800);
+        } catch {}
+      });
+
+      // X-Ray scenario tabs
+      const xrayTabs = Array.from(document.querySelectorAll(".xray-tab"));
+      const xrayPanel = document.getElementById("xpanel");
+      wireTablist(xrayTabs, (selectedTab, moveFocus) => {
+        xrayTabs.forEach(t => {
+          const active = t === selectedTab;
+          t.setAttribute("aria-selected", String(active));
+          t.tabIndex = active ? 0 : -1;
+        });
+        xrayPanel.setAttribute("aria-labelledby", selectedTab.id);
+        currentScenario = selectedTab.dataset.scenario || "ui";
+        renderXray();
+        if (moveFocus) selectedTab.focus();
+      });
+
+      // Two-state color-scheme toggle synced with <meta name="color-scheme">
+      const schemeMeta = document.querySelector('meta[name="color-scheme"]');
+      const themeBtn = document.getElementById("theme-toggle");
+
+      function getSystemScheme() {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+
+      function getRenderedScheme() {
+        const content = schemeMeta ? schemeMeta.content : "light dark";
+        return content === "dark" || content === "light" ? content : getSystemScheme();
+      }
+
+      themeBtn.addEventListener("click", () => {
+        const systemScheme = getSystemScheme();
+        const target = getRenderedScheme() === "dark" ? "light" : "dark";
+        if (target === systemScheme) {
+          try { localStorage.removeItem("color-scheme"); } catch {}
+          schemeMeta.content = "light dark";
+        } else {
+          try { localStorage.setItem("color-scheme", target); } catch {}
+          schemeMeta.content = target;
+        }
+        announce(
+          currentLang === "en"
+            ? `Switched to ${target} theme`
+            : `已切换为${target === "dark" ? "深色" : "浅色"}外观`
+        );
+      });
+
+      window.addEventListener("storage", e => {
+        if (e.key === "color-scheme" && schemeMeta) {
+          schemeMeta.content = e.newValue ?? "light dark";
+        }
+      });
+    })();
   </script>
 </body>
 </html>
