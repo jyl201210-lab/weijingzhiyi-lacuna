@@ -6,43 +6,40 @@
 
 ## 安装
 
-需要本机已安装 `Node.js >= 20`（Windows / macOS / Linux 通用，中英文提问自动识别切换）：
+需要 `Node.js >= 20`（Windows / macOS / Linux）：
 
 ```bash
 npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init
 ```
 
-也可以直接用系统脚本安装：
-
 ```powershell
-# Windows (PowerShell)
+# Windows PowerShell
 irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.ps1 | iex
 ```
 
 ```bash
-# macOS / Linux / WSL
+# macOS / Linux
 curl -fsSL https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.sh | sh
 ```
 
-> **Codex 桌面端 App**：直接把下面这句发给对话框里的 AI 代装，装完**彻底退出并重启一次 App** 即可：  
-> `Install Lacuna globally via: npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init`
+Codex 桌面端 App：把 `npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init` 发给应用内对话自动安装，装完退出并重启一次 App。
 
-## 核心机制
+## 作用
 
-- **自动垫好预设**：按任务挂载 UI 排版（`tabular-nums`、克制色板、防连点）、SQLite 写锁与科研统计规范；你的明确指令永远排第一，一句话即可覆盖。
-- **先跑初版再拍板**：话没说死时先交出可逆第一版，末尾最多只问 **2 个关键选择题**，不套廉价模板也不十连追问。
-- **跨轮锁死 & 走偏回退**：自动记住已确认的规矩（含“不要物理删除”等否定要求）；某轮走偏时 `lacuna rebase` 自动备份并截断回退 `.jsonl` 会话。
+- **前置预设**：发给模型前按任务附加前端排版、数据库事务与统计检验基线；当轮显式指令优先，中英文自动识别。
+- **会话约束**：自动记录当前会话已定的约束（表结构、软删除等），后续轮次持续附带，可用 `lacuna rules` 管理。
+- **记录回退**：`lacuna rebase <session_id> [turns]` 自动备份并截断 Codex / Claude 本地 `.jsonl` 最后 N 轮对话。
 
-## 常用命令
+## 命令
 
 ```bash
 lacuna config show                 # 查看当前配置
-lacuna config set lang en          # 语言：auto（默认自动识别，英文提问 100% 纯英文注入）| zh | en
-lacuna rules list                  # 查看当前会话已锁定的规矩
-lacuna rebase <session_id> 1       # 备份并物理截断最近 1 轮走偏记录
-lacuna uninstall                   # 一键卸载全局前置 Hook
+lacuna config set lang auto        # 语言：auto（默认）| zh | en
+lacuna rules list                  # 查看当前会话约束（支持 add / revoke / clear）
+lacuna rebase <session_id> [turns] # 备份并截断最后 N 轮 .jsonl 对话
+lacuna uninstall                   # 卸载前置 Hook
 ```
 
-## 说明与联系
+## 联系
 
-闭源单文件 CLI 发行版（`UNLICENSED`）。反馈与交流：`1061790014@qq.com` · WeChat `Jyl2012111`
+闭源单文件 CLI 发行版（`UNLICENSED`） · `1061790014@qq.com` · WeChat `Jyl2012111`

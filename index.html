@@ -4,532 +4,583 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="未竟之意 (Lacuna) — 面向 Codex、Claude Code 与 Antigravity 的发送前意图与预设控制层。支持 Windows / macOS / Linux 与中英自动切换。">
+  <meta name="description" content="未竟之意 (Lacuna) — Codex、Claude Code 与 Antigravity 的前置 Hook。">
   <title>未竟之意 | Lacuna</title>
   <style>
-    :root {
-      color-scheme: dark;
-      --bg-color: #050505;
-      --text-primary: #f5f5f5;
-      --text-secondary: #a3a3a3;
-      --text-dim: #6e6e6e;
-      --line: rgba(255, 255, 255, 0.08);
-      --line-strong: rgba(255, 255, 255, 0.22);
-      --surface: rgba(255, 255, 255, 0.025);
-      --surface-hover: rgba(255, 255, 255, 0.045);
-      --font-serif: "Songti SC", "STSong", "Noto Serif SC", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      --ease: cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    @layer reset, base, components;
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    @layer reset {
+      :where(html) {
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
 
-    html {
-      scroll-behavior: smooth;
-    }
+      :where(body, h1, h2, h3, p, ul, li, pre) {
+        margin: 0;
+        padding: 0;
+      }
 
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
+      :where(body, main, header, footer, section, div, button, a, pre, code, span, h1, h2, h3, p, ul, li) {
+        box-sizing: inherit;
       }
     }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      line-height: 1.8;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+    @layer base {
+      :root {
+        color-scheme: dark;
+        --bg-color: #050505;
+        --surface: rgba(255, 255, 255, 0.025);
+        --surface-elevated: rgba(14, 14, 14, 0.84);
+        --surface-hover: rgba(255, 255, 255, 0.045);
+        --text-primary: #f5f5f5;
+        --text-secondary: #a8a8a8;
+        --text-muted: #8a8a8a;
+        --border-subtle: rgba(255, 255, 255, 0.08);
+        --border-strong: rgba(255, 255, 255, 0.24);
+        --font-serif: "Songti SC", "STSong", "Noto Serif SC", Georgia, serif;
+        --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        :where(html) {
+          scroll-behavior: auto;
+        }
+        :where(body, .fade-in-section, .hero *, .comparison-col, .lang-btn, .itab, .copy-btn, .gh-link) {
+          animation: none !important;
+          transition: none !important;
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        line-height: 1.8;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      ::selection {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      :where(a:any-link, button, [role="tab"]):focus-visible {
+        outline: 2px solid #f5f5f5;
+        outline-offset: 3px;
+      }
+
+      html[lang^="zh"] [data-i18n="en"] { display: none !important; }
+      html[lang^="en"] [data-i18n="zh"] { display: none !important; }
+
+      h1, h2, h3 {
+        font-family: var(--font-serif);
+        font-weight: normal;
+        text-wrap: balance;
+      }
+
+      h1 {
+        font-size: clamp(3.3rem, 2.2rem + 3.6vw, 4.6rem);
+        letter-spacing: 0.15em;
+        line-height: 1.16;
+        margin-block-end: 1.75rem;
+        background: linear-gradient(135deg, #ffffff 0%, #aaaaaa 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      html[lang^="en"] h1 {
+        letter-spacing: 0.04em;
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 1.15rem + 1vw, 1.9rem);
+        margin-block: 5.5rem 2rem;
+        color: #e5e5e5;
+        border-block-end: 1px solid rgba(255, 255, 255, 0.06);
+        padding-block-end: 1.25rem;
+        letter-spacing: 0.05em;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+        margin-block-end: 0.85rem;
+        color: var(--text-primary);
+        letter-spacing: 0.03em;
+      }
+
+      p {
+        font-size: 1.0625rem;
+        color: var(--text-secondary);
+        max-inline-size: 66ch;
+        margin-block-end: 1.35rem;
+        letter-spacing: 0.02em;
+        text-wrap: pretty;
+        overflow-wrap: break-word;
+      }
+
+      strong {
+        color: #ffffff;
+        font-weight: 500;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        font-variant-numeric: tabular-nums;
+        color: #eaeaea;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0.125rem 0.375rem;
+        border-radius: 4px;
+      }
+
+      @media (forced-colors: active) {
+        h1 {
+          background: none;
+          -webkit-text-fill-color: CanvasText;
+          color: CanvasText;
+        }
+      }
     }
 
-    ::selection {
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-    }
+    @layer components {
+      .visually-hidden:where(:not(:focus-within, :active)) {
+        position: absolute !important;
+        clip-path: inset(50%) !important;
+        overflow: hidden !important;
+        width: 1px !important;
+        height: 1px !important;
+        margin: -1px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        white-space: nowrap !important;
+      }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+      .ambient-light {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+        z-index: -1;
+        pointer-events: none;
+      }
 
-    :where(a:any-link, button, [role="tab"]):focus-visible {
-      outline: 1.5px solid #e5e5e5;
-      outline-offset: 3px;
-    }
+      .top-controls {
+        position: fixed;
+        top: 1.75rem;
+        right: 2.25rem;
+        z-index: 20;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-    html[lang^="zh"] [data-i18n="en"] { display: none !important; }
-    html[lang^="en"] [data-i18n="zh"] { display: none !important; }
+      .lang-pill {
+        display: inline-flex;
+        padding: 0.1875rem;
+        border-radius: 999px;
+        background: var(--surface-elevated);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-subtle);
+      }
 
-    .visually-hidden:where(:not(:focus-within, :active)) {
-      position: absolute !important;
-      clip-path: inset(50%) !important;
-      overflow: hidden !important;
-      width: 1px !important;
-      height: 1px !important;
-      margin: -1px !important;
-      padding: 0 !important;
-      border: 0 !important;
-      white-space: nowrap !important;
-    }
+      .lang-btn {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: var(--text-secondary);
+        font-family: var(--font-sans);
+        font-size: 0.8125rem;
+        letter-spacing: 0.04em;
+        padding: 0.25rem 0.75rem;
+        min-block-size: 26px;
+        min-inline-size: 36px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: color 0.2s var(--ease), background 0.2s var(--ease);
+      }
 
-    .ambient-light {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.045) 0%, transparent 62%);
-      z-index: -1;
-      pointer-events: none;
-    }
+      .lang-btn[aria-pressed="true"] {
+        background: rgba(255, 255, 255, 0.14);
+        color: #ffffff;
+      }
 
-    /* Floating Minimal Top Controls */
-    .top-controls {
-      position: fixed;
-      top: 28px;
-      right: 36px;
-      z-index: 20;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
+      .gh-link {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        padding: 0.25rem 0.8125rem;
+        min-block-size: 32px;
+        border-radius: 999px;
+        background: var(--surface-elevated);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-subtle);
+        transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+      }
 
-    .lang-pill {
-      display: inline-flex;
-      padding: 3px;
-      border-radius: 999px;
-      background: rgba(10, 10, 10, 0.78);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--line);
-    }
+      .gh-link:hover {
+        color: #ffffff;
+        border-color: var(--border-strong);
+      }
 
-    .lang-btn {
-      appearance: none;
-      border: 0;
-      background: transparent;
-      color: var(--text-secondary);
-      font-family: var(--font-sans);
-      font-size: 0.78rem;
-      letter-spacing: 0.04em;
-      padding: 4px 11px;
-      min-block-size: 26px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: color 0.25s var(--ease), background 0.25s var(--ease);
-    }
+      .container {
+        max-inline-size: 47.5rem;
+        margin-inline: auto;
+        padding-inline: 2.5rem;
+      }
 
-    .lang-btn[aria-pressed="true"] {
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-    }
+      .hero {
+        min-block-size: 94svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        position: relative;
+        padding-block: 6rem 8rem;
+      }
 
-    .gh-link {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: rgba(10, 10, 10, 0.78);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--line);
-      transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
-    }
+      .brand-tag {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-block-end: 1.25rem;
+      }
 
-    .gh-link:hover {
-      color: #fff;
-      border-color: var(--line-strong);
-    }
+      .hero p.lead {
+        font-size: clamp(1.25rem, 1.05rem + 0.45vw, 1.45rem);
+        color: var(--text-primary);
+        max-inline-size: 40rem;
+        line-height: 1.75;
+        font-family: var(--font-serif);
+        margin-block-end: 2.5rem;
+        text-wrap: balance;
+      }
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 0 40px;
-    }
+      .install-shell {
+        inline-size: 100%;
+        max-inline-size: 41rem;
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        background: var(--surface);
+        overflow: hidden;
+      }
 
-    /* Typography */
-    h1, h2, h3, h4 {
-      font-family: var(--font-serif);
-      font-weight: normal;
-      text-wrap: balance;
-    }
+      .install-tabs {
+        display: flex;
+        gap: 0.25rem;
+        padding: 0.5rem 0.75rem;
+        border-block-end: 1px solid rgba(255, 255, 255, 0.05);
+        flex-wrap: wrap;
+      }
 
-    h1 {
-      font-size: clamp(3.1rem, 2rem + 3.6vw, 4.6rem);
-      letter-spacing: 0.14em;
-      line-height: 1.15;
-      margin-bottom: 1.75rem;
-      background: linear-gradient(135deg, #ffffff 0%, #a6a6a6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+      .itab {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        padding: 0.25rem 0.625rem;
+        min-block-size: 26px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: color 0.2s var(--ease), background 0.2s var(--ease);
+      }
 
-    html[lang^="en"] h1 {
-      letter-spacing: 0.04em;
-    }
+      .itab:hover {
+        color: var(--text-primary);
+      }
 
-    .brand-tag {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 1.1rem;
-    }
+      .itab[aria-selected="true"] {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.1);
+      }
 
-    h2 {
-      font-size: clamp(1.55rem, 1.1rem + 1.2vw, 1.95rem);
-      margin: 5rem 0 1.8rem;
-      color: #e8e8e8;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding-bottom: 1.25rem;
-      letter-spacing: 0.04em;
-    }
+      .install-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.875rem 1rem;
+      }
 
-    p {
-      font-size: 1.06rem;
-      color: var(--text-secondary);
-      margin-bottom: 1.35rem;
-      letter-spacing: 0.02em;
-      text-wrap: pretty;
-    }
+      .install-cmd {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        font-variant-numeric: tabular-nums;
+        color: #f0f0f0;
+        line-height: 1.6;
+        overflow-wrap: break-word;
+      }
 
-    strong {
-      color: #ffffff;
-      font-weight: 500;
-    }
+      .install-prompt {
+        color: var(--text-muted);
+        user-select: none;
+        margin-inline-end: 0.5rem;
+      }
 
-    code {
-      font-family: var(--font-mono);
-      font-size: 0.88em;
-      color: #e5e5e5;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
+      .copy-btn {
+        appearance: none;
+        flex-shrink: 0;
+        border: 1px solid var(--border-subtle);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-secondary);
+        font-family: var(--font-sans);
+        font-size: 0.8125rem;
+        padding: 0.3125rem 0.75rem;
+        min-block-size: 30px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease);
+      }
 
-    ul.clean-list {
-      list-style: none;
-      margin: 1.6rem 0;
-    }
+      .copy-btn:hover:not(:disabled) {
+        color: #ffffff;
+        border-color: var(--border-strong);
+      }
 
-    ul.clean-list li {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-      padding-left: 24px;
-      position: relative;
-      text-wrap: pretty;
-    }
+      .copy-btn[data-state="copied"] {
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.42);
+        background: rgba(255, 255, 255, 0.12);
+      }
 
-    ul.clean-list li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 12px;
-      width: 4px;
-      height: 4px;
-      background-color: var(--text-secondary);
-      border-radius: 50%;
-      opacity: 0.6;
-    }
+      .hero-meta {
+        margin-block-start: 1rem;
+        font-size: 0.8125rem;
+        font-variant-numeric: tabular-nums;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        overflow-wrap: break-word;
+      }
 
-    /* Hero */
-    .hero {
-      min-height: 94vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      position: relative;
-      padding: 8vh 0 10vh;
-    }
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 0;
+        opacity: 0;
+        animation: fadeUp 1.1s 0.7s ease forwards;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-family: var(--font-mono);
+      }
 
-    .hero p.lead {
-      font-size: clamp(1.16rem, 0.95rem + 0.5vw, 1.32rem);
-      color: var(--text-primary);
-      max-width: 680px;
-      line-height: 1.75;
-      font-family: var(--font-serif);
-      margin-bottom: 1.2rem;
-    }
+      .scroll-indicator::after {
+        content: "";
+        display: block;
+        width: 1px;
+        height: 2.75rem;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), transparent);
+        margin-block-start: 0.625rem;
+        margin-inline-start: 1.125rem;
+      }
 
-    .hero p.sub-lead {
-      font-size: 1.04rem;
-      max-width: 650px;
-      margin-bottom: 2.2rem;
-      color: var(--text-secondary);
-    }
+      .clean-list {
+        list-style: none;
+        margin-block: 1.75rem;
+      }
 
-    /* Minimal Install Box */
-    .install-shell {
-      width: 100%;
-      max-width: 650px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.02);
-      overflow: hidden;
-    }
+      .clean-list li {
+        font-size: 1.0625rem;
+        color: var(--text-secondary);
+        max-inline-size: 66ch;
+        padding-inline-start: 1.5rem;
+        position: relative;
+        text-wrap: pretty;
+        overflow-wrap: break-word;
+      }
 
-    .install-tabs {
-      display: flex;
-      gap: 4px;
-      padding: 8px 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      flex-wrap: wrap;
-    }
+      .clean-list li:not(:last-child) {
+        margin-block-end: 1.15rem;
+      }
 
-    .itab {
-      appearance: none;
-      border: 0;
-      background: transparent;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-      font-size: 0.76rem;
-      padding: 4px 10px;
-      min-block-size: 26px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: color 0.2s var(--ease), background 0.2s var(--ease);
-    }
+      .clean-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.75rem;
+        width: 4px;
+        height: 4px;
+        background-color: var(--text-secondary);
+        border-radius: 50%;
+        opacity: 0.65;
+      }
 
-    .itab:hover {
-      color: var(--text-secondary);
-    }
+      .code-panel {
+        margin-block: 1.5rem 2rem;
+        padding: 1.35rem 1.5rem;
+        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.9;
+        color: #eaeaea;
+        overflow-x: auto;
+      }
 
-    .itab[aria-selected="true"] {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
-    }
+      .code-panel .dim {
+        color: var(--text-muted);
+      }
 
-    .install-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px 16px;
-    }
+      .comparison {
+        display: flex;
+        gap: 1.5rem;
+        margin-block: 2rem;
+      }
 
-    .install-cmd {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: #f0f0f0;
-      line-height: 1.55;
-      overflow-wrap: break-word;
-    }
+      .comparison-col {
+        flex: 1;
+        padding: 1.75rem 2rem;
+        background: var(--surface);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.3s var(--ease);
+      }
 
-    .install-prompt {
-      color: var(--text-dim);
-      user-select: none;
-      margin-right: 8px;
-    }
+      .comparison-col:hover {
+        background: var(--surface-hover);
+      }
 
-    .copy-btn {
-      appearance: none;
-      flex-shrink: 0;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-secondary);
-      font-family: var(--font-sans);
-      font-size: 0.78rem;
-      padding: 5px 12px;
-      min-block-size: 30px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease);
-    }
+      .comparison-col p {
+        font-size: 0.96875rem;
+        margin-block-end: 0;
+      }
 
-    .copy-btn:hover {
-      color: #fff;
-      border-color: var(--line-strong);
-    }
+      .fade-in-section {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
+      }
 
-    .copy-btn[data-copied="true"] {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.45);
-      background: rgba(255, 255, 255, 0.12);
-    }
+      .fade-in-section.is-visible {
+        opacity: 1;
+        transform: none;
+      }
 
-    .hero-meta {
-      margin-top: 0.9rem;
-      font-size: 0.84rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
+      .hero .brand-tag { animation: fadeUp 0.9s ease forwards; opacity: 0; }
+      .hero h1 { animation: fadeUp 1s 0.1s ease forwards; opacity: 0; }
+      .hero p.lead { animation: fadeUp 1s 0.22s ease forwards; opacity: 0; }
+      .hero .install-shell, .hero .hero-meta { animation: fadeUp 1s 0.36s ease forwards; opacity: 0; }
 
-    /* Highlight Quote Box */
-    .highlight-box {
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0%, transparent 100%);
-      border-left: 2px solid rgba(255, 255, 255, 0.38);
-      padding: 1.9rem 2.2rem;
-      margin: 2.6rem 0;
-      border-radius: 0 12px 12px 0;
-    }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
 
-    .highlight-box p {
-      margin: 0;
-      color: var(--text-primary);
-      font-family: var(--font-serif);
-      font-size: 1.2rem;
-      line-height: 1.8;
-    }
+      footer {
+        margin-block-start: 6.5rem;
+        padding-block: 5.5rem 6rem;
+        text-align: center;
+        border-block-start: 1px solid rgba(255, 255, 255, 0.05);
+        background: linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+      }
 
-    /* Two-Column Comparison */
-    .comparison {
-      display: flex;
-      gap: 1.6rem;
-      margin: 2.2rem 0;
-    }
+      .footer-brand {
+        max-inline-size: none;
+        font-family: var(--font-sans);
+        font-size: 1.5rem;
+        letter-spacing: 0.1em;
+        color: var(--text-secondary);
+        margin-block-end: 1.5rem;
+      }
 
-    .comparison-col {
-      flex: 1;
-      padding: 2rem;
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: transform 0.35s var(--ease), background 0.35s var(--ease);
-    }
+      .footer-brand span {
+        font-family: var(--font-serif);
+        color: #ffffff;
+      }
 
-    .comparison-col:hover {
-      transform: translateY(-3px);
-      background: var(--surface-hover);
-    }
+      .footer-note {
+        max-inline-size: none;
+        font-family: var(--font-serif);
+        font-size: 1.125rem;
+        color: var(--text-primary);
+        margin-block-end: 0.35rem;
+      }
 
-    .comparison-col h4 {
-      font-size: 1.2rem;
-      margin-bottom: 0.9rem;
-      color: var(--text-primary);
-    }
+      .footer-links {
+        max-inline-size: none;
+        margin-block-start: 2.25rem;
+        margin-block-end: 0;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        font-variant-numeric: tabular-nums;
+        color: var(--text-muted);
+      }
 
-    .comparison-col p {
-      font-size: 0.98rem;
-      margin-bottom: 0;
-    }
+      .footer-links a:hover {
+        color: #ffffff;
+      }
 
-    /* Minimal Code Block */
-    .code-panel {
-      margin: 1.5rem 0;
-      padding: 1.4rem 1.6rem;
-      border-radius: 12px;
-      background: var(--surface);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      font-family: var(--font-mono);
-      font-size: 0.83rem;
-      line-height: 1.85;
-      color: #e5e5e5;
-      overflow-x: auto;
-    }
+      @media (pointer: coarse) {
+        .lang-btn, .itab, .copy-btn, .gh-link {
+          min-block-size: 36px;
+        }
+      }
 
-    .code-panel .dim {
-      color: var(--text-dim);
-    }
+      @media (max-width: 42.5rem) {
+        .container { padding-inline: 1.5rem; }
+        .top-controls { top: 1.125rem; right: 1.25rem; }
+        .comparison { flex-direction: column; }
+        .install-bar { flex-direction: column; align-items: stretch; }
+        .copy-btn { align-self: flex-end; }
+        .scroll-indicator { display: none; }
+      }
 
-    /* Scroll Indicator */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 28px;
-      left: 0;
-      opacity: 0;
-      animation: fadeUp 1.1s 0.7s ease forwards;
-      font-size: 0.76rem;
-      color: var(--text-dim);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
-    }
-
-    .scroll-indicator::after {
-      content: "";
-      display: block;
-      width: 1px;
-      height: 44px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), transparent);
-      margin-top: 10px;
-      margin-left: 18px;
-    }
-
-    .fade-in-section {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
-    }
-
-    .fade-in-section.is-visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    .hero .brand-tag { animation: fadeUp 0.9s ease forwards; opacity: 0; }
-    .hero h1 { animation: fadeUp 1s 0.1s ease forwards; opacity: 0; }
-    .hero p.lead { animation: fadeUp 1s 0.22s ease forwards; opacity: 0; }
-    .hero p.sub-lead { animation: fadeUp 1s 0.34s ease forwards; opacity: 0; }
-    .hero .install-shell, .hero .hero-meta { animation: fadeUp 1s 0.44s ease forwards; opacity: 0; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    footer {
-      margin-top: 6rem;
-      padding: 5rem 0 6rem;
-      text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    footer .footer-brand {
-      font-family: var(--font-sans);
-      font-size: 1.35rem;
-      letter-spacing: 0.1em;
-      color: var(--text-secondary);
-      margin-bottom: 1.2rem;
-    }
-
-    footer .footer-brand span {
-      font-family: var(--font-serif);
-      color: #ffffff;
-    }
-
-    footer .footer-links {
-      font-family: var(--font-mono);
-      font-size: 0.84rem;
-      color: var(--text-dim);
-    }
-
-    footer .footer-links a:hover {
-      color: #ffffff;
-    }
-
-    @media (max-width: 680px) {
-      .container { padding: 0 24px; }
-      .top-controls { top: 18px; right: 20px; }
-      .comparison { flex-direction: column; }
-      .scroll-indicator { display: none; }
+      @media print {
+        @page { size: A4 portrait; margin: 0; }
+        body {
+          background-color: #050505 !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        .ambient-light, .scroll-indicator, .top-controls {
+          display: none !important;
+        }
+        .fade-in-section, .hero * {
+          opacity: 1 !important;
+          transform: none !important;
+          animation: none !important;
+        }
+        .hero {
+          min-block-size: auto !important;
+          padding-block: 3.5rem 2rem !important;
+        }
+      }
     }
   </style>
 </head>
 <body>
-  <div class="ambient-light"></div>
+  <div class="ambient-light" aria-hidden="true"></div>
   <div id="live-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 
-  <div class="top-controls">
+  <header class="top-controls">
     <div class="lang-pill" role="group" aria-label="Language">
       <button type="button" class="lang-btn" lang="zh-CN" data-set-lang="zh" aria-pressed="true">中文</button>
       <button type="button" class="lang-btn" lang="en" data-set-lang="en" aria-pressed="false">EN</button>
     </div>
     <a class="gh-link" href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">GitHub ↗</a>
-  </div>
+  </header>
 
   <main class="container">
     <section class="hero">
@@ -544,133 +595,108 @@
       </h1>
 
       <p class="lead">
-        <span data-i18n="zh">面向 Codex、Claude Code 与 Antigravity 的发送前意图与预设控制层。</span>
-        <span data-i18n="en">A pre-send intent and preset layer for Codex, Claude Code, and Antigravity.</span>
-      </p>
-
-      <p class="sub-lead">
-        <span data-i18n="zh">话没说透时，先补齐工程预设、交付可逆初版并列出最多 2 个关键选择题；方向拍板后，跨轮锁死已确认的规矩，走偏时一键回退本地会话。</span>
-        <span data-i18n="en">When a prompt is underspecified, it attaches stack presets, ships a reversible v1, and surfaces at most 2 key choices; once decided, it locks rules across turns and rolls back drifted sessions cleanly.</span>
+        <span data-i18n="zh">Codex、Claude Code 与 Antigravity 的前置 Hook。</span>
+        <span data-i18n="en">Pre-prompt hook for Codex, Claude Code, and Antigravity.</span>
       </p>
 
       <div class="install-shell">
         <div class="install-tabs" role="tablist" aria-label="Install method">
-          <button type="button" role="tab" class="itab" id="tab-npm" aria-selected="true" aria-controls="panel-cmd" data-prompt="$" data-cmd="npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init">npm (Universal)</button>
-          <button type="button" role="tab" class="itab" id="tab-ps" aria-selected="false" aria-controls="panel-cmd" tabindex="-1" data-prompt="PS&gt;" data-cmd="irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.ps1 | iex">Windows (PowerShell)</button>
+          <button type="button" role="tab" class="itab" id="tab-npm" aria-selected="true" aria-controls="panel-cmd" data-prompt="$" data-cmd="npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init">npm</button>
+          <button type="button" role="tab" class="itab" id="tab-ps" aria-selected="false" aria-controls="panel-cmd" tabindex="-1" data-prompt="PS&gt;" data-cmd="irm https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.ps1 | iex">Windows PowerShell</button>
           <button type="button" role="tab" class="itab" id="tab-sh" aria-selected="false" aria-controls="panel-cmd" tabindex="-1" data-prompt="$" data-cmd="curl -fsSL https://raw.githubusercontent.com/jyl201210-lab/weijingzhiyi-lacuna/main/i.sh | sh">macOS / Linux</button>
         </div>
         <div class="install-bar" id="panel-cmd" role="tabpanel" aria-labelledby="tab-npm">
           <div class="install-cmd">
             <span class="install-prompt" id="cmd-prompt">$</span><span id="cmd-text">npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</span>
           </div>
-          <button type="button" class="copy-btn" id="copy-btn">
-            <span data-i18n="zh">复制</span>
-            <span data-i18n="en">Copy</span>
+          <button type="button" class="copy-btn" id="copy-btn" data-state="idle">
+            <span data-copy-label="zh" data-i18n="zh">复制</span>
+            <span data-copy-label="en" data-i18n="en">Copy</span>
           </button>
         </div>
       </div>
 
       <div class="hero-meta">
-        <span data-i18n="zh">Node.js &ge; 20 · 中英文输入自动识别（英文提问 100% 纯英文注入） · 0 额外 API 调用</span>
-        <span data-i18n="en">Node.js &ge; 20 · Auto EN / ZH detection (100% pure English on EN prompts) · 0 extra API calls</span>
+        <span data-i18n="zh">Node.js &gt;= 20 · Codex（CLI 与桌面端 App）/ Claude Code / Antigravity · 中英文自动识别</span>
+        <span data-i18n="en">Node.js &gt;= 20 · Codex (CLI &amp; Desktop App) / Claude Code / Antigravity · Auto EN / ZH</span>
       </div>
 
-      <div class="scroll-indicator">Scroll</div>
+      <div class="scroll-indicator" aria-hidden="true">Scroll</div>
     </section>
 
     <section class="fade-in-section">
       <h2>
-        <span data-i18n="zh">只解决三个最常卡壳的瞬间</span>
-        <span data-i18n="en">Built for Three Everyday Friction Points</span>
+        <span data-i18n="zh">作用</span>
+        <span data-i18n="en">Features</span>
       </h2>
 
-      <ul class="clean-list">
+      <ul class="clean-list" role="list">
         <li>
-          <span data-i18n="zh"><strong>第一轮话没说全</strong> —— 自动挂载 UI 排版（<code>tabular-nums</code>、克制色板、防连点）、SQLite 写锁与科研统计规范，拒绝廉价蓝紫模板和十连追问。</span>
-          <span data-i18n="en"><strong>Underspecified Turn 1</strong> — Automatically attaches UI craft (<code>tabular-nums</code>, restrained palettes, submit locks), SQLite write locks, and statistical rigor without purple-gradient slop or 10-question stalls.</span>
+          <span data-i18n="zh"><strong>前置预设</strong> —— 发给模型前按任务附加前端排版、数据库事务与统计检验基线；当轮显式指令始终优先，英文输入自动注入纯英文上下文。</span>
+          <span data-i18n="en"><strong>Task Presets</strong> — Attaches frontend, database, and statistical baselines before prompts reach the model. Explicit instructions take precedence; English prompts stay 100% English.</span>
         </li>
         <li>
-          <span data-i18n="zh"><strong>聊久了忘规矩</strong> —— 自动提取你已确认的决定（含“不要物理删除”等否定要求），后续每一轮持续生效。</span>
-          <span data-i18n="en"><strong>Forgotten rules on Turn 10</strong> — Captures confirmed decisions (including negations like <em>"Never hard-delete"</em>) and carries them across every follow-up turn.</span>
+          <span data-i18n="zh"><strong>会话约束</strong> —— 自动记录当前会话内已定的约束（如表结构、软删除策略），后续轮次持续附带，可通过 <code>lacuna rules</code> 查看、添加或撤销。</span>
+          <span data-i18n="en"><strong>Session Rules</strong> — Carries confirmed session constraints (schemas, soft-delete policies, etc.) across turns. Inspect, add, or revoke via <code>lacuna rules</code>.</span>
         </li>
         <li>
-          <span data-i18n="zh"><strong>走偏后越改越乱</strong> —— <code>lacuna rebase</code> 自动备份并物理截断本地 <code>.jsonl</code> 错误轮次，带着已锁定的规矩干净重跑。</span>
-          <span data-i18n="en"><strong>Rabbit-hole turns</strong> — <code>lacuna rebase</code> backs up and truncates drifted <code>.jsonl</code> turns so you rerun cleanly with locked rules intact.</span>
+          <span data-i18n="zh"><strong>记录回退</strong> —— <code>lacuna rebase &lt;session_id&gt; [turns]</code> 自动备份并截断本机 Codex 或 Claude <code>.jsonl</code> 最后 N 轮对话。</span>
+          <span data-i18n="en"><strong>JSONL Rollback</strong> — <code>lacuna rebase &lt;session_id&gt; [turns]</code> backs up and truncates the last N turns of local Codex or Claude <code>.jsonl</code> logs.</span>
         </li>
       </ul>
-
-      <div class="highlight-box">
-        <p>
-          <span data-i18n="zh">你的本轮明确指令永远排第一，一句话即可覆盖任何默认预设。</span>
-          <span data-i18n="en">Your explicit instructions always come first—override any default preset in a single sentence.</span>
-        </p>
-      </div>
     </section>
 
     <section class="fade-in-section">
       <h2>
-        <span data-i18n="zh">从方向未定到持续推进</span>
-        <span data-i18n="en">From Open Direction to Locked Execution</span>
+        <span data-i18n="zh">命令与安装</span>
+        <span data-i18n="en">Commands &amp; Setup</span>
       </h2>
+
+      <pre class="code-panel">lacuna config show                  <span class="dim" data-i18n="zh"># 查看当前配置</span><span class="dim" data-i18n="en"># Show active configuration</span>
+lacuna config set lang auto         <span class="dim" data-i18n="zh"># 语言：auto（默认）| zh | en</span><span class="dim" data-i18n="en"># Language: auto (default) | en | zh</span>
+lacuna rules list                   <span class="dim" data-i18n="zh"># 查看当前会话约束</span><span class="dim" data-i18n="en"># List constraints in active session</span>
+lacuna rules revoke --id &lt;id&gt;       <span class="dim" data-i18n="zh"># 撤销指定约束</span><span class="dim" data-i18n="en"># Revoke a constraint by ID</span>
+lacuna rebase &lt;session_id&gt; [turns]  <span class="dim" data-i18n="zh"># 备份并截断最后 N 轮 .jsonl</span><span class="dim" data-i18n="en"># Back up and truncate last N .jsonl turns</span>
+lacuna uninstall                    <span class="dim" data-i18n="zh"># 卸载前置 Hook</span><span class="dim" data-i18n="en"># Remove pre-model hooks</span></pre>
 
       <div class="comparison">
         <div class="comparison-col">
-          <h4>
-            <span data-i18n="zh">方向未定时</span>
-            <span data-i18n="en">Before You Decide</span>
-          </h4>
+          <h3>
+            <span data-i18n="zh">终端 CLI</span>
+            <span data-i18n="en">CLI Hosts</span>
+          </h3>
           <p>
-            <span data-i18n="zh">先按状态标记或预览模式交出能跑的第一版，代码结束后最多只问 2 个决定后续走向的大白话选择题。</span>
-            <span data-i18n="en">Delivers a runnable, reversible v1 first, then asks at most 2 plain-language trade-off choices outside the code block.</span>
+            <span data-i18n="zh">闭源单文件 CLI 发行版（<code>UNLICENSED</code>）。执行 <code>lacuna init</code> 自动写入 Codex CLI、Claude Code 与 Antigravity 的前置 Hook；<code>lacuna uninstall</code> 可完整移除。</span>
+            <span data-i18n="en">Closed-source single-file CLI (<code>UNLICENSED</code>). Running <code>lacuna init</code> configures pre-model hooks for Codex CLI, Claude Code, and Antigravity; <code>lacuna uninstall</code> removes them.</span>
           </p>
         </div>
         <div class="comparison-col">
-          <h4>
-            <span data-i18n="zh">方向拍板后</span>
-            <span data-i18n="en">Once You Confirm</span>
-          </h4>
+          <h3>
+            <span data-i18n="zh">Codex 桌面端 App</span>
+            <span data-i18n="en">Codex Desktop App</span>
+          </h3>
           <p>
-            <span data-i18n="zh">拍板内容写进当前会话规矩清单，你改主意时自动更新覆盖；Codex 桌面端、CLI、Claude Code 与 Antigravity 同步可用。</span>
-            <span data-i18n="en">Confirmed choices stay locked for the rest of the session, update cleanly if you change your mind, and work across Codex App/CLI, Claude Code, and Antigravity.</span>
+            <span data-i18n="zh">把 <code>npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> 发给应用内对话自动安装，装完退出并重启一次 App。</span>
+            <span data-i18n="en">Send <code>npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> in an in-app chat to install, then quit and restart the app once.</span>
           </p>
         </div>
       </div>
-    </section>
-
-    <section class="fade-in-section">
-      <h2>
-        <span data-i18n="zh">常用命令</span>
-        <span data-i18n="en">Everyday Commands</span>
-      </h2>
-
-      <pre class="code-panel"><span class="dim" data-i18n="zh"># 查看或切换语言 (auto 默认自动识别 | zh | en)</span><span class="dim" data-i18n="en"># Inspect or switch language (auto | en | zh)</span>
-lacuna config show
-lacuna config set lang en
-
-<span class="dim" data-i18n="zh"># 查看或撤销当前会话已锁定的规矩</span><span class="dim" data-i18n="en"># List or revoke locked rules in current session</span>
-lacuna rules list
-lacuna rules revoke --id r_1
-
-<span class="dim" data-i18n="zh"># 备份并回退最近 1 轮走偏会话 / 一键卸载</span><span class="dim" data-i18n="en"># Backup &amp; roll back last 1 drifted turn / cleanly uninstall</span>
-lacuna rebase &lt;session_id&gt; 1
-lacuna uninstall</pre>
-
-      <p>
-        <span data-i18n="zh"><strong>Codex 桌面端 App 代装：</strong>直接把 <code>Install Lacuna via: npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> 发给对话框里的 AI，装完彻底退出并重启一次 App 即可。</span>
-        <span data-i18n="en"><strong>Codex Desktop App:</strong> Send <code>Install Lacuna via: npm i -g jyl201210-lab/weijingzhiyi-lacuna &amp;&amp; lacuna init</code> directly to the in-app AI, then quit and restart Codex App once.</span>
-      </p>
     </section>
   </main>
 
   <footer class="fade-in-section">
     <div class="container">
-      <div class="footer-brand">未竟之意 / <span>Lacuna</span></div>
-      <div class="footer-links">
+      <p class="footer-brand">未竟之意 / <span>Lacuna</span></p>
+      <p class="footer-note">
+        <span data-i18n="zh">不是让 AI 更快替人定义问题，而是让方向先长出来，再把后续推进接过去。</span>
+        <span data-i18n="en">Let direction take shape before handing off execution.</span>
+      </p>
+      <p class="footer-links">
         <a href="mailto:1061790014@qq.com">1061790014@qq.com</a>
-        &nbsp;·&nbsp; WeChat: Jyl2012111 &nbsp;·&nbsp;
-        <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">GitHub</a>
+        &nbsp;·&nbsp; WeChat: Jyl2012111
+        &nbsp;·&nbsp; <a href="https://github.com/jyl201210-lab/weijingzhiyi-lacuna" target="_blank" rel="noreferrer">GitHub</a>
         &nbsp;·&nbsp; UNLICENSED
-      </div>
+      </p>
     </div>
   </footer>
 
@@ -678,12 +704,23 @@ lacuna uninstall</pre>
     (() => {
       const live = document.getElementById("live-status");
       const langBtns = Array.from(document.querySelectorAll("[data-set-lang]"));
+      const copyBtn = document.getElementById("copy-btn");
+      const copyZh = copyBtn.querySelector('[data-copy-label="zh"]');
+      const copyEn = copyBtn.querySelector('[data-copy-label="en"]');
       let lang = "zh";
+      let copyTimer = 0;
+      let isCopying = false;
 
       function announce(text) {
         if (!live) return;
         live.textContent = "";
         setTimeout(() => { live.textContent = text; }, 30);
+      }
+
+      function resetCopyLabel() {
+        copyBtn.dataset.state = "idle";
+        copyZh.textContent = "复制";
+        copyEn.textContent = "Copy";
       }
 
       function setLang(next, persist) {
@@ -711,7 +748,6 @@ lacuna uninstall</pre>
       const panel = document.getElementById("panel-cmd");
       const cmdPrompt = document.getElementById("cmd-prompt");
       const cmdText = document.getElementById("cmd-text");
-      const copyBtn = document.getElementById("copy-btn");
 
       function selectTab(tab, focus) {
         tabs.forEach(t => {
@@ -722,7 +758,8 @@ lacuna uninstall</pre>
         panel.setAttribute("aria-labelledby", tab.id);
         cmdPrompt.textContent = tab.dataset.prompt;
         cmdText.textContent = tab.dataset.cmd;
-        copyBtn.dataset.copied = "false";
+        clearTimeout(copyTimer);
+        resetCopyLabel();
         if (focus) tab.focus();
       }
 
@@ -732,6 +769,8 @@ lacuna uninstall</pre>
           let next = -1;
           if (e.key === "ArrowRight") next = (i + 1) % tabs.length;
           else if (e.key === "ArrowLeft") next = (i - 1 + tabs.length) % tabs.length;
+          else if (e.key === "Home") next = 0;
+          else if (e.key === "End") next = tabs.length - 1;
           if (next >= 0) {
             e.preventDefault();
             selectTab(tabs[next], true);
@@ -740,24 +779,40 @@ lacuna uninstall</pre>
       });
 
       copyBtn.addEventListener("click", async () => {
+        if (isCopying) return;
+        isCopying = true;
+        clearTimeout(copyTimer);
         try {
           await navigator.clipboard.writeText(cmdText.textContent || "");
-          copyBtn.dataset.copied = "true";
-          announce(lang === "en" ? "Copied to clipboard" : "已复制到剪贴板");
-          setTimeout(() => { copyBtn.dataset.copied = "false"; }, 1600);
-        } catch {}
+          copyBtn.dataset.state = "copied";
+          copyZh.textContent = "✓ 已复制";
+          copyEn.textContent = "✓ Copied";
+          announce(lang === "en" ? "Command copied to clipboard" : "命令已复制到剪贴板");
+        } catch {
+          copyBtn.dataset.state = "error";
+          copyZh.textContent = "请按 Ctrl/Cmd+C";
+          copyEn.textContent = "Press Ctrl/Cmd+C";
+          try { window.getSelection()?.selectAllChildren(cmdText); } catch {}
+          announce(lang === "en" ? "Clipboard unavailable; command text selected" : "剪贴板不可用，已选中命令文本");
+        } finally {
+          isCopying = false;
+          copyTimer = window.setTimeout(resetCopyLabel, 1800);
+        }
       });
 
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
-
-      document.querySelectorAll(".fade-in-section").forEach(el => observer.observe(el));
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll(".fade-in-section").forEach(el => observer.observe(el));
+      } else {
+        document.querySelectorAll(".fade-in-section").forEach(el => el.classList.add("is-visible"));
+      }
     })();
   </script>
 </body>
