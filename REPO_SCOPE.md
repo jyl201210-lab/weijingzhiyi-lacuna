@@ -3,9 +3,9 @@
 ## 这个公开仓库包含什么
 
 - `README.md` / `README.en.md`：中英双语产品说明与一键安装指南
-- `index.html`：中英双语交互式宣传主页（支持深浅色切换与前置注入场景透视）
-- `dist/lacuna.mjs`、`package.json`、`i.ps1`、`i.sh`：混淆封装后的闭源单文件 CLI 分发产物与 Windows / macOS / Linux 安装脚本
-- `assets/screenshots/`：v2.4 中英文页面视觉预览
+- `index.html`：中英双语交互式宣传主页
+- `dist/lacuna.mjs`、`package.json`、`i.ps1`、`i.sh`：单文件打包封装的闭源 CLI 分发产物与 Windows / macOS / Linux 安装脚本
+- `assets/screenshots/`：中英文页面视觉预览
 
 ## 这个公开仓库不包含什么
 

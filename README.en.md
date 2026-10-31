@@ -27,7 +27,7 @@ For Codex Desktop App, send the `npm` command above in an in-app chat, then full
 ## Use
 
 - **Explore**: While the goal is taking shape, start with a working, reversible implementation and surface key trade-offs for your decision.
-- **Iterate**: Carry confirmed architecture and data conventions through development and bug fixes. View, add, or revoke with `lacuna rules`.
+- **Iterate**: Carry confirmed architecture and data conventions through development and bug fixes. View, add (`--once` / `--ttl <N>` for scoped turns), or revoke with `lacuna rules`.
 - **Rewind**: Back up and truncate the last `N` turns of local Codex / Claude Code `.jsonl` logs while keeping workspace code in place.
 
 ```bash
@@ -38,8 +38,8 @@ lacuna config set lang auto         # Language: auto (default, 100% EN on EN inp
 lacuna uninstall                    # Remove integration settings
 ```
 
-Includes baselines for frontend layout and UI states, database transaction locks and snapshot checks, and avoiding circular reasoning in statistical tests. Explicit instructions always take precedence.
+Includes baselines for frontend layout and UI states, database transaction locks and snapshot checks, independent statistical validation, and falsifiable reasoning with source-preserving notes. Explicit instructions always take precedence.
 
 ## About
 
-v2.4 · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v2.5 · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
