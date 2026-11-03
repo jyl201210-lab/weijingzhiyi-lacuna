@@ -1,7 +1,7 @@
 {
   "name": "lacuna-ai",
-  "version": "2.5.1",
-  "description": "Lacuna (未竟之意) — Cross-platform bilingual (ZH/EN) pre-model context & decision engine for Codex CLI, Claude Code, and Antigravity.",
+  "version": "3.2.0",
+  "description": "Lacuna (未竟之意) — Subscription-first Dual-AI third-perspective calibration, domain craft & session recovery engine for Codex CLI, Claude Code, and Antigravity.",
   "license": "UNLICENSED",
   "type": "module",
   "engines": {

@@ -22,4 +22,4 @@ chmod +x "$TMP_MJS"
 mv -f "$TMP_MJS" "$BIN_DIR/lacuna.mjs"
 ln -sf "$BIN_DIR/lacuna.mjs" "$LOCAL_BIN/lacuna"
 node "$BIN_DIR/lacuna.mjs" install --quiet
-echo "[Lacuna] Installed to $LOCAL_BIN/lacuna. Try: lacuna help"
+echo "[Lacuna] Installed to $LOCAL_BIN/lacuna. Try: lacuna status"

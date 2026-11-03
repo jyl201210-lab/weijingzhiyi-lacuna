@@ -6,7 +6,7 @@
 
 ## Install
 
-`Node.js >= 20` · Windows / macOS / Linux · Works with Codex (CLI & Desktop App), Claude Code, and Antigravity
+`Node.js >= 20` · Windows / macOS / Linux · Works with Antigravity, Codex (CLI & Desktop App), and Claude Code (uses your logged-in subscription out of the box—no API key required)
 
 ```bash
 npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init
@@ -26,20 +26,23 @@ For Codex Desktop App, send the `npm` command above in an in-app chat, then full
 
 ## Use
 
-- **Explore**: While the goal is taking shape, start with a working, reversible implementation and surface key trade-offs for your decision.
-- **Iterate**: Carry confirmed architecture and data conventions through development and bug fixes. View, add (`--once` / `--ttl <N>` for scoped turns), or revoke with `lacuna rules`.
-- **Rewind**: Back up and truncate the last `N` turns of local Codex / Claude Code `.jsonl` logs while keeping workspace code in place.
+- **Same-App Subscription Default**: Whichever app you are chatting in, Lacuna uses that app's own logged-in subscription model once before sending (zero hidden post-turn calls), showing every model call openly at the top of the window and falling back honestly to local baseline rules on timeout or quota exhaustion.
+- **Optional Multi-Model Cross-Review**: Users with multiple subscriptions on one machine can explicitly enable `lacuna cross-review on` for parallel primary + co-reviewer calibration with full call transparency.
+- **Adjustable Cost Tiers**: Switch anytime between `standard` (every substantive turn), `light` (inflection points only), and `quiet` (local baseline rules, 0 model calls).
+- **Existing-Project Respect & Recovery**: Follows existing UI tokens and ledger column precision first when editing established codebases; persists global commitments and cleanly `rebase`s or `fork`s derailed turns while preserving your words.
 
 ```bash
-lacuna rules list                   # View confirmed conventions (also: add, revoke, clear)
-lacuna rebase <session_id> [turns]  # Back up and remove the last N turns
-lacuna config show                  # View configuration
-lacuna config set lang auto         # Language: auto (default, 100% EN on EN input) | en | zh
+lacuna status                       # Inspect active subscription channel, tier, call log & hooks
+lacuna tier standard|light|quiet    # Switch cost tier anytime (0-call 'quiet' mode supported)
+lacuna cross-review on|off|status   # Toggle optional multi-model cross-review (off by default)
+lacuna rules list                   # Manage standing global commitments (add / revoke / clear)
+lacuna rebase <session_id> [turns]  # Back up and cut the last N derailed turns
+lacuna fork <session_id> [turns]    # Fork a clean session UUID non-destructively
 lacuna uninstall                    # Remove integration settings
 ```
 
-Includes baselines for frontend layout and UI states, database transaction locks and snapshot checks, independent statistical validation, and falsifiable reasoning with source-preserving notes. Explicit instructions always take precedence.
+Includes domain craft cards for frontend UI & states, SQLite/backend transactions, ledger-aware monetary math, independent statistical checks, verbatim note organization, and commercial accountability—delivered only when actively building that deliverable.
 
 ## About
 
-v2.5 · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v3.2 (3.2.0) · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`

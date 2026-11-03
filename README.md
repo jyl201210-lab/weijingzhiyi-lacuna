@@ -6,7 +6,7 @@
 
 ## 安装
 
-`Node.js >= 20` · Windows / macOS / Linux · 支持 Codex（CLI 与桌面端 App）、Claude Code、Antigravity
+`Node.js >= 20` · Windows / macOS / Linux · 支持 Antigravity、Codex（CLI 与桌面端 App）、Claude Code（直接复用本机已登录会员，免填 API Key）
 
 ```bash
 npm i -g jyl201210-lab/weijingzhiyi-lacuna && lacuna init
@@ -26,20 +26,23 @@ Codex 桌面端 App 可在应用内对话直接发送上方 `npm` 命令安装�
 
 ## 使用
 
-- **探索**：目标未定时，先做出可用、可回退的实现，再列出关键取舍供你确认。
-- **迭代**：将已确认的架构与数据约定持续带入后续开发和修复；用 `lacuna rules` 查看、添加（支持 `--once` / `--ttl <N>` 临时范围）或撤销。
-- **回退**：备份并截断本地 Codex / Claude Code `.jsonl` 最后若干轮对话，保留工作区代码。
+- **本分顺手的场外把脉**：当前在哪个软件里聊天，默认就直接调用该软件自己已登录的会员模型在发消息前把脉一次（无后台二次暗调），并在顶部提示与状态查看里亮明本次出场的模型与作用；超时或当期额度用满时如实说明并自动暂走本地基础规则。
+- **高级选配多模型会审**：电脑同时登录多家软件会员时，可按需手动开启 `lacuna cross-review on`，由主审与副审并行协作并在界面透明亮出。
+- **三档用量自由切换**：支持 `standard`（标准高配档）、`light`（轻量按需档）、`quiet`（静默省流档，零模型调用）。
+- **顺着老项目底子干活与切枝恢复**：新建项目给足成熟参考，改动老项目优先沿用既有界面风格与账目精度表结构；支持保存全局长期约定，以及备份切出或无损分叉（`rebase` / `fork`）跑偏轮次并保留原话。
 
 ```bash
-lacuna rules list                   # 查看已确认的约定（支持 add / revoke / clear）
-lacuna rebase <session_id> [turns]  # 备份并截断最后 N 轮对话
-lacuna config show                  # 查看配置
-lacuna config set lang auto         # 语言：auto（默认，英文输入纯英文注入）| zh | en
+lacuna status                       # 查看当前软件会员通道、档位、最近调用明细与挂载状态
+lacuna tier standard|light|quiet    # 切换消耗档位（标准高配 / 轻量按需 / 静默省流）
+lacuna cross-review on|off|status   # 按需开关跨软件多模型会审（默认关闭）
+lacuna rules list                   # 查看全局长期约定（支持 add / revoke / clear）
+lacuna rebase <session_id> [turns]  # 备份并切掉最后 N 轮跑偏对话（保留原话）
+lacuna fork <session_id> [turns]    # 无损分叉出干净新会话
 lacuna uninstall                    # 移除接入配置
 ```
 
-内置前端排版与状态、数据库事务锁与快照核验、统计独立检验、可证伪推演与原稿分层基线；你的明确指令始终优先。
+内置前端层次与交互、数据库事务锁、账目精度保护与分位精算、科研统计独立检验、原稿保真整理与商业权责审视经验卡，仅在实际动手做对应事情时递送；你的本轮明确指令始终优先。
 
 ## 关于
 
-v2.5 · 闭源单文件 CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v3.2 (3.2.0) · 闭源单文件 CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
