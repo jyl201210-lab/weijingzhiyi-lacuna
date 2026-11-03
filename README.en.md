@@ -27,6 +27,7 @@ For Codex Desktop App, send the `npm` command above in an in-app chat, then full
 ## Use
 
 - **Same-App Subscription Default**: Whichever app you are chatting in, Lacuna uses that app's own logged-in subscription model once before sending (zero hidden post-turn calls), showing every model call openly at the top of the window and falling back honestly to local baseline rules on timeout or quota exhaustion.
+- **Multi-Message Coalescing & Long-Session Continuity**: Automatically combines consecutive short messages sent before the AI replies into one complete thought, and hydrates a lightweight Q&A spine plus your disclosed project context (such as real capabilities vs demo-only placeholders) from local session transcripts—even when attaching 40+ turns in.
 - **Optional Multi-Model Cross-Review**: Users with multiple subscriptions on one machine can explicitly enable `lacuna cross-review on` for parallel primary + co-reviewer calibration with full call transparency.
 - **Adjustable Cost Tiers**: Switch anytime between `standard` (every substantive turn), `light` (inflection points only), and `quiet` (local baseline rules, 0 model calls).
 - **Existing-Project Respect & Recovery**: Follows existing UI tokens and ledger column precision first when editing established codebases; persists global commitments and cleanly `rebase`s or `fork`s derailed turns while preserving your words.
@@ -45,4 +46,4 @@ Includes domain craft cards for frontend UI & states, SQLite/backend transaction
 
 ## About
 
-v3.2 (3.2.0) · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v3.3 (3.3.0) · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
