@@ -46,4 +46,4 @@ lacuna uninstall                    # 移除接入配置
 
 ## 关于
 
-v3.3 (3.3.0) · 闭源单文件 CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v3.5 (3.5.0) · 闭源单文件 CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`

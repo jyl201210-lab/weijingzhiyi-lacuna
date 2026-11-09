@@ -46,4 +46,4 @@ Includes domain craft cards for frontend UI & states, SQLite/backend transaction
 
 ## About
 
-v3.3 (3.3.0) · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v3.5 (3.5.0) · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
