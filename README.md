@@ -36,6 +36,7 @@ Codex 桌面端 App 可在应用内对话直接发送上方 `npm` 命令安装�
 lacuna status                       # 查看当前软件会员通道、档位、最近调用明细与挂载状态
 lacuna tier standard|light|quiet    # 切换消耗档位（标准高配 / 轻量按需 / 静默省流）
 lacuna cross-review on|off|status   # 按需开关跨软件多模型会审（默认关闭）
+lacuna worker --raw "<施工任务>"     # 无侧边栏残留派发 Carbon 独立施工与验证
 lacuna rules list                   # 查看全局长期约定（支持 add / revoke / clear）
 lacuna rebase <session_id> [turns]  # 备份并切掉最后 N 轮跑偏对话（保留原话）
 lacuna fork <session_id> [turns]    # 无损分叉出干净新会话
@@ -46,4 +47,4 @@ lacuna uninstall                    # 移除接入配置
 
 ## 关于
 
-v3.5 (3.5.0) · 闭源单文件 CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v3.6 (3.6.0) · 闭源单文件 CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`

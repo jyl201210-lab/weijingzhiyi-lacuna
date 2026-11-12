@@ -36,6 +36,7 @@ For Codex Desktop App, send the `npm` command above in an in-app chat, then full
 lacuna status                       # Inspect active subscription channel, tier, call log & hooks
 lacuna tier standard|light|quiet    # Switch cost tier anytime (0-call 'quiet' mode supported)
 lacuna cross-review on|off|status   # Toggle optional multi-model cross-review (off by default)
+lacuna worker --raw "<task>"        # Dispatch sidebar-invisible Carbon worker via agy CLI
 lacuna rules list                   # Manage standing global commitments (add / revoke / clear)
 lacuna rebase <session_id> [turns]  # Back up and cut the last N derailed turns
 lacuna fork <session_id> [turns]    # Fork a clean session UUID non-destructively
@@ -46,4 +47,4 @@ Includes domain craft cards for frontend UI & states, SQLite/backend transaction
 
 ## About
 
-v3.5 (3.5.0) · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
+v3.6 (3.6.0) · Closed-source single-file CLI · `UNLICENSED` · [1061790014@qq.com](mailto:1061790014@qq.com) · WeChat `Jyl2012111`
